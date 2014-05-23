@@ -42,7 +42,10 @@
     <Compile Include="ConsoleInterface\Argument.cs" />
     <Compile Include="ConsoleInterface\Command.cs" />
     <Compile Include="ConsoleInterface\ConsoleInterface.cs" />
+    <Compile Include="ConsoleInterface\Exceptions\Exceptions.cs" />
     <Compile Include="ConsoleInterface\ExitCommand.cs" />
+    <Compile Include="ConsoleInterface\Flags.cs" />
+    <Compile Include="ConsoleInterface\HelpCommand.cs" />
     <Compile Include="ConsoleInterface\Request.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\IXmlCollectable.cs" />
