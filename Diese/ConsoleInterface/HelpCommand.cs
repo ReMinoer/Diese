@@ -16,11 +16,24 @@ namespace Diese.ConsoleInterface
             Commands = commands;
         }
 
-        protected override void Action(string[] args)
+        protected override void Action(ArgumentsDictionary arguments, OptionsDictionary options)
         {
             foreach (Command c in Commands.Values)
             {
-                Console.WriteLine("\t" + c.Keyword + " : " + c.Description);
+                Console.WriteLine();
+                Console.Write(c.Keyword);
+
+                foreach (Argument a in c.RequiredArguments)
+                    Console.Write(" " + a.Name);
+                Console.WriteLine();
+
+                Console.WriteLine("\tDESCRIPTION : " + c.Description);
+
+                if (c.RequiredArguments.Any())
+                    Console.WriteLine("\tARGUMENTS :");
+
+                foreach (Argument a in c.RequiredArguments)
+                    Console.WriteLine("\t\t" + a.Name + " : " + a.Description);
             }
         }
     }
