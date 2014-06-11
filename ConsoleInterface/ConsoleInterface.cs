@@ -11,7 +11,7 @@ namespace Diese.ConsoleInterface
         public string Name { get; set; }
         public string WelcomeMessage { get; set; }
 
-        public Dictionary<string, Command> Commands { get; set; }
+        private Dictionary<string, Command> Commands { get; set; }
 
         private static string exitKeyword = "exit";
         private static string helpKeyword = "help";
@@ -20,66 +20,53 @@ namespace Diese.ConsoleInterface
         {
             Name = name;
 
+            WelcomeMessage = "Welcome in " + name + " !";
+
             Commands = new Dictionary<string, Command>();
             Commands.Add(exitKeyword, new ExitCommand(name));
             Commands.Add(helpKeyword, new HelpCommand(Commands));
         }
 
-        public void Run()
+        protected void AddCommand(Command c)
         {
-            WriteWelcomeMessage();
-            while (WaitRequest()) { }
+            Commands.Add(c.Keyword, c);
         }
 
-        public bool WaitRequest()
+        public void Run()
+        {
+            Console.WriteLine(WelcomeMessage);
+            while (true)
+                WaitRequest();
+        }
+
+        private void WaitRequest()
         {
             Console.WriteLine();
             Console.Write(Name + ">");
-            return Request(Console.ReadLine().Split(new char[] { ' ' }));
+            Request(new Request(Console.ReadLine()));
         }
 
-        public void WriteWelcomeMessage()
+        public void Request(string[] args)
         {
-            Console.WriteLine(WelcomeMessage);
+            Request(new Request(args));
         }
 
-        public bool Request(string[] request)
-        {
-            return Request(new Request(request));
-        }
-
-        public bool Request(Request request)
+        private void Request(Request request)
         {
             try
             {
                 if (request.Command == "")
-                    return true;
-
-                if (request.Command == exitKeyword)
-                {
-                    Commands[exitKeyword].Run(request.Arguments);
-                    return false;
-                }
+                    return;
 
                 if (!Commands.Keys.Contains(request.Command))
                     throw new UnknownCommandException(request.Command);
 
                 Commands[request.Command].Run(request.Arguments);
             }
-            catch (NumberOfArgumentsException e)
+            catch (ConsoleInterfaceException e)
             {
                 Console.WriteLine(e.Message);
             }
-            catch (ArgumentNotValidException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            catch (UnknownCommandException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return true;
         }
     }
 }
