@@ -2,11 +2,10 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Globalization;
 
 namespace Diese.Xml
 {
-    class XmlSaver
+    internal class XmlSaver
     {
         private XmlWriter writer;
 
@@ -63,7 +62,7 @@ namespace Diese.Xml
 
         public void WriteCollection(XmlCollection c)
         {
-            foreach(KeyValuePair<string, string> x in c)
+            foreach (KeyValuePair<string, string> x in c)
                 writer.WriteAttributeString(x.Key, x.Value);
         }
     }
