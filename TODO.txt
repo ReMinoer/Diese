@@ -1,0 +1,7 @@
+- generic converter
+- ramdom object value generator
+- helper for unit test
+- universisal transition
+- abstract Data
+- exception display
+- serialization update
