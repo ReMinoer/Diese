@@ -4,7 +4,7 @@ using Diese.Modelization;
 
 namespace Diese.Serialization
 {
-    public class XmlSerializer<T>
+    public class XmlSerializer<T> : Serializer<T>
         where T : new()
     {
         private readonly XmlSerializer _serializer;
@@ -14,51 +14,35 @@ namespace Diese.Serialization
             _serializer = new XmlSerializer(typeof(T));
         }
 
-        public T Load(string path)
+        public override T Load(Stream stream)
         {
-            var streamReader = new StreamReader(path);
-            var obj = (T)_serializer.Deserialize(streamReader);
-            streamReader.Close();
-            return obj;
+            return (T)_serializer.Deserialize(stream);
         }
 
-        public void Save(T obj, string path)
+        public override void Save(T obj, Stream stream)
         {
-            var streamWriter = new StreamWriter(path);
-            _serializer.Serialize(streamWriter, obj);
-            streamWriter.Close();
+            _serializer.Serialize(stream, obj);
         }
     }
 
-    public class XmlSerializer<T, TModel>
+    public class XmlSerializer<T, TModel> : ModelSerializer<T, TModel>
         where TModel : IModel<T>, new()
     {
         private readonly XmlSerializer _serializer;
 
         public XmlSerializer()
         {
-            _serializer = new XmlSerializer(typeof(T));
+            _serializer = new XmlSerializer(typeof(TModel));
         }
 
-        public void Load(T obj, string path)
+        protected override TModel LoadModel(Stream stream)
         {
-            var streamReader = new StreamReader(path);
-
-            var model = (TModel)_serializer.Deserialize(streamReader);
-            model.To(obj);
-
-            streamReader.Close();
+            return (TModel)_serializer.Deserialize(stream);
         }
 
-        public void Save(T obj, string path)
+        protected override void SaveModel(TModel model, Stream stream)
         {
-            var streamWriter = new StreamWriter(path);
-
-            var model = new TModel();
-            model.From(obj);
-            _serializer.Serialize(streamWriter, model);
-
-            streamWriter.Close();
+            _serializer.Serialize(stream, model);
         }
     }
 }
