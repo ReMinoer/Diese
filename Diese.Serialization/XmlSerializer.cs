@@ -23,6 +23,16 @@ namespace Diese.Serialization
         {
             _serializer.Serialize(stream, obj);
         }
+
+        public T Load(TextReader textReader)
+        {
+            return (T)_serializer.Deserialize(textReader);
+        }
+
+        public void Save(T obj, TextWriter textWriter)
+        {
+            _serializer.Serialize(textWriter, obj);
+        }
     }
 
     public class XmlSerializer<T, TModel> : ModelSerializer<T, TModel>
@@ -43,6 +53,19 @@ namespace Diese.Serialization
         protected override void SaveModel(TModel model, Stream stream)
         {
             _serializer.Serialize(stream, model);
+        }
+
+        public void Load(T obj, TextReader textReader)
+        {
+            var model = (TModel)_serializer.Deserialize(textReader);
+            model.To(obj);
+        }
+
+        public void Save(T obj, TextWriter textWriter)
+        {
+            var model = new TModel();
+            model.From(obj);
+            _serializer.Serialize(textWriter, model);
         }
     }
 }
