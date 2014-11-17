@@ -53,13 +53,13 @@
       <Project>{0781AD0F-EB0F-442E-9A1C-34C2AA9319FD}</Project>
       <Name>Diese.Modelization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Diese.Serialization\Diese.Serialization.csproj">
-      <Project>{4AE2D764-4161-453D-8B2D-BD66607EC27A}</Project>
-      <Name>Diese.Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Diese.Modelization.Test\Diese.Modelization.Test.csproj">
       <Project>{0A7EC775-E197-45E0-9ADC-5535708FBB6A}</Project>
       <Name>Diese.Modelization.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Diese.Serialization\Diese.Serialization.csproj">
+      <Project>{4AE2D764-4161-453D-8B2D-BD66607EC27A}</Project>
+      <Name>Diese.Serialization</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

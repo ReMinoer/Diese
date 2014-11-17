@@ -1,8 +1,10 @@
 ﻿using System.IO;
+using Diese.Modelization;
+using System.Reflection;
 
 namespace Diese.Serialization
 {
-    public abstract class Serializer<T> : ISerializer<T>
+	public abstract class Serializer<T> : ISerializer<T>
     {
         public T Load(string path)
         {
@@ -10,7 +12,7 @@ namespace Diese.Serialization
             T obj = Load(streamReader.BaseStream);
             streamReader.Close();
             return obj;
-        }
+		}
 
         public void Save(T obj, string path)
         {
