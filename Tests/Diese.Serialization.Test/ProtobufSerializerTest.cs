@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Diese.Modelization.Test.Samples;
+using Diese.Serialization.Protobuf;
 using NUnit.Framework;
 
 namespace Diese.Serialization.Test

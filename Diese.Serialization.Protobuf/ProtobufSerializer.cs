@@ -2,7 +2,7 @@
 using Diese.Modelization;
 using ProtoBuf;
 
-namespace Diese.Serialization
+namespace Diese.Serialization.Protobuf
 {
     public class ProtobufSerializer<T> : Serializer<T>
         where T : new()

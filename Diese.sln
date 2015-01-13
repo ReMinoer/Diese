@@ -26,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9616
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Exceptions.Sample", "Samples\Diese.Exceptions.Sample\Diese.Exceptions.Sample.csproj", "{AC7C9776-94FF-434B-9084-8DCB175CF969}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Serialization.Xml", "Diese.Serialization.Xml\Diese.Serialization.Xml.csproj", "{2E54BDF5-E178-4672-AD09-22971F3E7610}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Serialization.Protobuf", "Diese.Serialization.Protobuf\Diese.Serialization.Protobuf.csproj", "{34435AF2-672B-4324-93F9-940E1D2D97BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,14 @@ Global
 		{AC7C9776-94FF-434B-9084-8DCB175CF969}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC7C9776-94FF-434B-9084-8DCB175CF969}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC7C9776-94FF-434B-9084-8DCB175CF969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E54BDF5-E178-4672-AD09-22971F3E7610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E54BDF5-E178-4672-AD09-22971F3E7610}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E54BDF5-E178-4672-AD09-22971F3E7610}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E54BDF5-E178-4672-AD09-22971F3E7610}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34435AF2-672B-4324-93F9-940E1D2D97BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34435AF2-672B-4324-93F9-940E1D2D97BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34435AF2-672B-4324-93F9-940E1D2D97BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34435AF2-672B-4324-93F9-940E1D2D97BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

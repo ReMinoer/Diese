@@ -1,21 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A19FAF49-2036-40DE-B9BD-DDB3A72C3B47}</ProjectGuid>
+    <ProjectGuid>{34435AF2-672B-4324-93F9-940E1D2D97BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Diese.Serialization.Test</RootNamespace>
-    <AssemblyName>Diese.Serialization.Test</AssemblyName>
+    <RootNamespace>Diese.Serialization.Protobuf</RootNamespace>
+    <AssemblyName>Diese.Serialization.Protobuf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +24,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,35 +32,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ProtobufSerializerTest.cs" />
-    <Compile Include="XmlSerializerTest.cs" />
+    <Reference Include="protobuf-net">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtobufSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Diese.Modelization\Diese.Modelization.csproj">
+    <ProjectReference Include="..\Diese.Modelization\Diese.Modelization.csproj">
       <Project>{0781AD0F-EB0F-442E-9A1C-34C2AA9319FD}</Project>
       <Name>Diese.Modelization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Diese.Serialization.Protobuf\Diese.Serialization.Protobuf.csproj">
-      <Project>{34435AF2-672B-4324-93F9-940E1D2D97BE}</Project>
-      <Name>Diese.Serialization.Protobuf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Diese.Serialization.Xml\Diese.Serialization.Xml.csproj">
-      <Project>{2E54BDF5-E178-4672-AD09-22971F3E7610}</Project>
-      <Name>Diese.Serialization.Xml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Diese.Modelization.Test\Diese.Modelization.Test.csproj">
-      <Project>{0A7EC775-E197-45E0-9ADC-5535708FBB6A}</Project>
-      <Name>Diese.Modelization.Test</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Diese.Serialization\Diese.Serialization.csproj">
+    <ProjectReference Include="..\Diese.Serialization\Diese.Serialization.csproj">
       <Project>{4AE2D764-4161-453D-8B2D-BD66607EC27A}</Project>
       <Name>Diese.Serialization</Name>
     </ProjectReference>

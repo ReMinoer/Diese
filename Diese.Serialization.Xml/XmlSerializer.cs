@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using Diese.Modelization;
 
-namespace Diese.Serialization
+namespace Diese.Serialization.Xml
 {
     public class XmlSerializer<T> : Serializer<T>
         where T : new()
