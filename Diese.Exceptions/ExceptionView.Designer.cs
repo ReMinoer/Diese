@@ -35,10 +35,14 @@
             // 
             // textBox
             // 
+            this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox.Location = new System.Drawing.Point(12, 40);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(260, 173);
+            this.textBox.ReadOnly = true;
+            this.textBox.Size = new System.Drawing.Size(235, 146);
             this.textBox.TabIndex = 0;
             // 
             // label1
@@ -52,9 +56,11 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(16, 219);
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.Location = new System.Drawing.Point(12, 192);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(256, 31);
+            this.okButton.Size = new System.Drawing.Size(235, 31);
             this.okButton.TabIndex = 2;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
@@ -63,7 +69,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(259, 235);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox);
