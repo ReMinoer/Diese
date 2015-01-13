@@ -31,7 +31,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.proto";
 
-            var serializer = new ProtobufSerializer<Vehicle, VehicleModel>();
+            var serializer = new ProtobufSerializer<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle();
 
@@ -69,7 +69,7 @@ namespace Diese.Serialization.Test
         public void FromStreamByModel()
         {
             // Prerequisites
-            var serializer = new ProtobufSerializer<Vehicle, VehicleModel>();
+            var serializer = new ProtobufSerializer<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle();
 

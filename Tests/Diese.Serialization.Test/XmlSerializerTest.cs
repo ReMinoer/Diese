@@ -31,7 +31,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.xml";
 
-            var serializer = new XmlSerializer<Vehicle, VehicleModel>();
+            var serializer = new XmlSerializer<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle();
 
@@ -67,7 +67,7 @@ namespace Diese.Serialization.Test
         public void FromStreamByModel()
         {
             // Prerequisites
-            var serializer = new XmlSerializer<Vehicle, VehicleModel>();
+            var serializer = new XmlSerializer<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle();
 

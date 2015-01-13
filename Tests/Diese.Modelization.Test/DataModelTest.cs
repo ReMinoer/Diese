@@ -3,13 +3,13 @@ using NUnit.Framework;
 
 namespace Diese.Modelization.Test
 {
-    internal class ModelTest
+    internal class DataModelTest
     {
         [Test]
         public void ModelFromObject()
         {
             var vehicle = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var model = new VehicleModel();
+            var model = new VehicleDataModel();
 
             Assert.IsTrue(model.SpeedMax == 0);
 
@@ -21,7 +21,7 @@ namespace Diese.Modelization.Test
         [Test]
         public void ModelToObject()
         {
-            var model = new VehicleModel {SpeedMax = 60};
+            var model = new VehicleDataModel {SpeedMax = 60};
             var vehicle = new Vehicle();
 
             Assert.IsTrue(vehicle.SpeedMax == 0);

@@ -35,8 +35,8 @@ namespace Diese.Serialization
         }
     }
 
-    public class XmlSerializer<T, TModel> : ModelSerializer<T, TModel>
-        where TModel : IModel<T>, new()
+    public class XmlSerializer<T, TModel> : DataModelSerializer<T, TModel>
+        where TModel : IDataModel<T>, new()
     {
         private readonly XmlSerializer _serializer;
 

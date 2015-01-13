@@ -3,7 +3,7 @@
 namespace Diese.Modelization.Test.Samples
 {
     [ProtoContract]
-    public class VehicleModel : IModel<Vehicle>
+    public class VehicleDataModel : IDataModel<Vehicle>
     {
         [ProtoMember(1)]
         public int SpeedMax { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Diese.Serialization
 {
-    public interface IModelSerializer<in T>
+    public interface IDataModelSerializer<in T>
     {
         void Load(T obj, string path);
         void Load(T obj, Stream stream);

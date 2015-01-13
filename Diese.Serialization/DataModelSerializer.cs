@@ -3,8 +3,8 @@ using Diese.Modelization;
 
 namespace Diese.Serialization
 {
-    public abstract class ModelSerializer<T, TModel> : IModelSerializer<T>
-        where TModel : IModel<T>, new()
+    public abstract class DataModelSerializer<T, TModel> : IDataModelSerializer<T>
+        where TModel : IDataModel<T>, new()
     {
         public void Load(T obj, string path)
         {

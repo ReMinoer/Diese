@@ -34,9 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ModelTest.cs" />
+    <Compile Include="DataModelTest.cs" />
     <Compile Include="Samples\Vehicle.cs" />
-    <Compile Include="Samples\Vehicle.Model.cs" />
+    <Compile Include="Samples\Vehicle.DataModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">

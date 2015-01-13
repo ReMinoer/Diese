@@ -18,8 +18,8 @@ namespace Diese.Serialization
         }
     }
 
-    public class ProtobufSerializer<T, TModel> : ModelSerializer<T, TModel>
-        where TModel : IModel<T>, new()
+    public class ProtobufSerializer<T, TModel> : DataModelSerializer<T, TModel>
+        where TModel : IDataModel<T>, new()
     {
         protected override TModel LoadModel(Stream stream)
         {
