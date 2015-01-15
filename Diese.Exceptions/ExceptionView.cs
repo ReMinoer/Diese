@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Diese.Exceptions
@@ -13,6 +14,7 @@ namespace Diese.Exceptions
             InitializeComponent();
 
             _presenter = new ExceptionPresenter(this);
+            systemIcon.Image = new Icon(SystemIcons.Warning, 40, 40).ToBitmap();
         }
 
         public ExceptionView(Exception exception)
@@ -22,6 +24,8 @@ namespace Diese.Exceptions
         }
 
         public Button OkButton { get { return okButton; } }
+        public Label NameLabel { get { return nameLabel; } }
+        public Label MessageLabel { get { return messageLabel; } }
         public TextBox TextBox { get { return textBox; } }
 
         static public DialogResult ShowDialog(Exception exception)

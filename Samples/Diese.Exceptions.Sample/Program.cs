@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Diese.Exceptions.Sample
@@ -9,12 +10,19 @@ namespace Diese.Exceptions.Sample
         ///     Point d'entrée principal de l'application.
         /// </summary>
         [STAThread]
-        static private void Main()
+        static private void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Exception e = new ArgumentException("I'm not a real exception !");
-            Application.Run(new ExceptionView(e));
+            try
+            {
+                int zero = args.Any() ? 1 : 0;
+                int divideByZero = 5 / zero;
+            }
+            catch (Exception e)
+            {
+                Application.Run(new ExceptionView(e));
+            }
         }
     }
 }

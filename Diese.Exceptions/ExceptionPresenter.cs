@@ -27,7 +27,9 @@ namespace Diese.Exceptions
 
         private void RefreshAll()
         {
-            _view.TextBox.Text = _exception.Message;
+            _view.NameLabel.Text = "An exception occurred : " + _exception.GetType().Name;
+            _view.MessageLabel.Text = _exception.Message;
+            _view.TextBox.Text = _exception.StackTrace;
         }
 
         private void OkButtonOnClick(object sender, EventArgs eventArgs)
@@ -39,6 +41,8 @@ namespace Diese.Exceptions
     public interface IExceptionView
     {
         Button OkButton { get; }
+        Label NameLabel { get; }
+        Label MessageLabel { get; }
         TextBox TextBox { get; }
         void Close();
     }
