@@ -63,9 +63,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Diese.Exceptions\Diese.Exceptions.csproj">
-      <Project>{F69A34B7-5A4B-427A-9CC2-909100B5560D}</Project>
-      <Name>Diese.Exceptions</Name>
+    <ProjectReference Include="..\..\Diese.Debug\Diese.Debug.csproj">
+      <Project>{CF81F12F-4EFA-4A26-9853-DF86973533CE}</Project>
+      <Name>Diese.Debug</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

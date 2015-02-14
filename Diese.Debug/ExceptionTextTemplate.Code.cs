@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Diese.Exceptions
+namespace Diese.Debug
 {
     public partial class ExceptionTextTemplate
     {

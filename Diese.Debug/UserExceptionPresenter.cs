@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Diese.Exceptions
+namespace Diese.Debug
 {
     public class UserExceptionPresenter
     {
@@ -15,21 +15,21 @@ namespace Diese.Exceptions
                 RefreshAll();
             }
         }
-        protected readonly IUserExceptionView _view;
-        protected Exception _exception;
+        protected readonly IUserExceptionView View;
+        private Exception _exception;
 
         public UserExceptionPresenter(IUserExceptionView view)
         {
-            _view = view;
+            View = view;
 
-            _view.CopyButton.Click += CopyButtonOnClick;
-            _view.QuitButton.Click += QuitButtonOnClick;
+            View.CopyButton.Click += CopyButtonOnClick;
+            View.QuitButton.Click += QuitButtonOnClick;
         }
 
         protected virtual void RefreshAll()
         {
-            _view.NameLabel.Text = "Exception : " + _exception.GetType().Name;
-            _view.MessageLabel.Text = _exception.Message;
+            View.NameLabel.Text = "Exception : " + _exception.GetType().Name;
+            View.MessageLabel.Text = _exception.Message;
         }
 
         private void CopyButtonOnClick(object sender, EventArgs eventArgs)
@@ -40,7 +40,7 @@ namespace Diese.Exceptions
 
         private void QuitButtonOnClick(object sender, EventArgs eventArgs)
         {
-            _view.Close();
+            View.Close();
         }
     }
 

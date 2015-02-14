@@ -7,14 +7,12 @@
 //     le code est régénéré.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Diese.Exceptions
+
+using System.Diagnostics;
+using System.IO;
+
+namespace Diese.Debug
 {
-    using System.Text;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Collections.Generic;
-    using System;
-    
     /// <summary>
     /// Class to produce the template output
     /// </summary>

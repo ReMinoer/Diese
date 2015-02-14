@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Diese.Debug;
 
 namespace Diese.Exceptions.Sample
 {

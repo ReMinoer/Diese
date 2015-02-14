@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 
-[assembly: AssemblyTitle("Diese.Exceptions")]
+[assembly: AssemblyTitle("Diese.Debug")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Diese.Exceptions")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("Diese.Debug")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
 
-[assembly: Guid("8515a3ca-bd54-4ebc-b4cc-27581988297b")]
+[assembly: Guid("a21dd729-bf3b-4389-b96b-617c1a06c57a")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

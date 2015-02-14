@@ -2,11 +2,11 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace Diese.Exceptions
+namespace Diese.Debug
 {
     public class DevExceptionPresenter : UserExceptionPresenter
     {
-        new private readonly IDevExceptionView _view;
+        private readonly IDevExceptionView _view;
 
         public DevExceptionPresenter(IDevExceptionView view)
             : base(view)
@@ -18,7 +18,7 @@ namespace Diese.Exceptions
         {
             base.RefreshAll();
 
-            var stackTrace = new StackTrace(_exception, true);
+            var stackTrace = new StackTrace(Exception, true);
             var stackFrames = stackTrace.GetFrames();
             if (stackFrames != null)
             {

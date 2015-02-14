@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Diese.Exceptions
+namespace Diese.Debug
 {
     public partial class DevExceptionView : Form, IDevExceptionView
     {
