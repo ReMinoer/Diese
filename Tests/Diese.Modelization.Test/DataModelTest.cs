@@ -27,7 +27,7 @@ namespace Diese.Modelization.Test
             Assert.IsTrue(vehicle.SpeedMax == 0);
             Assert.IsTrue(vehicle.CurrentSpeed == 0);
 
-            model.To(vehicle);
+            model.To(out vehicle);
 
             Assert.IsTrue(model.SpeedMax == 60);
             Assert.IsTrue(vehicle.CurrentSpeed == 0);

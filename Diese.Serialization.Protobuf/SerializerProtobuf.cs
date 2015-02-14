@@ -4,7 +4,7 @@ using ProtoBuf;
 
 namespace Diese.Serialization.Protobuf
 {
-    public class ProtobufSerializer<T> : Serializer<T>
+    public class SerializerProtobuf<T> : Serializer<T>
         where T : new()
     {
         public override T Load(Stream stream)
@@ -18,15 +18,15 @@ namespace Diese.Serialization.Protobuf
         }
     }
 
-    public class ProtobufSerializer<T, TModel> : DataModelSerializer<T, TModel>
+    public class SerializerProtobuf<T, TModel> : Serializer<T, TModel>
         where TModel : IDataModel<T>, new()
     {
-        protected override TModel LoadModel(Stream stream)
+        public override TModel LoadModel(Stream stream)
         {
             return Serializer.Deserialize<TModel>(stream);
         }
 
-        protected override void SaveModel(TModel model, Stream stream)
+        public override void SaveModel(TModel model, Stream stream)
         {
             Serializer.Serialize(stream, model);
         }

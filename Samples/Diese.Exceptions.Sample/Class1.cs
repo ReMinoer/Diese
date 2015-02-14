@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Diese.Exceptions.Sample
+﻿namespace Diese.Exceptions.Sample
 {
-    static class Class1
+    static internal class Class1
     {
         static public void Method1()
         {

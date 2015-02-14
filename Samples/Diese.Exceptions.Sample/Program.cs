@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 
 namespace Diese.Exceptions.Sample
@@ -10,7 +9,7 @@ namespace Diese.Exceptions.Sample
         ///     Point d'entrée principal de l'application.
         /// </summary>
         [STAThread]
-        static private void Main(string[] args)
+        static private void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

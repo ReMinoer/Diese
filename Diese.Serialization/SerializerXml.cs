@@ -2,14 +2,14 @@
 using System.Xml.Serialization;
 using Diese.Modelization;
 
-namespace Diese.Serialization.Xml
+namespace Diese.Serialization
 {
-    public class XmlSerializer<T> : Serializer<T>
+    public class SerializerXml<T> : Serializer<T>
         where T : new()
     {
         private readonly XmlSerializer _serializer;
 
-        public XmlSerializer()
+        public SerializerXml()
         {
             _serializer = new XmlSerializer(typeof(T));
         }
@@ -35,30 +35,30 @@ namespace Diese.Serialization.Xml
         }
     }
 
-    public class XmlSerializer<T, TModel> : DataModelSerializer<T, TModel>
+    public class SerializerXml<T, TModel> : Serializer<T, TModel>
         where TModel : IDataModel<T>, new()
     {
         private readonly XmlSerializer _serializer;
 
-        public XmlSerializer()
+        public SerializerXml()
         {
             _serializer = new XmlSerializer(typeof(TModel));
         }
 
-        protected override TModel LoadModel(Stream stream)
+        public override TModel LoadModel(Stream stream)
         {
             return (TModel)_serializer.Deserialize(stream);
         }
 
-        protected override void SaveModel(TModel model, Stream stream)
+        public override void SaveModel(TModel model, Stream stream)
         {
             _serializer.Serialize(stream, model);
         }
 
-        public void Load(T obj, TextReader textReader)
+        public void Load(out T obj, TextReader textReader)
         {
             var model = (TModel)_serializer.Deserialize(textReader);
-            model.To(obj);
+            model.To(out obj);
         }
 
         public void Save(T obj, TextWriter textWriter)

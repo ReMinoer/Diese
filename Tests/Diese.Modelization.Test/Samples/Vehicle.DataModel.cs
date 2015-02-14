@@ -13,9 +13,9 @@ namespace Diese.Modelization.Test.Samples
             SpeedMax = obj.SpeedMax;
         }
 
-        public void To(Vehicle obj)
+        public void To(out Vehicle obj)
         {
-            obj.SpeedMax = SpeedMax;
+            obj = new Vehicle {SpeedMax = SpeedMax};
         }
     }
 }

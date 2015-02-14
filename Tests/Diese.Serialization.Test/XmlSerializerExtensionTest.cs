@@ -1,25 +1,25 @@
 ﻿using System.IO;
+using System.Xml.Serialization;
 using Diese.Modelization.Test.Samples;
-using Diese.Serialization.Protobuf;
 using NUnit.Framework;
 
 namespace Diese.Serialization.Test
 {
     [TestFixture]
-    internal class ProtobufSerializerTest
+    internal class XmlSerializerExtensionTest
     {
         [Test]
         public void FromPath()
         {
             // Prerequisites
-            const string path = "test-result.proto";
+            const string path = "test-result.xml";
 
-            var serializer = new ProtobufSerializer<Vehicle>();
+            var serializer = new XmlSerializer(typeof(Vehicle));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
             serializer.Save(vehicleA, path);
-            Vehicle vehicleB = serializer.Load(path);
+            var vehicleB = serializer.Load<Vehicle>(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -30,16 +30,16 @@ namespace Diese.Serialization.Test
         public void FromPathByModel()
         {
             // Prerequisites
-            const string path = "test-result.proto";
+            const string path = "test-result.xml";
 
-            var serializer = new ProtobufSerializer<Vehicle, VehicleDataModel>();
+            var serializer = new XmlSerializer(typeof(VehicleDataModel));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var vehicleB = new Vehicle();
+            Vehicle vehicleB;
 
             // Process
-            serializer.Save(vehicleA, path);
+            serializer.Save<Vehicle, VehicleDataModel>(vehicleA, path);
 
-            serializer.Load(vehicleB, path);
+            serializer.Load<Vehicle, VehicleDataModel>(out vehicleB, path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -49,17 +49,15 @@ namespace Diese.Serialization.Test
         public void FromStream()
         {
             // Prerequisites
-            var serializer = new ProtobufSerializer<Vehicle>();
+            var serializer = new XmlSerializer(typeof(Vehicle));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
-            var streamWriter = new StreamWriter("test-result.proto");
-            serializer.Save(vehicleA, streamWriter.BaseStream);
-            streamWriter.Close();
+            var stringWriter = new StringWriter();
+            serializer.Save(vehicleA, stringWriter);
 
-            var streamReader = new StreamReader("test-result.proto");
-            Vehicle vehicleB = serializer.Load(streamReader.BaseStream);
-            streamReader.Close();
+            var stringReader = new StringReader(stringWriter.ToString());
+            var vehicleB = serializer.Load<Vehicle>(stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -70,18 +68,16 @@ namespace Diese.Serialization.Test
         public void FromStreamByModel()
         {
             // Prerequisites
-            var serializer = new ProtobufSerializer<Vehicle, VehicleDataModel>();
+            var serializer = new XmlSerializer(typeof(VehicleDataModel));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var vehicleB = new Vehicle();
+            Vehicle vehicleB;
 
             // Process
-            var streamWriter = new StreamWriter("test-result.proto");
-            serializer.Save(vehicleA, streamWriter.BaseStream);
-            streamWriter.Close();
+            var stringWriter = new StringWriter();
+            serializer.Save<Vehicle, VehicleDataModel>(vehicleA, stringWriter);
 
-            var streamReader = new StreamReader("test-result.proto");
-            serializer.Load(vehicleB, streamReader.BaseStream);
-            streamReader.Close();
+            var stringReader = new StringReader(stringWriter.ToString());
+            serializer.Load<Vehicle, VehicleDataModel>(out vehicleB, stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);

@@ -23,16 +23,16 @@ namespace Diese.Exceptions
             Exception = exception;
         }
 
-        public Button CopyButton { get { return copyButton; } }
-        public Button QuitButton { get { return quitButton; } }
-        public Label NameLabel { get { return nameLabel; } }
-        public Label MessageLabel { get { return messageLabel; } }
-        public ListView StackTraceList { get { return stackTraceList; } }
-
         static public DialogResult ShowDialog(Exception exception)
         {
             var view = new ExceptionView(exception);
             return view.ShowDialog();
         }
+
+        public Button CopyButton { get; private set; }
+        public Button QuitButton { get; private set; }
+        public Label NameLabel { get; private set; }
+        public Label MessageLabel { get; private set; }
+        public ListView StackTraceList { get; private set; }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Diese.Exceptions
@@ -35,14 +33,12 @@ namespace Diese.Exceptions
             _view.MessageLabel.Text = _exception.Message;
 
             var stackTrace = new StackTrace(_exception, true);
-            StackFrame[] stackFrames = stackTrace.GetFrames();
+            var stackFrames = stackTrace.GetFrames();
             if (stackFrames != null)
             {
                 ListViewGroup group = null;
                 foreach (StackFrame stackFrame in stackFrames)
                 {
-                    string filename = Path.GetFileName(stackFrame.GetFileName());
-
                     Type reflectedType = stackFrame.GetMethod().ReflectedType;
                     if (reflectedType != null)
                     {
@@ -53,9 +49,9 @@ namespace Diese.Exceptions
 
                     var subItems = new[]
                     {
-                        new ListViewItem.ListViewSubItem{ Text = "" },
-                        new ListViewItem.ListViewSubItem{ Text = stackFrame.GetMethod().ToString() },
-                        new ListViewItem.ListViewSubItem{ Text = stackFrame.GetFileLineNumber().ToString() }
+                        new ListViewItem.ListViewSubItem {Text = ""},
+                        new ListViewItem.ListViewSubItem {Text = stackFrame.GetMethod().ToString()},
+                        new ListViewItem.ListViewSubItem {Text = stackFrame.GetFileLineNumber().ToString()}
                     };
                     var item = new ListViewItem(subItems, 0, group);
                     _view.StackTraceList.Items.Add(item);

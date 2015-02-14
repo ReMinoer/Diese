@@ -1,0 +1,2 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=F69A34B7_002D5A4B_002D427A_002D9CC2_002D909100B5560D_002Ff_003AExceptionTextTemplate_002Ecs/@EntryIndexedValue">F69A34B7-5A4B-427A-9CC2-909100B5560D/f:ExceptionTextTemplate.cs</s:String></wpf:ResourceDictionary>
