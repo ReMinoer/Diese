@@ -1,0 +1,36 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
+Exception : <#= _exception.GetType().Name #>
+Message : <#= _exception.Message #>
+
+StackTrace :
+
+<# 
+    var stackTrace = new StackTrace(_exception, true);
+    StackFrame[] stackFrames = stackTrace.GetFrames();
+    if (stackFrames == null)
+		#>None<#else
+    {
+        string currentFilename = "";
+        foreach (StackFrame stackFrame in stackFrames)
+        {
+            string filename = Path.GetFileName(stackFrame.GetFileName());
+            string directory = Path.GetDirectoryName(stackFrame.GetFileName());
+			
+			if (currentFilename != filename)
+			{
+				currentFilename = filename;
+#>
+<#= stackFrame.GetMethod().ReflectedType.FullName #> (<#= stackFrame.GetFileName() #>)
+<#
+			}
+#>
+	<#= stackFrame.GetMethod().ToString() #> : line <#= stackFrame.GetFileLineNumber().ToString() #>
+<#
+        }
+    }
+#>

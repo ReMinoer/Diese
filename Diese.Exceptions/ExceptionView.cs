@@ -23,7 +23,8 @@ namespace Diese.Exceptions
             Exception = exception;
         }
 
-        public Button OkButton { get { return okButton; } }
+        public Button CopyButton { get { return copyButton; } }
+        public Button QuitButton { get { return quitButton; } }
         public Label NameLabel { get { return nameLabel; } }
         public Label MessageLabel { get { return messageLabel; } }
         public ListView StackTraceList { get { return stackTraceList; } }

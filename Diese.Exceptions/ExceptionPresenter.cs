@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Diese.Exceptions
@@ -24,7 +25,8 @@ namespace Diese.Exceptions
         {
             _view = view;
 
-            _view.OkButton.Click += OkButtonOnClick;
+            _view.CopyButton.Click += CopyButtonOnClick;
+            _view.QuitButton.Click += QuitButtonOnClick;
         }
 
         private void RefreshAll()
@@ -40,18 +42,20 @@ namespace Diese.Exceptions
                 foreach (StackFrame stackFrame in stackFrames)
                 {
                     string filename = Path.GetFileName(stackFrame.GetFileName());
-                    string directory = Path.GetDirectoryName(stackFrame.GetFileName());
 
-                    string groupName = string.Format("{0} ({1})", filename, directory);
-                    if (group == null || !_view.StackTraceList.Groups.Contains(group))
-                        group = _view.StackTraceList.Groups.Add(groupName, groupName);
+                    Type reflectedType = stackFrame.GetMethod().ReflectedType;
+                    if (reflectedType != null)
+                    {
+                        string groupName = string.Format("{0} ({1})", reflectedType.FullName, stackFrame.GetFileName());
+                        if (group == null || group.Name != groupName)
+                            group = _view.StackTraceList.Groups.Add(groupName, groupName);
+                    }
 
                     var subItems = new[]
                     {
                         new ListViewItem.ListViewSubItem{ Text = "" },
                         new ListViewItem.ListViewSubItem{ Text = stackFrame.GetMethod().ToString() },
-                        new ListViewItem.ListViewSubItem{ Text = stackFrame.GetFileLineNumber().ToString() },
-                        new ListViewItem.ListViewSubItem{ Text = stackFrame.GetFileColumnNumber().ToString() }
+                        new ListViewItem.ListViewSubItem{ Text = stackFrame.GetFileLineNumber().ToString() }
                     };
                     var item = new ListViewItem(subItems, 0, group);
                     _view.StackTraceList.Items.Add(item);
@@ -59,7 +63,13 @@ namespace Diese.Exceptions
             }
         }
 
-        private void OkButtonOnClick(object sender, EventArgs eventArgs)
+        private void CopyButtonOnClick(object sender, EventArgs eventArgs)
+        {
+            var textTemplate = new ExceptionTextTemplate(_exception);
+            Clipboard.SetText(textTemplate.TransformText());
+        }
+
+        private void QuitButtonOnClick(object sender, EventArgs eventArgs)
         {
             _view.Close();
         }
@@ -67,7 +77,8 @@ namespace Diese.Exceptions
 
     public interface IExceptionView
     {
-        Button OkButton { get; }
+        Button CopyButton { get; }
+        Button QuitButton { get; }
         Label NameLabel { get; }
         Label MessageLabel { get; }
         ListView StackTraceList { get; }

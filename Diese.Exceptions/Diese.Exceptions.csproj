@@ -37,6 +37,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptionPresenter.cs" />
+    <Compile Include="ExceptionTextTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionTextTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionTextTemplate.Code.cs" />
     <Compile Include="ExceptionView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -52,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExceptionTextTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ExceptionTextTemplate.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

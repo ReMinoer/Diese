@@ -24,17 +24,22 @@ namespace Diese.Exceptions.Sample
             }
         }
 
-        static private void Method1()
+        static public void Method1()
         {
             Method2();
         }
 
-        static private void Method2()
+        static public void Method2()
         {
-            Method3();
+            Class1.Method1();
         }
 
-        static private void Method3()
+        static public void Method3()
+        {
+            Class1.Method2();
+        }
+
+        static public void Method4()
         {
             // ReSharper disable All
             int zero = 0;
