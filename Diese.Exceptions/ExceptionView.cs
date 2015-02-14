@@ -26,7 +26,7 @@ namespace Diese.Exceptions
         public Button OkButton { get { return okButton; } }
         public Label NameLabel { get { return nameLabel; } }
         public Label MessageLabel { get { return messageLabel; } }
-        public TextBox TextBox { get { return textBox; } }
+        public ListView StackTraceList { get { return stackTraceList; } }
 
         static public DialogResult ShowDialog(Exception exception)
         {
