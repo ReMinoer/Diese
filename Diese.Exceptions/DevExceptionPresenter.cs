@@ -4,33 +4,19 @@ using System.Windows.Forms;
 
 namespace Diese.Exceptions
 {
-    public class ExceptionPresenter
+    public class DevExceptionPresenter : UserExceptionPresenter
     {
-        public Exception Exception
-        {
-            get { return _exception; }
-            set
-            {
-                _exception = value;
+        new private readonly IDevExceptionView _view;
 
-                RefreshAll();
-            }
-        }
-        private readonly IExceptionView _view;
-        private Exception _exception;
-
-        public ExceptionPresenter(IExceptionView view)
+        public DevExceptionPresenter(IDevExceptionView view)
+            : base(view)
         {
             _view = view;
-
-            _view.CopyButton.Click += CopyButtonOnClick;
-            _view.QuitButton.Click += QuitButtonOnClick;
         }
 
-        private void RefreshAll()
+        protected override void RefreshAll()
         {
-            _view.NameLabel.Text = "Exception : " + _exception.GetType().Name;
-            _view.MessageLabel.Text = _exception.Message;
+            base.RefreshAll();
 
             var stackTrace = new StackTrace(_exception, true);
             var stackFrames = stackTrace.GetFrames();
@@ -58,26 +44,10 @@ namespace Diese.Exceptions
                 }
             }
         }
-
-        private void CopyButtonOnClick(object sender, EventArgs eventArgs)
-        {
-            var textTemplate = new ExceptionTextTemplate(_exception);
-            Clipboard.SetText(textTemplate.TransformText());
-        }
-
-        private void QuitButtonOnClick(object sender, EventArgs eventArgs)
-        {
-            _view.Close();
-        }
     }
 
-    public interface IExceptionView
+    public interface IDevExceptionView : IUserExceptionView
     {
-        Button CopyButton { get; }
-        Button QuitButton { get; }
-        Label NameLabel { get; }
-        Label MessageLabel { get; }
         ListView StackTraceList { get; }
-        void Close();
     }
 }

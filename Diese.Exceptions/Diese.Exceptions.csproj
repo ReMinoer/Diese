@@ -36,24 +36,34 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExceptionPresenter.cs" />
+    <Compile Include="UserExceptionPresenter.cs" />
+    <Compile Include="DevExceptionPresenter.cs" />
+    <Compile Include="UserExceptionView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserExceptionView.Designer.cs">
+      <DependentUpon>UserExceptionView.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptionTextTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionTextTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="ExceptionTextTemplate.Code.cs" />
-    <Compile Include="ExceptionView.cs">
+    <Compile Include="DevExceptionView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExceptionView.Designer.cs">
-      <DependentUpon>ExceptionView.cs</DependentUpon>
+    <Compile Include="DevExceptionView.Designer.cs">
+      <DependentUpon>DevExceptionView.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ExceptionView.resx">
-      <DependentUpon>ExceptionView.cs</DependentUpon>
+    <EmbeddedResource Include="UserExceptionView.resx">
+      <DependentUpon>UserExceptionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DevExceptionView.resx">
+      <DependentUpon>DevExceptionView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

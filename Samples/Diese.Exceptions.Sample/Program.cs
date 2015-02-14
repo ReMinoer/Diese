@@ -19,7 +19,8 @@ namespace Diese.Exceptions.Sample
             }
             catch (Exception e)
             {
-                Application.Run(new ExceptionView(e));
+                Application.Run(new DevExceptionView(e));
+                Application.Run(new UserExceptionView(e));
             }
         }
 
