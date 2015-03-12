@@ -24,22 +24,22 @@ namespace Diese.Lua
 
         static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, string name)
         {
-            var results = lua.GetFunction("CoroutineManager.Resume").Call(name);
+            object[] results = lua.GetFunction("CoroutineManager.Resume").Call(name);
             return (bool)results[0]
-                       ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
-                       : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
+                ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
+                : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
         }
 
         static public object[] ResumeCoroutine(this NLua.Lua lua, string name, out bool isValid)
         {
-            var results = lua.GetFunction("CoroutineManager.Resume").Call(name);
+            object[] results = lua.GetFunction("CoroutineManager.Resume").Call(name);
             isValid = (bool)results[0];
             return results.Skip(1).ToArray();
         }
 
         static public LuaCoroutineStatus StatusCoroutine(this NLua.Lua lua, string name)
         {
-            string status = (string)lua.GetFunction("CoroutineManager.Status").Call(name).First();
+            var status = (string)lua.GetFunction("CoroutineManager.Status").Call(name).First();
             LuaCoroutineStatus result;
             Enum.TryParse(status, true, out result);
             return result;
@@ -48,11 +48,11 @@ namespace Diese.Lua
         static public Dictionary<string, LuaCoroutineResult> UpdateCoroutines(this NLua.Lua lua)
         {
             var coroutineResults = new Dictionary<string, LuaCoroutineResult>();
-            var callResult = lua.GetFunction("CoroutineManager.Update").Call();
+            object[] callResult = lua.GetFunction("CoroutineManager.Update").Call();
 
             var table = callResult.First() as LuaTable;
-            var tempDico = lua.GetTableDict(table);
-            foreach (var pair in tempDico)
+            Dictionary<object, object> tempDico = lua.GetTableDict(table);
+            foreach (KeyValuePair<object, object> pair in tempDico)
             {
                 var table2 = (LuaTable)pair.Value;
                 var values = new object[table2.Values.Count];

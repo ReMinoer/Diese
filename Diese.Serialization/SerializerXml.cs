@@ -11,7 +11,7 @@ namespace Diese.Serialization
 
         public SerializerXml()
         {
-            _serializer = new XmlSerializer(typeof (T));
+            _serializer = new XmlSerializer(typeof(T));
         }
 
         public override T Load(Stream stream)
@@ -42,7 +42,7 @@ namespace Diese.Serialization
 
         public SerializerXml()
         {
-            _serializer = new XmlSerializer(typeof (TModel));
+            _serializer = new XmlSerializer(typeof(TModel));
         }
 
         public override TModel LoadModel(Stream stream)

@@ -19,7 +19,7 @@ namespace Diese.Debug
             base.RefreshAll();
 
             var stackTrace = new StackTrace(Exception, true);
-            var stackFrames = stackTrace.GetFrames();
+            StackFrame[] stackFrames = stackTrace.GetFrames();
             if (stackFrames != null)
             {
                 ListViewGroup group = null;
