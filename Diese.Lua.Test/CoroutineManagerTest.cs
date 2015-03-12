@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Diese.Lua.Test
 {
@@ -14,7 +15,7 @@ namespace Diese.Lua.Test
 
                 lua.CreateCoroutine("test");
                 bool isValid;
-                var results = lua.ResumeCoroutine("test", out isValid);
+                object[] results = lua.ResumeCoroutine("test", out isValid);
 
                 Assert.IsTrue(isValid);
                 Assert.IsTrue((string)results[0] == "truc");
@@ -32,7 +33,7 @@ namespace Diese.Lua.Test
 
                 lua.CreateCoroutine("test");
                 bool isValid;
-                var results = lua.ResumeCoroutine("test", out isValid);
+                object[] results = lua.ResumeCoroutine("test", out isValid);
                 Assert.IsTrue(isValid);
                 Assert.IsTrue((int)(double)results[0] == 1);
 
@@ -83,7 +84,7 @@ namespace Diese.Lua.Test
                 lua.CreateCoroutine("test2");
                 lua.CreateCoroutine("test3");
 
-                var results = lua.UpdateCoroutines();
+                Dictionary<string, LuaCoroutineResult> results = lua.UpdateCoroutines();
 
                 Assert.IsTrue(results["test"].IsValid);
                 Assert.IsTrue((string)results["test"].Results[0] == "hi");

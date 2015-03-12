@@ -7,9 +7,19 @@ namespace Diese.Debug
 {
     static public class Log
     {
+        static private readonly Stopwatch ExecutionStopwatch = new Stopwatch();
+        static private StreamWriter _fileStream;
+        static private bool _viewInConsole = true;
+        private const string DefaultOutputPath = "log.txt";
         static public bool Enable { get; set; }
-        static public bool ViewInConsole { get { return _viewInConsole; } set { _viewInConsole = value; } }
         static public bool UseExecutionTime { get; set; }
+
+        static public bool ViewInConsole
+        {
+            get { return _viewInConsole; }
+            set { _viewInConsole = value; }
+        }
+
         static public string OutputPath
         {
             get { return _outputPath; }
@@ -21,10 +31,6 @@ namespace Diese.Debug
                 _fileStream = new StreamWriter(_outputPath) {AutoFlush = true};
             }
         }
-        private const string DefaultOutputPath = "log.txt";
-        static private readonly Stopwatch ExecutionStopwatch = new Stopwatch();
-        static private StreamWriter _fileStream;
-        static private bool _viewInConsole = true;
 
         static public void Instantiate(bool showConsole, string outputPath = DefaultOutputPath)
         {
@@ -44,8 +50,8 @@ namespace Diese.Debug
                 return;
 
             string formatedTime = UseExecutionTime
-                                      ? ExecutionStopwatch.Elapsed.ToString(@"hh\:mm\:ss")
-                                      : DateTime.Now.ToString("HH:mm:ss");
+                ? ExecutionStopwatch.Elapsed.ToString(@"hh\:mm\:ss")
+                : DateTime.Now.ToString("HH:mm:ss");
 
             string line = string.Format("[{0}] {1}", formatedTime, message);
 
