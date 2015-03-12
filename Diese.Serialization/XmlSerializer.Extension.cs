@@ -49,7 +49,7 @@ namespace Diese.Serialization
             where TModel : IDataModel<T>
         {
             var model = serializer.Load<TModel>(stream);
-            model.To(out obj);
+            obj = model.Create();
         }
 
         static public void Save<T, TModel>(this XmlSerializer serializer, T obj, Stream stream)
@@ -80,7 +80,7 @@ namespace Diese.Serialization
             where TModel : IDataModel<T>
         {
             var model = (TModel)serializer.Deserialize(textReader);
-            model.To(out obj);
+            obj = model.Create();
         }
 
         static public void Save<T, TModel>(this XmlSerializer serializer, T obj, TextWriter textWriter)

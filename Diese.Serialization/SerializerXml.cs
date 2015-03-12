@@ -11,7 +11,7 @@ namespace Diese.Serialization
 
         public SerializerXml()
         {
-            _serializer = new XmlSerializer(typeof(T));
+            _serializer = new XmlSerializer(typeof (T));
         }
 
         public override T Load(Stream stream)
@@ -42,7 +42,7 @@ namespace Diese.Serialization
 
         public SerializerXml()
         {
-            _serializer = new XmlSerializer(typeof(TModel));
+            _serializer = new XmlSerializer(typeof (TModel));
         }
 
         public override TModel LoadModel(Stream stream)
@@ -55,10 +55,16 @@ namespace Diese.Serialization
             _serializer.Serialize(stream, model);
         }
 
-        public void Load(out T obj, TextReader textReader)
+        public void Initialization(T obj, TextReader textReader)
         {
             var model = (TModel)_serializer.Deserialize(textReader);
-            model.To(out obj);
+            model.To(obj);
+        }
+
+        public T Load(TextReader textReader)
+        {
+            var model = (TModel)_serializer.Deserialize(textReader);
+            return model.Create();
         }
 
         public void Save(T obj, TextWriter textWriter)

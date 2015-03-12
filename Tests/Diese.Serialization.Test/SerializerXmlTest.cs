@@ -33,12 +33,11 @@ namespace Diese.Serialization.Test
 
             var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB;
 
             // Process
             serializer.Save(vehicleA, path);
 
-            serializer.Load(out vehicleB, path);
+            Vehicle vehicleB = serializer.Load(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -69,14 +68,51 @@ namespace Diese.Serialization.Test
             // Prerequisites
             var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB;
 
             // Process
             var stringWriter = new StringWriter();
             serializer.Save(vehicleA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            serializer.Load(out vehicleB, stringReader);
+            Vehicle vehicleB = serializer.Load(stringReader);
+
+            // Test
+            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
+        }
+
+        [Test]
+        public void InitializationFromPath()
+        {
+            // Prerequisites
+            const string path = "test-result.xml";
+
+            var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+
+            // Process
+            serializer.Save(vehicleA, path);
+
+            serializer.Initialization(vehicleB, path);
+
+            // Test
+            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
+        }
+
+        [Test]
+        public void InitializationFromStream()
+        {
+            // Prerequisites
+            var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+
+            // Process
+            var stringWriter = new StringWriter();
+            serializer.Save(vehicleA, stringWriter);
+
+            var stringReader = new StringReader(stringWriter.ToString());
+            serializer.Initialization(vehicleB, stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);

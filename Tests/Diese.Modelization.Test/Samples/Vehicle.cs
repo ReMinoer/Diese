@@ -7,6 +7,7 @@ namespace Diese.Modelization.Test.Samples
     {
         [ProtoMember(1)]
         public int SpeedMax { get; set; }
+
         [ProtoMember(2)]
         public int CurrentSpeed { get; set; }
     }
