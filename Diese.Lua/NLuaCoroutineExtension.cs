@@ -35,7 +35,7 @@ namespace Diese.Lua
             return coroutineResult;
         }
 
-        static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, int elapsedTime, string name)
+        static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, double elapsedTime, string name)
         {
             object[] luaResult = lua.GetFunction("coroutine.manager.resume").Call(name, elapsedTime);
             object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
@@ -63,7 +63,7 @@ namespace Diese.Lua
             return result;
         }
 
-        static public Dictionary<string, LuaCoroutineResult> UpdateCoroutines(this NLua.Lua lua, float elapsedTime = 0)
+        static public Dictionary<string, LuaCoroutineResult> UpdateCoroutines(this NLua.Lua lua, double elapsedTime = 0)
         {
             var coroutineResults = new Dictionary<string, LuaCoroutineResult>();
             object[] callResult = lua.GetFunction("coroutine.manager.update").Call(elapsedTime);
