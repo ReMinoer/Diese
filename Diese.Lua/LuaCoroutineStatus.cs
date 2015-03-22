@@ -4,6 +4,7 @@
     {
         Running,
         Suspended,
+        Sleeping,
         Normal,
         Dead
     }

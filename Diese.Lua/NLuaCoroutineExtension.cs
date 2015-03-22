@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLua;
+using NLua.Exceptions;
 
 namespace Diese.Lua
 {
@@ -14,7 +15,7 @@ namespace Diese.Lua
 
         static public void CreateCoroutine(this NLua.Lua lua, LuaFunction function, string name)
         {
-            lua.GetFunction("CoroutineManager.Create").Call(name, function);
+            lua.GetFunction("coroutine.manager.create").Call(function, name);
         }
 
         static public void CreateCoroutine(this NLua.Lua lua, string functionPath, string substituteName = null)
@@ -24,47 +25,72 @@ namespace Diese.Lua
 
         static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, string name)
         {
-            var results = lua.GetFunction("CoroutineManager.Resume").Call(name);
-            return (bool)results[0]
-                       ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
-                       : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
+            object[] luaResult = lua.GetFunction("coroutine.manager.resume").Call(name, 0);
+            object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
+
+            LuaCoroutineResult coroutineResult = (bool)results[0]
+                ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
+                : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
+
+            return coroutineResult;
+        }
+
+        static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, int elapsedTime, string name)
+        {
+            object[] luaResult = lua.GetFunction("coroutine.manager.resume").Call(name, elapsedTime);
+            object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
+
+            LuaCoroutineResult coroutineResult = (bool)results[0]
+                ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
+                : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
+
+            return coroutineResult;
         }
 
         static public object[] ResumeCoroutine(this NLua.Lua lua, string name, out bool isValid)
         {
-            var results = lua.GetFunction("CoroutineManager.Resume").Call(name);
+            object[] luaResult = lua.GetFunction("coroutine.manager.resume").Call(name, 0);
+            object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
             isValid = (bool)results[0];
             return results.Skip(1).ToArray();
         }
 
         static public LuaCoroutineStatus StatusCoroutine(this NLua.Lua lua, string name)
         {
-            string status = (string)lua.GetFunction("CoroutineManager.Status").Call(name).First();
+            var status = (string)lua.GetFunction("coroutine.manager.status").Call(name).First();
             LuaCoroutineStatus result;
             Enum.TryParse(status, true, out result);
             return result;
         }
 
-        static public Dictionary<string, LuaCoroutineResult> UpdateCoroutines(this NLua.Lua lua)
+        static public Dictionary<string, LuaCoroutineResult> UpdateCoroutines(this NLua.Lua lua, float elapsedTime = 0)
         {
             var coroutineResults = new Dictionary<string, LuaCoroutineResult>();
-            var callResult = lua.GetFunction("CoroutineManager.Update").Call();
+            object[] callResult = lua.GetFunction("coroutine.manager.update").Call(elapsedTime);
 
             var table = callResult.First() as LuaTable;
-            var tempDico = lua.GetTableDict(table);
-            foreach (var pair in tempDico)
+            Dictionary<object, object> tempDico = lua.GetTableDict(table);
+            foreach (KeyValuePair<object, object> pair in tempDico)
             {
-                var table2 = (LuaTable)pair.Value;
-                var values = new object[table2.Values.Count];
-                table2.Values.CopyTo(values, 0);
+                object[] values = ExtractResultsFromTable((LuaTable)pair.Value);
 
-                var result = new LuaCoroutineResult {IsValid = (bool)values[0]};
-                if (result.IsValid)
-                    result.Results = values.Skip(1).ToArray();
+                LuaCoroutineResult coroutineResult;
+                if ((bool)values[0])
+                    coroutineResult = new LuaCoroutineResult {IsValid = true, Results = values.Skip(1).ToArray()};
                 else
-                    result.ErrorMessage = (string)values[1];
+                {
+                    var exception = values[1] as LuaScriptException;
+                    if (exception != null)
+                        coroutineResult = new LuaCoroutineResult
+                        {
+                            IsValid = false,
+                            ErrorMessage = exception.Source + exception.Message
+                        };
+                    else
+                        coroutineResult = new LuaCoroutineResult {IsValid = false, ErrorMessage = values[1].ToString()};
+                }
 
-                coroutineResults.Add((string)pair.Key, result);
+                coroutineResults.Add((string)pair.Key, coroutineResult);
             }
 
             return coroutineResults;
@@ -72,7 +98,14 @@ namespace Diese.Lua
 
         static public bool ExistsCoroutine(this NLua.Lua lua, string name)
         {
-            return (bool)lua.GetFunction("CoroutineManager.Exists").Call(name).First();
+            return (bool)lua.GetFunction("coroutine.manager.exists").Call(name).First();
+        }
+
+        static private object[] ExtractResultsFromTable(LuaTable luaTable)
+        {
+            var results = new object[luaTable.Values.Count];
+            luaTable.Values.CopyTo(results, 0);
+            return results;
         }
     }
 }
