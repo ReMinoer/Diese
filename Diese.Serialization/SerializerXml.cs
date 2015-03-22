@@ -55,10 +55,16 @@ namespace Diese.Serialization
             _serializer.Serialize(stream, model);
         }
 
-        public void Load(out T obj, TextReader textReader)
+        public void Initialization(T obj, TextReader textReader)
         {
             var model = (TModel)_serializer.Deserialize(textReader);
-            model.To(out obj);
+            model.To(obj);
+        }
+
+        public T Load(TextReader textReader)
+        {
+            var model = (TModel)_serializer.Deserialize(textReader);
+            return model.Create();
         }
 
         public void Save(T obj, TextWriter textWriter)

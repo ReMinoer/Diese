@@ -14,8 +14,10 @@ namespace Diese.Serialization
     public interface ISerializer<T, TModel>
         where TModel : IDataModel<T>
     {
-        void Load(out T obj, string path);
-        void Load(out T obj, Stream stream);
+        void Initialization(T obj, string path);
+        void Initialization(T obj, Stream stream);
+        T Load(string path);
+        T Load(Stream stream);
         void Save(T obj, string path);
         void Save(T obj, Stream stream);
         TModel LoadModel(Stream stream);

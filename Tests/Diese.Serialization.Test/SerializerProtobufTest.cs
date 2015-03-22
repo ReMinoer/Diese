@@ -34,12 +34,11 @@ namespace Diese.Serialization.Test
 
             var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB;
 
             // Process
             serializer.Save(vehicleA, path);
 
-            serializer.Load(out vehicleB, path);
+            Vehicle vehicleB = serializer.Load(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -49,15 +48,17 @@ namespace Diese.Serialization.Test
         public void FromStream()
         {
             // Prerequisites
+            const string path = "test-result.proto";
+
             var serializer = new SerializerProtobuf<Vehicle>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
-            var streamWriter = new StreamWriter("test-result.proto");
+            var streamWriter = new StreamWriter(path);
             serializer.Save(vehicleA, streamWriter.BaseStream);
             streamWriter.Close();
 
-            var streamReader = new StreamReader("test-result.proto");
+            var streamReader = new StreamReader(path);
             Vehicle vehicleB = serializer.Load(streamReader.BaseStream);
             streamReader.Close();
 
@@ -70,17 +71,60 @@ namespace Diese.Serialization.Test
         public void FromStreamByModel()
         {
             // Prerequisites
+            const string path = "test-result.proto";
+
             var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB;
 
             // Process
-            var streamWriter = new StreamWriter("test-result.proto");
+            var streamWriter = new StreamWriter(path);
             serializer.Save(vehicleA, streamWriter.BaseStream);
             streamWriter.Close();
 
-            var streamReader = new StreamReader("test-result.proto");
-            serializer.Load(out vehicleB, streamReader.BaseStream);
+            var streamReader = new StreamReader(path);
+            Vehicle vehicleB = serializer.Load(streamReader.BaseStream);
+            streamReader.Close();
+
+            // Test
+            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
+        }
+
+        [Test]
+        public void InitializationFromPath()
+        {
+            // Prerequisites
+            const string path = "test-result.proto";
+
+            var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+
+            // Process
+            serializer.Save(vehicleA, path);
+
+            serializer.Initialization(vehicleB, path);
+
+            // Test
+            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
+        }
+
+        [Test]
+        public void InitializationFromStream()
+        {
+            // Prerequisites
+            const string path = "test-result.proto";
+
+            var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+
+            // Process
+            var streamWriter = new StreamWriter(path);
+            serializer.Save(vehicleA, streamWriter.BaseStream);
+            streamWriter.Close();
+
+            var streamReader = new StreamReader(path);
+            serializer.Initialization(vehicleB, streamReader.BaseStream);
             streamReader.Close();
 
             // Test
