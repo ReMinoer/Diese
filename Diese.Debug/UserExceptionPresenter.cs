@@ -5,6 +5,9 @@ namespace Diese.Debug
 {
     public class UserExceptionPresenter
     {
+        protected readonly IUserExceptionView View;
+        private Exception _exception;
+
         public Exception Exception
         {
             get { return _exception; }
@@ -15,8 +18,6 @@ namespace Diese.Debug
                 RefreshAll();
             }
         }
-        protected readonly IUserExceptionView View;
-        private Exception _exception;
 
         public UserExceptionPresenter(IUserExceptionView view)
         {
