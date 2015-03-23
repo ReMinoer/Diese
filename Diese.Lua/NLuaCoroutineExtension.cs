@@ -8,7 +8,7 @@ namespace Diese.Lua
 {
     static public class NLuaCoroutineExtension
     {
-        static public void DoCoroutineManager(this NLua.Lua lua)
+        static public void LoadCoroutineManager(this NLua.Lua lua)
         {
             lua.DoString(LuaTools.CoroutineManager);
         }
