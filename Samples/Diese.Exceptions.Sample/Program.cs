@@ -25,7 +25,7 @@ namespace Diese.Exceptions.Sample
         {
             // ReSharper disable All
             var zero = 0;
-            int divideByZero = 5/zero;
+            int divideByZero = 5 / zero;
             // ReSharper restore All
         }
 

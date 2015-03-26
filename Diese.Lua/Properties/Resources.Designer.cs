@@ -22,7 +22,7 @@ namespace Diese.Lua.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Diese.Lua.Properties {
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Diese.Lua.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Diese.Lua.Properties {
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -79,7 +79,7 @@ namespace Diese.Lua.Properties {
         ///
         ///-- Resume a cor [le reste de la chaîne a été tronqué]&quot;;.
         /// </summary>
-        internal static string CoroutineManager {
+        public static string CoroutineManager {
             get {
                 return ResourceManager.GetString("CoroutineManager", resourceCulture);
             }
@@ -111,7 +111,7 @@ namespace Diese.Lua.Properties {
         ///    local it = list:GetEnumerator()
         ///    while it:MoveNext() do [le reste de la chaîne a été tronqué]&quot;;.
         /// </summary>
-        internal static string TableTools {
+        public static string TableTools {
             get {
                 return ResourceManager.GetString("TableTools", resourceCulture);
             }
