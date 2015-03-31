@@ -34,6 +34,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Lua", "Diese.Lua\Dies
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Lua.Test", "Diese.Lua.Test\Diese.Lua.Test.csproj", "{7AC67B80-2D3D-4872-A8A7-35416E8344FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.UnitTest", "Diese.UnitTest\Diese.UnitTest.csproj", "{496DD102-2319-4DA5-88AA-53D1ACD07ABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.UnitTest.Test", "Tests\Diese.UnitTest.Test\Diese.UnitTest.Test.csproj", "{C9B66B14-F26B-432D-BE30-FCC121AE6CDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +84,14 @@ Global
 		{7AC67B80-2D3D-4872-A8A7-35416E8344FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AC67B80-2D3D-4872-A8A7-35416E8344FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AC67B80-2D3D-4872-A8A7-35416E8344FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{496DD102-2319-4DA5-88AA-53D1ACD07ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{496DD102-2319-4DA5-88AA-53D1ACD07ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{496DD102-2319-4DA5-88AA-53D1ACD07ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{496DD102-2319-4DA5-88AA-53D1ACD07ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +102,7 @@ Global
 		{AC7C9776-94FF-434B-9084-8DCB175CF969} = {961607C8-6CFD-4DE5-BBC3-0431CF6960AF}
 		{5445B701-2E6C-4CBD-B0B7-48C34E90A658} = {961607C8-6CFD-4DE5-BBC3-0431CF6960AF}
 		{7AC67B80-2D3D-4872-A8A7-35416E8344FF} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
+		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Diese.Serialization\Diese.Serialization.csproj
