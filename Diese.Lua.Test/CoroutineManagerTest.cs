@@ -10,7 +10,7 @@ namespace Diese.Lua.Test
         {
             using (var lua = new NLua.Lua())
             {
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() return 'truc', 2 end");
 
                 lua.CreateCoroutine("test");
@@ -28,7 +28,7 @@ namespace Diese.Lua.Test
         {
             using (var lua = new NLua.Lua())
             {
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() local x = 1; coroutine.yield(x); return 2 end");
 
                 lua.CreateCoroutine("test");
@@ -52,7 +52,7 @@ namespace Diese.Lua.Test
         {
             using (var lua = new NLua.Lua())
             {
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() x = 1; coroutine.yield(x); return 2 end");
 
                 lua.CreateCoroutine("test");
@@ -82,7 +82,7 @@ namespace Diese.Lua.Test
             using (var lua = new NLua.Lua())
             {
                 lua.LoadCLRPackage();
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() return 'hi' end " + "function test2() coroutine.yield() return true end "
                              + "function test3() return 3,4 end");
 
@@ -124,7 +124,7 @@ namespace Diese.Lua.Test
             using (var lua = new NLua.Lua())
             {
                 lua.LoadCLRPackage();
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() coroutine.manager.sleep(10, 'stopped 1') return 'hi' end " +
                              "function test2() coroutine.manager.sleep(20, 'stopped 2') return 'hello' end ");
 
@@ -166,7 +166,7 @@ namespace Diese.Lua.Test
         {
             using (var lua = new NLua.Lua())
             {
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() coroutine.yield() coroutine.yield() coroutine.yield() end");
 
                 lua.CreateCoroutine("test");
@@ -189,7 +189,7 @@ namespace Diese.Lua.Test
         {
             using (var lua = new NLua.Lua())
             {
-                lua.DoCoroutineManager();
+                lua.LoadCoroutineManager();
                 lua.DoString("function test() coroutine.yield(1) coroutine.yield(2) coroutine.yield(3) end "
                              + "function test2() coroutine.yield(4) coroutine.yield(5) coroutine.yield(6) end");
 
