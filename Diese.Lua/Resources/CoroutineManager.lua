@@ -61,6 +61,15 @@ function coroutine.manager.exists(name)
 	return coroutine.manager.table[name] ~= nil
 end
 
+-- Clean dead coroutines
+function coroutine.manager.clean()
+    for name, value in pairs(coroutine.manager.table) do
+		if coroutine.manager.status(name) == "dead" then
+			coroutine.manager.table[name] = nil
+		end
+    end
+end
+
 -- Make a coroutine sleep during a specific time
 ------ name : name of the coroutine
 ------ time : duration of sleep in milliseconds

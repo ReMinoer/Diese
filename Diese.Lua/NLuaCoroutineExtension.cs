@@ -101,6 +101,11 @@ namespace Diese.Lua
             return (bool)lua.GetFunction("coroutine.manager.exists").Call(name).First();
         }
 
+        static public void CleanDeadCoroutines(this NLua.Lua lua)
+        {
+            lua.GetFunction("coroutine.manager.clean").Call();
+        }
+
         static private object[] ExtractResultsFromTable(LuaTable luaTable)
         {
             var results = new object[luaTable.Values.Count];

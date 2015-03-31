@@ -202,5 +202,31 @@ namespace Diese.Lua.Test
                 Assert.IsTrue(lua.ExistsCoroutine("test2"));
             }
         }
+
+        [Test]
+        public void CleanDeadCoroutines()
+        {
+            using (var lua = new NLua.Lua())
+            {
+                lua.LoadCoroutineManager();
+                lua.DoString("function test() return 1 end "
+                             + "function test2() coroutine.yield(1) return 2 end");
+
+                lua.CreateCoroutine("test");
+                lua.CreateCoroutine("test2");
+
+                lua.UpdateCoroutines();
+                lua.CleanDeadCoroutines();
+
+                Assert.IsTrue(!lua.ExistsCoroutine("test"));
+                Assert.IsTrue(lua.ExistsCoroutine("test2"));
+
+                lua.UpdateCoroutines();
+                lua.CleanDeadCoroutines();
+
+                Assert.IsTrue(!lua.ExistsCoroutine("test"));
+                Assert.IsTrue(!lua.ExistsCoroutine("test2"));
+            }
+        }
     }
 }
