@@ -9,22 +9,22 @@ namespace Diese.Sample.Log
         {
             InitializeComponent();
 
-            Debug.Log.Message("Run program.exe...", DefaultLogTag.System);
-            Debug.Log.Message("I'm a system message.", DefaultLogTag.System);
-            Debug.Log.Message("I'm a warning.", DefaultLogTag.Warning);
-            Debug.Log.Message("I'm an error.", DefaultLogTag.Error);
-            Debug.Log.Message("I'm a debug message.", DefaultLogTag.Debug);
+            Debug.LogConsole.Message("Run program.exe...", DefaultLogTag.System);
+            Debug.LogConsole.Message("I'm a system message.", DefaultLogTag.System);
+            Debug.LogConsole.Message("I'm a warning.", DefaultLogTag.Warning);
+            Debug.LogConsole.Message("I'm an error.", DefaultLogTag.Error);
+            Debug.LogConsole.Message("I'm a debug message.", DefaultLogTag.Debug);
 
-            Debug.Log.Enable = false;
-            Debug.Log.Message("I'm hide.", DefaultLogTag.Debug);
-            Debug.Log.Enable = true;
+            Debug.LogConsole.Enable = false;
+            Debug.LogConsole.Message("I'm hide.", DefaultLogTag.Debug);
+            Debug.LogConsole.Enable = true;
 
-            Debug.Log.UseExecutionTime = true;
-            Debug.Log.Message("I use the execution time.", DefaultLogTag.Debug);
-            Debug.Log.UseExecutionTime = false;
-            Debug.Log.Message("I use the real time.", DefaultLogTag.Debug);
+            Debug.LogConsole.UseExecutionTime = true;
+            Debug.LogConsole.Message("I use the execution time.", DefaultLogTag.Debug);
+            Debug.LogConsole.UseExecutionTime = false;
+            Debug.LogConsole.Message("I use the real time.", DefaultLogTag.Debug);
 
-            Debug.Log.Message("I'm a normal message.");
+            Debug.LogConsole.Message("I'm a normal message.");
         }
     }
 }

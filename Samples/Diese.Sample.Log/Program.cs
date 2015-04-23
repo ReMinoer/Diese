@@ -11,7 +11,7 @@ namespace Diese.Sample.Log
         [STAThread]
         static private void Main()
         {
-            Debug.Log.Instantiate(true);
+            Debug.LogConsole.Instantiate(true);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
