@@ -18,7 +18,7 @@ namespace Diese.Serialization.Test
 
             // Process
             serializer.Save(vehicleA, path);
-            Vehicle vehicleB = serializer.Load(path);
+            Vehicle vehicleB = serializer.Instantiate(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -37,7 +37,7 @@ namespace Diese.Serialization.Test
             // Process
             serializer.Save(vehicleA, path);
 
-            Vehicle vehicleB = serializer.Load(path);
+            Vehicle vehicleB = serializer.Instantiate(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -55,7 +55,7 @@ namespace Diese.Serialization.Test
             serializer.Save(vehicleA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            Vehicle vehicleB = serializer.Load(stringReader);
+            Vehicle vehicleB = serializer.Instantiate(stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -74,7 +74,7 @@ namespace Diese.Serialization.Test
             serializer.Save(vehicleA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            Vehicle vehicleB = serializer.Load(stringReader);
+            Vehicle vehicleB = serializer.Instantiate(stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -93,7 +93,7 @@ namespace Diese.Serialization.Test
             // Process
             serializer.Save(vehicleA, path);
 
-            serializer.Initialization(vehicleB, path);
+            serializer.Load(vehicleB, path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -112,7 +112,7 @@ namespace Diese.Serialization.Test
             serializer.Save(vehicleA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            serializer.Initialization(vehicleB, stringReader);
+            serializer.Load(vehicleB, stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);

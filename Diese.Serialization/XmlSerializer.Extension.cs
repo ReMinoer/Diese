@@ -46,7 +46,7 @@ namespace Diese.Serialization
         // With model
 
         static public void Load<T, TModel>(this XmlSerializer serializer, out T obj, Stream stream)
-            where TModel : IDataModel<T>
+            where TModel : ICreator<T>
         {
             var model = serializer.Load<TModel>(stream);
             obj = model.Create();
@@ -61,7 +61,7 @@ namespace Diese.Serialization
         }
 
         static public void Load<T, TModel>(this XmlSerializer serializer, out T obj, string path)
-            where TModel : IDataModel<T>
+            where TModel : ICreator<T>
         {
             var streamReader = new StreamReader(path);
             serializer.Load<T, TModel>(out obj, streamReader.BaseStream);
@@ -77,7 +77,7 @@ namespace Diese.Serialization
         }
 
         static public void Load<T, TModel>(this XmlSerializer serializer, out T obj, TextReader textReader)
-            where TModel : IDataModel<T>
+            where TModel : ICreator<T>
         {
             var model = (TModel)serializer.Deserialize(textReader);
             obj = model.Create();

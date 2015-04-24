@@ -3,7 +3,7 @@
 namespace Diese.Modelization.Test.Samples
 {
     [ProtoContract]
-    public class VehicleDataModel : IDataModel<Vehicle>
+    public class VehicleDataModel : IConfigurator<Vehicle>, ICreator<Vehicle>
     {
         [ProtoMember(1)]
         public int SpeedMax { get; set; }
@@ -13,7 +13,7 @@ namespace Diese.Modelization.Test.Samples
             SpeedMax = obj.SpeedMax;
         }
 
-        public void To(Vehicle obj)
+        public void Configure(Vehicle obj)
         {
             obj.SpeedMax = SpeedMax;
         }
@@ -21,7 +21,7 @@ namespace Diese.Modelization.Test.Samples
         public Vehicle Create()
         {
             var obj = new Vehicle();
-            To(obj);
+            Configure(obj);
             return obj;
         }
     }

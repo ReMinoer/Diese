@@ -19,7 +19,7 @@ namespace Diese.Modelization.Test
         }
 
         [Test]
-        public void ModelToObject()
+        public void ModelConfigureObject()
         {
             var model = new VehicleDataModel {SpeedMax = 60};
             var vehicle = new Vehicle();
@@ -27,7 +27,7 @@ namespace Diese.Modelization.Test
             Assert.IsTrue(vehicle.SpeedMax == 0);
             Assert.IsTrue(vehicle.CurrentSpeed == 0);
 
-            model.To(vehicle);
+            model.Configure(vehicle);
 
             Assert.IsTrue(model.SpeedMax == 60);
             Assert.IsTrue(vehicle.CurrentSpeed == 0);

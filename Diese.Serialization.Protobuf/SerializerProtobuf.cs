@@ -7,7 +7,7 @@ namespace Diese.Serialization.Protobuf
     public class SerializerProtobuf<T> : Serializer<T>
         where T : new()
     {
-        public override T Load(Stream stream)
+        public override T Instantiate(Stream stream)
         {
             return Serializer.Deserialize<T>(stream);
         }

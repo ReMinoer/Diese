@@ -19,7 +19,7 @@ namespace Diese.Serialization.Test
 
             // Process
             serializer.Save(vehicleA, path);
-            Vehicle vehicleB = serializer.Load(path);
+            Vehicle vehicleB = serializer.Instantiate(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -38,7 +38,7 @@ namespace Diese.Serialization.Test
             // Process
             serializer.Save(vehicleA, path);
 
-            Vehicle vehicleB = serializer.Load(path);
+            Vehicle vehicleB = serializer.Instantiate(path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -59,7 +59,7 @@ namespace Diese.Serialization.Test
             streamWriter.Close();
 
             var streamReader = new StreamReader(path);
-            Vehicle vehicleB = serializer.Load(streamReader.BaseStream);
+            Vehicle vehicleB = serializer.Instantiate(streamReader.BaseStream);
             streamReader.Close();
 
             // Test
@@ -82,7 +82,7 @@ namespace Diese.Serialization.Test
             streamWriter.Close();
 
             var streamReader = new StreamReader(path);
-            Vehicle vehicleB = serializer.Load(streamReader.BaseStream);
+            Vehicle vehicleB = serializer.Instantiate(streamReader.BaseStream);
             streamReader.Close();
 
             // Test
@@ -102,7 +102,7 @@ namespace Diese.Serialization.Test
             // Process
             serializer.Save(vehicleA, path);
 
-            serializer.Initialization(vehicleB, path);
+            serializer.Load(vehicleB, path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -124,7 +124,7 @@ namespace Diese.Serialization.Test
             streamWriter.Close();
 
             var streamReader = new StreamReader(path);
-            serializer.Initialization(vehicleB, streamReader.BaseStream);
+            serializer.Load(vehicleB, streamReader.BaseStream);
             streamReader.Close();
 
             // Test
