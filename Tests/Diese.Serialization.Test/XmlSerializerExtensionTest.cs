@@ -19,7 +19,7 @@ namespace Diese.Serialization.Test
 
             // Process
             serializer.Save(passengerA, path);
-            var passengerB = serializer.Load<Passenger>(path);
+            var passengerB = serializer.Instantiate<Passenger>(path);
 
             // Test
             Assert.IsTrue(passengerB.Name == passengerA.Name);
@@ -27,19 +27,35 @@ namespace Diese.Serialization.Test
         }
 
         [Test]
-        public void FromPathByModel()
+        public void FromPathByCreator()
+        {
+            // Prerequisites
+            const string path = "test-result.xml";
+
+            var serializer = new XmlSerializer(typeof(VehicleData));
+            var vehicleA = new Vehicle { SpeedMax = 50, CurrentSpeed = 20 };
+
+            // Process
+            serializer.Save<Vehicle, VehicleData>(vehicleA, path);
+            Vehicle vehicleB = serializer.Instantiate<Vehicle, VehicleData>(path);
+
+            // Test
+            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
+        }
+
+        [Test]
+        public void FromPathByConfigurator()
         {
             // Prerequisites
             const string path = "test-result.xml";
 
             var serializer = new XmlSerializer(typeof(VehicleData));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB;
+            Vehicle vehicleB = new Vehicle();
 
             // Process
             serializer.Save<Vehicle, VehicleData>(vehicleA, path);
-
-            serializer.Load<Vehicle, VehicleData>(out vehicleB, path);
+            serializer.Load<Vehicle, VehicleData>(vehicleB, path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -57,7 +73,7 @@ namespace Diese.Serialization.Test
             serializer.Save(passengerA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            var passengerB = serializer.Load<Passenger>(stringReader);
+            var passengerB = serializer.Instantiate<Passenger>(stringReader);
 
             // Test
             Assert.IsTrue(passengerB.Name == passengerA.Name);
@@ -65,19 +81,37 @@ namespace Diese.Serialization.Test
         }
 
         [Test]
-        public void FromStreamByModel()
+        public void FromStreamByCreator()
         {
             // Prerequisites
             var serializer = new XmlSerializer(typeof(VehicleData));
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB;
+            var vehicleA = new Vehicle { SpeedMax = 50, CurrentSpeed = 20 };
 
             // Process
             var stringWriter = new StringWriter();
             serializer.Save<Vehicle, VehicleData>(vehicleA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            serializer.Load<Vehicle, VehicleData>(out vehicleB, stringReader);
+            Vehicle vehicleB = serializer.Instantiate<Vehicle, VehicleData>(stringReader);
+
+            // Test
+            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
+        }
+
+        [Test]
+        public void FromStreamByConfigurator()
+        {
+            // Prerequisites
+            var serializer = new XmlSerializer(typeof(VehicleData));
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            Vehicle vehicleB = new Vehicle();
+
+            // Process
+            var stringWriter = new StringWriter();
+            serializer.Save<Vehicle, VehicleData>(vehicleA, stringWriter);
+
+            var stringReader = new StringReader(stringWriter.ToString());
+            serializer.Load<Vehicle, VehicleData>(vehicleB, stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);

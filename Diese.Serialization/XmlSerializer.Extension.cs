@@ -8,7 +8,7 @@ namespace Diese.Serialization
     {
         // Classic
 
-        static public T Load<T>(this XmlSerializer serializer, Stream stream)
+        static public T Instantiate<T>(this XmlSerializer serializer, Stream stream)
         {
             return (T)serializer.Deserialize(stream);
         }
@@ -18,10 +18,10 @@ namespace Diese.Serialization
             serializer.Serialize(stream, obj);
         }
 
-        static public T Load<T>(this XmlSerializer serializer, string path)
+        static public T Instantiate<T>(this XmlSerializer serializer, string path)
         {
             var streamReader = new StreamReader(path);
-            var obj = serializer.Load<T>(streamReader.BaseStream);
+            var obj = serializer.Instantiate<T>(streamReader.BaseStream);
             streamReader.Close();
             return obj;
         }
@@ -33,7 +33,7 @@ namespace Diese.Serialization
             streamWriter.Close();
         }
 
-        static public T Load<T>(this XmlSerializer serializer, TextReader textReader)
+        static public T Instantiate<T>(this XmlSerializer serializer, TextReader textReader)
         {
             return (T)serializer.Deserialize(textReader);
         }
@@ -45,11 +45,18 @@ namespace Diese.Serialization
 
         // With model
 
-        static public void Load<T, TModel>(this XmlSerializer serializer, out T obj, Stream stream)
+        static public T Instantiate<T, TModel>(this XmlSerializer serializer, Stream stream)
             where TModel : ICreator<T>
         {
-            var model = serializer.Load<TModel>(stream);
-            obj = model.Create();
+            var model = serializer.Instantiate<TModel>(stream);
+            return model.Create();
+        }
+
+        static public void Load<T, TModel>(this XmlSerializer serializer, T obj, Stream stream)
+            where TModel : IConfigurator<T>
+        {
+            var model = serializer.Instantiate<TModel>(stream);
+            model.Configure(obj);
         }
 
         static public void Save<T, TModel>(this XmlSerializer serializer, T obj, Stream stream)
@@ -60,11 +67,20 @@ namespace Diese.Serialization
             serializer.Save(model, stream);
         }
 
-        static public void Load<T, TModel>(this XmlSerializer serializer, out T obj, string path)
+        static public T Instantiate<T, TModel>(this XmlSerializer serializer, string path)
             where TModel : ICreator<T>
         {
             var streamReader = new StreamReader(path);
-            serializer.Load<T, TModel>(out obj, streamReader.BaseStream);
+            T obj = serializer.Instantiate<T, TModel>(streamReader.BaseStream);
+            streamReader.Close();
+            return obj;
+        }
+
+        static public void Load<T, TModel>(this XmlSerializer serializer, T obj, string path)
+            where TModel : IConfigurator<T>
+        {
+            var streamReader = new StreamReader(path);
+            serializer.Load<T, TModel>(obj, streamReader.BaseStream);
             streamReader.Close();
         }
 
@@ -76,11 +92,18 @@ namespace Diese.Serialization
             streamWriter.Close();
         }
 
-        static public void Load<T, TModel>(this XmlSerializer serializer, out T obj, TextReader textReader)
+        static public T Instantiate<T, TModel>(this XmlSerializer serializer, TextReader textReader)
             where TModel : ICreator<T>
         {
             var model = (TModel)serializer.Deserialize(textReader);
-            obj = model.Create();
+            return model.Create();
+        }
+
+        static public void Load<T, TModel>(this XmlSerializer serializer, T obj, TextReader textReader)
+            where TModel : IConfigurator<T>
+        {
+            var model = serializer.Instantiate<TModel>(textReader);
+            model.Configure(obj);
         }
 
         static public void Save<T, TModel>(this XmlSerializer serializer, T obj, TextWriter textWriter)
