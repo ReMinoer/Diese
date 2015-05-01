@@ -23,7 +23,7 @@ namespace Diese.Serialization.Test
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
-            Assert.IsTrue(vehicleB.CurrentSpeed == vehicleA.CurrentSpeed);
+            Assert.IsTrue(vehicleB.CurrentSpeed != vehicleA.CurrentSpeed);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.proto";
 
-            var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
@@ -64,7 +64,7 @@ namespace Diese.Serialization.Test
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
-            Assert.IsTrue(vehicleB.CurrentSpeed == vehicleA.CurrentSpeed);
+            Assert.IsTrue(vehicleB.CurrentSpeed != vehicleA.CurrentSpeed);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.proto";
 
-            var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
@@ -95,7 +95,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.proto";
 
-            var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
 
@@ -114,7 +114,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.proto";
 
-            var serializer = new SerializerProtobuf<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
 

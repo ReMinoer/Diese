@@ -31,7 +31,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.xml";
 
-            var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerXml<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
@@ -66,7 +66,7 @@ namespace Diese.Serialization.Test
         public void FromStreamByModel()
         {
             // Prerequisites
-            var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerXml<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
@@ -86,7 +86,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.xml";
 
-            var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerXml<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
 
@@ -103,7 +103,7 @@ namespace Diese.Serialization.Test
         public void InitializationFromStream()
         {
             // Prerequisites
-            var serializer = new SerializerXml<Vehicle, VehicleDataModel>();
+            var serializer = new SerializerXml<Vehicle, VehicleData>();
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
 

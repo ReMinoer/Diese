@@ -32,14 +32,14 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.xml";
 
-            var serializer = new XmlSerializer(typeof(VehicleDataModel));
+            var serializer = new XmlSerializer(typeof(VehicleData));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             Vehicle vehicleB;
 
             // Process
-            serializer.Save<Vehicle, VehicleDataModel>(vehicleA, path);
+            serializer.Save<Vehicle, VehicleData>(vehicleA, path);
 
-            serializer.Load<Vehicle, VehicleDataModel>(out vehicleB, path);
+            serializer.Load<Vehicle, VehicleData>(out vehicleB, path);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
@@ -68,16 +68,16 @@ namespace Diese.Serialization.Test
         public void FromStreamByModel()
         {
             // Prerequisites
-            var serializer = new XmlSerializer(typeof(VehicleDataModel));
+            var serializer = new XmlSerializer(typeof(VehicleData));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
             Vehicle vehicleB;
 
             // Process
             var stringWriter = new StringWriter();
-            serializer.Save<Vehicle, VehicleDataModel>(vehicleA, stringWriter);
+            serializer.Save<Vehicle, VehicleData>(vehicleA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            serializer.Load<Vehicle, VehicleDataModel>(out vehicleB, stringReader);
+            serializer.Load<Vehicle, VehicleData>(out vehicleB, stringReader);
 
             // Test
             Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
