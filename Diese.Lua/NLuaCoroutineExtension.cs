@@ -57,7 +57,7 @@ namespace Diese.Lua
 
         static public LuaCoroutineStatus StatusCoroutine(this NLua.Lua lua, string name)
         {
-            var status = (string)lua.GetFunction("coroutine.manager.status").Call(name).First();
+            string status = (string)lua.GetFunction("coroutine.manager.status").Call(name).First();
             LuaCoroutineStatus result;
             Enum.TryParse(status, true, out result);
             return result;

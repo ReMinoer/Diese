@@ -24,7 +24,7 @@ namespace Diese.Exceptions.Sample
         static public void Method4()
         {
             // ReSharper disable All
-            var zero = 0;
+            int zero = 0;
             int divideByZero = 5 / zero;
             // ReSharper restore All
         }
