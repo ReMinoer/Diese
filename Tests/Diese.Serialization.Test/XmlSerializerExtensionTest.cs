@@ -14,16 +14,16 @@ namespace Diese.Serialization.Test
             // Prerequisites
             const string path = "test-result.xml";
 
-            var serializer = new XmlSerializer(typeof(Vehicle));
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var serializer = new XmlSerializer(typeof(Passenger));
+            var passengerA = new Passenger {Name = "John", Age = 20};
 
             // Process
-            serializer.Save(vehicleA, path);
-            var vehicleB = serializer.Load<Vehicle>(path);
+            serializer.Save(passengerA, path);
+            var passengerB = serializer.Load<Passenger>(path);
 
             // Test
-            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
-            Assert.IsTrue(vehicleB.CurrentSpeed == vehicleA.CurrentSpeed);
+            Assert.IsTrue(passengerB.Name == passengerA.Name);
+            Assert.IsTrue(passengerB.Age == passengerA.Age);
         }
 
         [Test]
@@ -49,19 +49,19 @@ namespace Diese.Serialization.Test
         public void FromStream()
         {
             // Prerequisites
-            var serializer = new XmlSerializer(typeof(Vehicle));
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var serializer = new XmlSerializer(typeof(Passenger));
+            var passengerA = new Passenger {Name = "John", Age = 20};
 
             // Process
             var stringWriter = new StringWriter();
-            serializer.Save(vehicleA, stringWriter);
+            serializer.Save(passengerA, stringWriter);
 
             var stringReader = new StringReader(stringWriter.ToString());
-            var vehicleB = serializer.Load<Vehicle>(stringReader);
+            var passengerB = serializer.Load<Passenger>(stringReader);
 
             // Test
-            Assert.IsTrue(vehicleB.SpeedMax == vehicleA.SpeedMax);
-            Assert.IsTrue(vehicleB.CurrentSpeed == vehicleA.CurrentSpeed);
+            Assert.IsTrue(passengerB.Name == passengerA.Name);
+            Assert.IsTrue(passengerB.Age == passengerA.Age);
         }
 
         [Test]

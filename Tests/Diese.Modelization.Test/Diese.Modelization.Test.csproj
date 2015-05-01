@@ -39,6 +39,8 @@
     <Compile Include="Samples\PassengerData.cs" />
     <Compile Include="Samples\Vehicle.cs" />
     <Compile Include="Samples\VehicleData.cs" />
+    <Compile Include="Samples\Wheel.cs" />
+    <Compile Include="Samples\WheelData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -48,6 +50,7 @@
     <Reference Include="protobuf-net">
       <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -56,6 +59,10 @@
     <ProjectReference Include="..\..\Diese.Modelization\Diese.Modelization.csproj">
       <Project>{0781AD0F-EB0F-442E-9A1C-34C2AA9319FD}</Project>
       <Name>Diese.Modelization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Diese.Serialization\Diese.Serialization.csproj">
+      <Project>{4AE2D764-4161-453D-8B2D-BD66607EC27A}</Project>
+      <Name>Diese.Serialization</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
