@@ -33,7 +33,7 @@ namespace Diese.Serialization.Test
             const string path = "test-result.xml";
 
             var serializer = new XmlSerializer(typeof(VehicleData));
-            var vehicleA = new Vehicle { SpeedMax = 50, CurrentSpeed = 20 };
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
             serializer.Save<Vehicle, VehicleData>(vehicleA, path);
@@ -51,7 +51,7 @@ namespace Diese.Serialization.Test
 
             var serializer = new XmlSerializer(typeof(VehicleData));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB = new Vehicle();
+            var vehicleB = new Vehicle();
 
             // Process
             serializer.Save<Vehicle, VehicleData>(vehicleA, path);
@@ -85,7 +85,7 @@ namespace Diese.Serialization.Test
         {
             // Prerequisites
             var serializer = new XmlSerializer(typeof(VehicleData));
-            var vehicleA = new Vehicle { SpeedMax = 50, CurrentSpeed = 20 };
+            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
 
             // Process
             var stringWriter = new StringWriter();
@@ -104,7 +104,7 @@ namespace Diese.Serialization.Test
             // Prerequisites
             var serializer = new XmlSerializer(typeof(VehicleData));
             var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            Vehicle vehicleB = new Vehicle();
+            var vehicleB = new Vehicle();
 
             // Process
             var stringWriter = new StringWriter();
