@@ -8,6 +8,16 @@ namespace Diese.Serialization
     [XmlRoot("SerializableDictionary")]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
+        public SerializableDictionary()
+        {
+        }
+
+        public SerializableDictionary(Dictionary<TKey, TValue> dictionary)
+        {
+            foreach (KeyValuePair<TKey, TValue> keyValuePair in dictionary)
+                Add(keyValuePair.Key, keyValuePair.Value);
+        }
+
         public XmlSchema GetSchema()
         {
             return null;
