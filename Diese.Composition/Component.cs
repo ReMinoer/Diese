@@ -5,7 +5,7 @@ namespace Diese.Composition
     public abstract class Component<TAbstract> : IComponent<TAbstract>
         where TAbstract : IComponent<TAbstract>
     {
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         public T GetComponent<T>(bool includeItself = false)
             where T : class, TAbstract

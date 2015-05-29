@@ -8,7 +8,7 @@ namespace Diese.Composition.Composite
         where TAbstract : IComponent<TAbstract>
     {
         protected readonly List<TAbstract> Components;
-        public abstract string Name { get; }
+        public string Name { get; set; }
 
         public int Count
         {
