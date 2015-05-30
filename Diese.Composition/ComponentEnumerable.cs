@@ -1,29 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Diese.Composition.Composite
+namespace Diese.Composition
 {
-    public abstract class Composite<TAbstract> : IComposite<TAbstract>
+    public abstract class ComponentEnumerable<TAbstract> : IComponent<TAbstract>, IEnumerable<TAbstract>
         where TAbstract : IComponent<TAbstract>
     {
-        protected readonly List<TAbstract> Components;
-        public string Name { get; set; }
-
-        public int Count
-        {
-            get { return Components.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        protected Composite()
-        {
-            Components = new List<TAbstract>();
-        }
+        public abstract string Name { get; set; }
 
         public T GetComponent<T>(bool includeItself = false)
             where T : class, TAbstract
@@ -102,42 +85,11 @@ namespace Diese.Composition.Composite
             return false;
         }
 
-        public IEnumerator<TAbstract> GetEnumerator()
-        {
-            return Components.GetEnumerator();
-        }
-
-        public void Add(TAbstract item)
-        {
-            if (item.ContainsComponentInChildren(this))
-                throw new InvalidOperationException("Item have its parent in its children !");
-
-            Components.Add(item);
-        }
-
-        public void Clear()
-        {
-            Components.Clear();
-        }
-
-        public bool Contains(TAbstract item)
-        {
-            return Components.Contains(item);
-        }
-
-        public void CopyTo(TAbstract[] array, int arrayIndex)
-        {
-            Components.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(TAbstract item)
-        {
-            return Components.Remove(item);
-        }
+        public abstract IEnumerator<TAbstract> GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Components.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

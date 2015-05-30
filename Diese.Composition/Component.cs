@@ -2,7 +2,7 @@
 
 namespace Diese.Composition
 {
-    public abstract class Component<TAbstract> : IComponent<TAbstract>
+    public class Component<TAbstract> : IComponent<TAbstract>
         where TAbstract : IComponent<TAbstract>
     {
         public string Name { get; set; }
