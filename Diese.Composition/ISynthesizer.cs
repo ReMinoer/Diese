@@ -6,6 +6,5 @@ namespace Diese.Composition
         where TAbstract : IComponent<TAbstract>
         where TInput : TAbstract
     {
-         
     }
 }

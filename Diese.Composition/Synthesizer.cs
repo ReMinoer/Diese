@@ -7,7 +7,7 @@ namespace Diese.Composition
         where TInput : TAbstract
     {
         protected readonly TInput[] Components;
-        public sealed override string Name { get; set; }
+        public override sealed string Name { get; set; }
 
         protected Synthesizer(int size)
         {

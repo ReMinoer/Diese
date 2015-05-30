@@ -6,7 +6,7 @@ namespace Diese.Composition
         where TAbstract : IComponent<TAbstract>
     {
         protected readonly TAbstract[] Components;
-        public sealed override string Name { get; set; }
+        public override sealed string Name { get; set; }
 
         protected Container(int size)
         {

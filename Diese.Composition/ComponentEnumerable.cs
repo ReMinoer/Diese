@@ -7,6 +7,7 @@ namespace Diese.Composition
         where TAbstract : IComponent<TAbstract>
     {
         public abstract string Name { get; set; }
+        public abstract IEnumerator<TAbstract> GetEnumerator();
 
         public T GetComponent<T>(bool includeItself = false)
             where T : class, TAbstract
@@ -84,8 +85,6 @@ namespace Diese.Composition
 
             return false;
         }
-
-        public abstract IEnumerator<TAbstract> GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {

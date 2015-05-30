@@ -7,6 +7,9 @@ namespace Diese.Serialization
 {
     public abstract class Serializer<T> : ISerializer<T>
     {
+        public abstract T Instantiate(Stream stream);
+        public abstract void Save(T obj, Stream stream);
+
         public T Instantiate(string path)
         {
             var streamReader = new StreamReader(path);
@@ -21,14 +24,14 @@ namespace Diese.Serialization
             Save(obj, streamWriter.BaseStream);
             streamWriter.Close();
         }
-
-        public abstract T Instantiate(Stream stream);
-        public abstract void Save(T obj, Stream stream);
     }
 
     public abstract class Serializer<T, TModel> : ISerializer<T, TModel>
         where TModel : IDataModel<T>, new()
     {
+        public abstract TModel LoadModel(Stream stream);
+        public abstract void SaveModel(TModel model, Stream stream);
+
         public void Save(T obj, string path)
         {
             var streamWriter = new StreamWriter(path);
@@ -88,8 +91,5 @@ namespace Diese.Serialization
 
             return model.Create();
         }
-
-        public abstract TModel LoadModel(Stream stream);
-        public abstract void SaveModel(TModel model, Stream stream);
     }
 }
