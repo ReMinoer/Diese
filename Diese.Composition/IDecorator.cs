@@ -1,8 +1,9 @@
 ﻿namespace Diese.Composition
 {
-    public interface IDecorator<TAbstract> : IComponent<TAbstract>
+    public interface IDecorator<TAbstract, TComponent> : IComponent<TAbstract>
         where TAbstract : IComponent<TAbstract>
+        where TComponent : TAbstract
     {
-        TAbstract Component { get; set; }
+        TComponent Component { get; set; }
     }
 }

@@ -2,11 +2,12 @@
 
 namespace Diese.Composition
 {
-    public class Decorator<TAbstract> : IDecorator<TAbstract>
+    public class Decorator<TAbstract, TComponent> : IDecorator<TAbstract, TComponent>
         where TAbstract : IComponent<TAbstract>
+        where TComponent : TAbstract
     {
         public string Name { get; set; }
-        public TAbstract Component { get; set; }
+        public TComponent Component { get; set; }
 
         public T GetComponent<T>(bool includeItself = false)
             where T : class, TAbstract
