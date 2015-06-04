@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Diese.Composition
 {
-    public class Synthesizer<TAbstract, TInput> : ComponentEnumerable<TAbstract>, ISynthesizer<TAbstract, TInput>
-        where TAbstract : IComponent<TAbstract>
+    public class Synthesizer<TAbstract, TInput> : ComponentEnumerable<TAbstract, TInput>,
+        ISynthesizer<TAbstract, TInput>
+        where TAbstract : class, IComponent<TAbstract>
         where TInput : TAbstract
     {
         protected readonly TInput[] Components;
@@ -14,14 +16,9 @@ namespace Diese.Composition
             Components = new TInput[size];
         }
 
-        public override IEnumerator<TAbstract> GetEnumerator()
+        public override IEnumerator<TInput> GetEnumerator()
         {
-            return (IEnumerator<TAbstract>)Components.GetEnumerator();
-        }
-
-        IEnumerator<TInput> IEnumerable<TInput>.GetEnumerator()
-        {
-            return (IEnumerator<TInput>)Components.GetEnumerator();
+            return Components.Cast<TInput>().GetEnumerator();
         }
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Diese.Composition
 {
-    public class Composite<TAbstract> : ComponentEnumerable<TAbstract>, IComposite<TAbstract>
-        where TAbstract : IComponent<TAbstract>
+    public class Composite<TAbstract> : ComponentEnumerable<TAbstract, TAbstract>, IComposite<TAbstract>
+        where TAbstract : class, IComponent<TAbstract>
     {
         protected readonly List<TAbstract> Components;
         public override string Name { get; set; }

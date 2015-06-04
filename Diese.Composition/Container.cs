@@ -2,8 +2,8 @@
 
 namespace Diese.Composition
 {
-    public class Container<TAbstract> : ComponentEnumerable<TAbstract>, IContainer<TAbstract>
-        where TAbstract : IComponent<TAbstract>
+    public class Container<TAbstract> : ComponentEnumerable<TAbstract, TAbstract>, IContainer<TAbstract>
+        where TAbstract : class, IComponent<TAbstract>
     {
         protected readonly TAbstract[] Components;
         public override sealed string Name { get; set; }
