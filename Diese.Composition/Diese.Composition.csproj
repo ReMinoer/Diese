@@ -35,18 +35,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component.cs" />
+    <Compile Include="Base\ComponentBase.cs" />
     <Compile Include="Composite.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ComponentEnumerable.cs" />
+    <Compile Include="Exceptions\InvalidChildException.cs" />
+    <Compile Include="Exceptions\ReadOnlyParentException.cs" />
     <Compile Include="IComposite.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="IDecorator.cs" />
     <Compile Include="IComponent.cs" />
+    <Compile Include="IParent.cs" />
     <Compile Include="ISynthesizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Synthesizer.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

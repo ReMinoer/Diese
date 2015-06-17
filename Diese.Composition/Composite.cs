@@ -14,7 +14,7 @@ namespace Diese.Composition
             get { return Components.Count; }
         }
 
-        public bool IsReadOnly
+        public override sealed bool IsReadOnly
         {
             get { return false; }
         }
@@ -24,7 +24,7 @@ namespace Diese.Composition
             Components = new List<TAbstract>();
         }
 
-        public void Add(TAbstract item)
+        public virtual void Add(TAbstract item)
         {
             if (item.ContainsComponentInChildren(this))
                 throw new InvalidOperationException("Item have its parent in its children !");
@@ -32,7 +32,7 @@ namespace Diese.Composition
             Components.Add(item);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Components.Clear();
         }
@@ -47,7 +47,7 @@ namespace Diese.Composition
             Components.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(TAbstract item)
+        public virtual bool Remove(TAbstract item)
         {
             return Components.Remove(item);
         }
@@ -62,20 +62,32 @@ namespace Diese.Composition
             return Components.IndexOf(item);
         }
 
-        public void Insert(int index, TAbstract item)
+        public virtual void Insert(int index, TAbstract item)
         {
             Components.Insert(index, item);
         }
 
-        public void RemoveAt(int index)
+        public virtual void RemoveAt(int index)
         {
             Components.RemoveAt(index);
         }
 
-        public TAbstract this[int index]
+        public virtual TAbstract this[int index]
         {
             get { return Components[index]; }
             set { Components[index] = value; }
+        }
+
+        public override sealed void Link(TAbstract child)
+        {
+            Add(child);
+            child.Parent = this;
+        }
+
+        public override sealed void Unlink(TAbstract child)
+        {
+            Remove(child);
+            child.Parent = null;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Diese.Composition
 {
-    public interface IContainer<TAbstract> : IComponent<TAbstract>, IEnumerable<TAbstract>
+    public interface IContainer<TAbstract> : IEnumerable<TAbstract>, IParent<TAbstract>
         where TAbstract : IComponent<TAbstract>
     {
     }

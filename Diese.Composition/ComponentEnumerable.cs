@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Diese.Composition.Base;
 
 namespace Diese.Composition
 {
-    public abstract class ComponentEnumerable<TAbstract, TInput> : IComponent<TAbstract>, IEnumerable<TInput>
+    public abstract class ComponentEnumerable<TAbstract, TInput> : ComponentBase<TAbstract>, IEnumerable<TInput>, IParent<TAbstract>
         where TAbstract : class, IComponent<TAbstract>
         where TInput : TAbstract
     {
-        public abstract string Name { get; set; }
+        public override abstract string Name { get; set; }
         public abstract IEnumerator<TInput> GetEnumerator();
 
-        public TAbstract GetComponent(string name, bool includeItself = false)
+        public override sealed TAbstract GetComponent(string name, bool includeItself = false)
         {
             if (Name == name)
                 return this as TAbstract;
@@ -23,7 +24,7 @@ namespace Diese.Composition
             return null;
         }
 
-        public TAbstract GetComponent(Type type, bool includeItself = false)
+        public override sealed TAbstract GetComponent(Type type, bool includeItself = false)
         {
             if (includeItself && type.IsInstanceOfType(this))
                 return this as TAbstract;
@@ -35,8 +36,7 @@ namespace Diese.Composition
             return null;
         }
 
-        public T GetComponent<T>(bool includeItself = false)
-            where T : class, TAbstract
+        public override sealed T GetComponent<T>(bool includeItself = false)
         {
             if (includeItself && this is T)
                 return this as T;
@@ -48,7 +48,7 @@ namespace Diese.Composition
             return null;
         }
 
-        public TAbstract GetComponentInChildren(string name, bool includeItself = false)
+        public override sealed TAbstract GetComponentInChildren(string name, bool includeItself = false)
         {
             TAbstract component = GetComponent(name, includeItself);
             if (component != null)
@@ -64,7 +64,7 @@ namespace Diese.Composition
             return null;
         }
 
-        public TAbstract GetComponentInChildren(Type type, bool includeItself = false)
+        public override sealed TAbstract GetComponentInChildren(Type type, bool includeItself = false)
         {
             TAbstract component = GetComponent(type, includeItself);
             if (component != null)
@@ -80,8 +80,7 @@ namespace Diese.Composition
             return null;
         }
 
-        public T GetComponentInChildren<T>(bool includeItself = false)
-            where T : class, TAbstract
+        public override sealed T GetComponentInChildren<T>(bool includeItself = false)
         {
             var component = GetComponent<T>(includeItself);
             if (component != null)
@@ -97,7 +96,7 @@ namespace Diese.Composition
             return null;
         }
 
-        public List<TAbstract> GetAllComponents(Type type, bool includeItself = false)
+        public override sealed List<TAbstract> GetAllComponents(Type type, bool includeItself = false)
         {
             var result = new List<TAbstract>();
 
@@ -111,8 +110,7 @@ namespace Diese.Composition
             return result;
         }
 
-        public List<T> GetAllComponents<T>(bool includeItself = false)
-            where T : class, TAbstract
+        public override sealed List<T> GetAllComponents<T>(bool includeItself = false)
         {
             var result = new List<T>();
 
@@ -126,7 +124,7 @@ namespace Diese.Composition
             return result;
         }
 
-        public List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false)
+        public override sealed List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false)
         {
             List<TAbstract> result = GetAllComponents(type, includeItself);
 
@@ -136,8 +134,7 @@ namespace Diese.Composition
             return result;
         }
 
-        public List<T> GetAllComponentsInChildren<T>(bool includeItself = false)
-            where T : class, TAbstract
+        public override sealed List<T> GetAllComponentsInChildren<T>(bool includeItself = false)
         {
             List<T> result = GetAllComponents<T>(includeItself);
 
@@ -147,7 +144,7 @@ namespace Diese.Composition
             return result;
         }
 
-        public bool ContainsComponent(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponent(IComponent<TAbstract> component)
         {
             foreach (TInput child in this)
                 if (child.Equals(component))
@@ -156,7 +153,7 @@ namespace Diese.Composition
             return false;
         }
 
-        public bool ContainsComponentInChildren(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponentInChildren(IComponent<TAbstract> component)
         {
             if (ContainsComponent(component))
                 return true;
@@ -172,5 +169,9 @@ namespace Diese.Composition
         {
             return GetEnumerator();
         }
+
+        public abstract bool IsReadOnly { get; }
+        public abstract void Link(TAbstract child);
+        public abstract void Unlink(TAbstract child);
     }
 }
