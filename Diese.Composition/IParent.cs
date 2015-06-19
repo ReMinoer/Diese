@@ -1,7 +1,8 @@
 ﻿namespace Diese.Composition
 {
-    public interface IParent<TAbstract> : IComponent<TAbstract>
-        where TAbstract : IComponent<TAbstract>
+    public interface IParent<TAbstract, TParent> : IComponent<TAbstract, TParent>
+        where TAbstract : IComponent<TAbstract, TParent>
+        where TParent : IParent<TAbstract, TParent>
     {
         bool IsReadOnly { get; }
         void Link(TAbstract child);

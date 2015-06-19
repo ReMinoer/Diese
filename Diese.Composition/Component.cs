@@ -4,11 +4,10 @@ using Diese.Composition.Base;
 
 namespace Diese.Composition
 {
-    public class Component<TAbstract> : ComponentBase<TAbstract>
-        where TAbstract : class, IComponent<TAbstract>
+    public class Component<TAbstract, TParent> : ComponentBase<TAbstract, TParent>
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : IParent<TAbstract, TParent>
     {
-        public override string Name { get; set; }
-
         public override sealed TAbstract GetComponent(string name, bool includeItself = false)
         {
             if (includeItself && Name == name)
@@ -71,12 +70,12 @@ namespace Diese.Composition
             return GetAllComponents<T>(includeItself);
         }
 
-        public override sealed bool ContainsComponent(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponent(TAbstract component)
         {
             return false;
         }
 
-        public override sealed bool ContainsComponentInChildren(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponentInChildren(TAbstract component)
         {
             return false;
         }

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Diese.Composition.Base;
 
 namespace Diese.Composition
 {
-    public abstract class ComponentEnumerable<TAbstract, TInput> : ComponentBase<TAbstract>, IEnumerable<TInput>, IParent<TAbstract>
-        where TAbstract : class, IComponent<TAbstract>
+    public abstract class ComponentEnumerable<TAbstract, TParent, TInput> : ComponentBase<TAbstract, TParent>, IEnumerable<TInput>, IParent<TAbstract, TParent>
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : IParent<TAbstract, TParent>
         where TInput : TAbstract
     {
-        public override abstract string Name { get; set; }
         public abstract IEnumerator<TInput> GetEnumerator();
 
         public override sealed TAbstract GetComponent(string name, bool includeItself = false)
@@ -41,11 +42,7 @@ namespace Diese.Composition
             if (includeItself && this is T)
                 return this as T;
 
-            foreach (TInput component in this)
-                if (component is T)
-                    return component as T;
-
-            return null;
+            return this.OfType<T>().FirstOrDefault();
         }
 
         public override sealed TAbstract GetComponentInChildren(string name, bool includeItself = false)
@@ -117,9 +114,7 @@ namespace Diese.Composition
             if (includeItself && this is T)
                 result.Add(this as T);
 
-            foreach (TInput component in this)
-                if (component is T)
-                    result.Add(component as T);
+            result.AddRange(this.OfType<T>());
 
             return result;
         }
@@ -144,25 +139,14 @@ namespace Diese.Composition
             return result;
         }
 
-        public override sealed bool ContainsComponent(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponent(TAbstract component)
         {
-            foreach (TInput child in this)
-                if (child.Equals(component))
-                    return true;
-
-            return false;
+            return this.Any(child => child.Equals(component));
         }
 
-        public override sealed bool ContainsComponentInChildren(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponentInChildren(TAbstract component)
         {
-            if (ContainsComponent(component))
-                return true;
-
-            foreach (TInput child in this)
-                if (child.ContainsComponentInChildren(component))
-                    return true;
-
-            return false;
+            return ContainsComponent(component) || this.Any(child => child.ContainsComponentInChildren(component));
         }
 
         IEnumerator IEnumerable.GetEnumerator()

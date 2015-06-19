@@ -5,11 +5,11 @@ using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
-    public class Decorator<TAbstract, TComponent> : ComponentBase<TAbstract>, IDecorator<TAbstract, TComponent>
-        where TAbstract : class, IComponent<TAbstract>
+    public class Decorator<TAbstract, TParent, TComponent> : ComponentBase<TAbstract, TParent>, IDecorator<TAbstract, TParent, TComponent>
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
-        public override string Name { get; set; }
         public TComponent Component { get; set; }
 
         public override sealed TAbstract GetComponent(string name, bool includeItself = false)
@@ -115,12 +115,12 @@ namespace Diese.Composition
             return result;
         }
 
-        public override sealed bool ContainsComponent(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponent(TAbstract component)
         {
             return Component.Equals(component);
         }
 
-        public override sealed bool ContainsComponentInChildren(IComponent<TAbstract> component)
+        public override sealed bool ContainsComponentInChildren(TAbstract component)
         {
             if (ContainsComponent(component))
                 return true;
@@ -142,7 +142,7 @@ namespace Diese.Composition
                 throw new InvalidChildException("Component provided is not of type " + typeof(TComponent) + " !");
 
             Component = (TComponent)child;
-            Component.Parent = this;
+            Component.Parent = this as TParent;
         }
 
         public void Unlink(TAbstract child)

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Diese.Composition
 {
-    public class Composite<TAbstract> : ComponentEnumerable<TAbstract, TAbstract>, IComposite<TAbstract>
-        where TAbstract : class, IComponent<TAbstract>
+    public class Composite<TAbstract, TParent> : ComponentEnumerable<TAbstract, TParent, TAbstract>, IComposite<TAbstract, TParent>
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
     {
         protected readonly List<TAbstract> Components;
-        public override string Name { get; set; }
 
         public int Count
         {
@@ -26,8 +26,10 @@ namespace Diese.Composition
 
         public virtual void Add(TAbstract item)
         {
-            if (item.ContainsComponentInChildren(this))
-                throw new InvalidOperationException("Item have its parent in its children !");
+            if (Equals(item))
+                throw new InvalidOperationException("Cyclic composition detected ! Item can't be a children of itself.");
+            if (ContainsComponentAmongParents(item))
+                throw new InvalidOperationException("Cyclic composition detected ! Item can't be a children of this component because it is already one of its parents.");
 
             Components.Add(item);
         }
@@ -81,7 +83,7 @@ namespace Diese.Composition
         public override sealed void Link(TAbstract child)
         {
             Add(child);
-            child.Parent = this;
+            child.Parent = this as TParent;
         }
 
         public override sealed void Unlink(TAbstract child)

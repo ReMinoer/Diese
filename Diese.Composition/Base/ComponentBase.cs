@@ -3,17 +3,20 @@ using System.Collections.Generic;
 
 namespace Diese.Composition.Base
 {
-    public abstract class ComponentBase<TAbstract> : IComponent<TAbstract>
-        where TAbstract : class, IComponent<TAbstract>
+    public abstract class ComponentBase<TAbstract, TParent> : IComponent<TAbstract, TParent>
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : IParent<TAbstract, TParent>
     {
-        private IParent<TAbstract> _parent;
+        private TParent _parent;
 
-        public IParent<TAbstract> Parent
+        public string Name { get; set; }
+
+        public TParent Parent
         {
             get { return _parent; }
             set
             {
-                if (_parent == value)
+                if (_parent.Equals(value))
                     return;
 
                 _parent.Unlink(this as TAbstract);
@@ -51,7 +54,14 @@ namespace Diese.Composition.Base
             return parent ?? Parent.GetComponentAmongParents<T>();
         }
 
-        public abstract string Name { get; set; }
+        public bool ContainsComponentAmongParents(TAbstract component)
+        {
+            if (Parent == null)
+                return false;
+
+            return Parent.Equals(component) || Parent.ContainsComponentAmongParents(component);
+        }
+
         public abstract TAbstract GetComponent(string name, bool includeItself = false);
         public abstract TAbstract GetComponent(Type type, bool includeItself = false);
         public abstract T GetComponent<T>(bool includeItself = false) where T : class, TAbstract;
@@ -62,7 +72,7 @@ namespace Diese.Composition.Base
         public abstract List<T> GetAllComponents<T>(bool includeItself = false) where T : class, TAbstract;
         public abstract List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false);
         public abstract List<T> GetAllComponentsInChildren<T>(bool includeItself = false) where T : class, TAbstract;
-        public abstract bool ContainsComponent(IComponent<TAbstract> component);
-        public abstract bool ContainsComponentInChildren(IComponent<TAbstract> component);
+        public abstract bool ContainsComponent(TAbstract component);
+        public abstract bool ContainsComponentInChildren(TAbstract component);
     }
 }

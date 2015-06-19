@@ -4,13 +4,13 @@ using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
-    public class Synthesizer<TAbstract, TInput> : ComponentEnumerable<TAbstract, TInput>,
-        ISynthesizer<TAbstract, TInput>
-        where TAbstract : class, IComponent<TAbstract>
+    public class Synthesizer<TAbstract, TParent, TInput> : ComponentEnumerable<TAbstract, TParent, TInput>,
+        ISynthesizer<TAbstract, TParent, TInput>
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : IParent<TAbstract, TParent>
         where TInput : TAbstract
     {
         protected readonly TInput[] Components;
-        public override sealed string Name { get; set; }
 
         protected Synthesizer(int size)
         {

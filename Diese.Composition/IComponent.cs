@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace Diese.Composition
 {
-    public interface IComponent<TAbstract>
-        where TAbstract : IComponent<TAbstract>
+    public interface IComponent<TAbstract, TParent>
+        where TAbstract : IComponent<TAbstract, TParent>
+        where TParent : IParent<TAbstract, TParent>
     {
         string Name { get; }
-        IParent<TAbstract> Parent { get; set; }
+        TParent Parent { get; set; }
         TAbstract GetComponent(string name, bool includeItself = false);
         TAbstract GetComponent(Type type, bool includeItself = false);
         T GetComponent<T>(bool includeItself = false) where T : class, TAbstract;
@@ -21,7 +22,8 @@ namespace Diese.Composition
         List<T> GetAllComponents<T>(bool includeItself = false) where T : class, TAbstract;
         List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false);
         List<T> GetAllComponentsInChildren<T>(bool includeItself = false) where T : class, TAbstract;
-        bool ContainsComponent(IComponent<TAbstract> component);
-        bool ContainsComponentInChildren(IComponent<TAbstract> component);
+        bool ContainsComponent(TAbstract component);
+        bool ContainsComponentInChildren(TAbstract component);
+        bool ContainsComponentAmongParents(TAbstract component);
     }
 }
