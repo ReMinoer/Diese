@@ -23,7 +23,7 @@ namespace Diese.Composition.Base
             }
         }
 
-        public TAbstract GetComponentInParents(string name)
+        public TAbstract GetComponentAmongParents(string name)
         {
             if (Parent == null)
                 return null;
@@ -31,10 +31,10 @@ namespace Diese.Composition.Base
             if (Parent.Name == name)
                 return Parent as TAbstract;
 
-            return Parent.GetComponentInParents(name);
+            return Parent.GetComponentAmongParents(name);
         }
 
-        public TAbstract GetComponentInParents(Type type)
+        public TAbstract GetComponentAmongParents(Type type)
         {
             if (Parent == null)
                 return null;
@@ -42,13 +42,13 @@ namespace Diese.Composition.Base
             if (type.IsInstanceOfType(Parent))
                 return Parent as TAbstract;
 
-            return Parent.GetComponentInParents(type);
+            return Parent.GetComponentAmongParents(type);
         }
 
-        public T GetComponentInParents<T>() where T : class, TAbstract
+        public T GetComponentAmongParents<T>() where T : class, TAbstract
         {
             var parent = Parent as T;
-            return parent ?? Parent.GetComponentInParents<T>();
+            return parent ?? Parent.GetComponentAmongParents<T>();
         }
 
         public abstract string Name { get; set; }

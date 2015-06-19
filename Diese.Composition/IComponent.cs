@@ -14,9 +14,9 @@ namespace Diese.Composition
         TAbstract GetComponentInChildren(string name, bool includeItself = false);
         TAbstract GetComponentInChildren(Type type, bool includeItself = false);
         T GetComponentInChildren<T>(bool includeItself = false) where T : class, TAbstract;
-        TAbstract GetComponentInParents(string name);
-        TAbstract GetComponentInParents(Type type);
-        T GetComponentInParents<T>() where T : class, TAbstract;
+        TAbstract GetComponentAmongParents(string name);
+        TAbstract GetComponentAmongParents(Type type);
+        T GetComponentAmongParents<T>() where T : class, TAbstract;
         List<TAbstract> GetAllComponents(Type type, bool includeItself = false);
         List<T> GetAllComponents<T>(bool includeItself = false) where T : class, TAbstract;
         List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false);
