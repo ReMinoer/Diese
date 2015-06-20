@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Diese.Composition
 {
-    public class Composite<TAbstract, TParent> : ComponentEnumerable<TAbstract, TParent, TAbstract>, IComposite<TAbstract, TParent>
+    public class Composite<TAbstract, TParent>
+        : ComponentEnumerable<TAbstract, TParent, TAbstract>, IComposite<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : class, IParent<TAbstract, TParent>
     {
@@ -27,9 +28,10 @@ namespace Diese.Composition
         public virtual void Add(TAbstract item)
         {
             if (Equals(item))
-                throw new InvalidOperationException("Cyclic composition detected ! Item can't be a children of itself.");
+                throw new InvalidOperationException("Item can't be a child of itself.");
             if (ContainsComponentAmongParents(item))
-                throw new InvalidOperationException("Cyclic composition detected ! Item can't be a children of this component because it is already one of its parents.");
+                throw new InvalidOperationException(
+                    "Item can't be a child of this because it is already among its parents.");
 
             Components.Add(item);
         }

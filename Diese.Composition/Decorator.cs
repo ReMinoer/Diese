@@ -5,12 +5,18 @@ using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
-    public class Decorator<TAbstract, TParent, TComponent> : ComponentBase<TAbstract, TParent>, IDecorator<TAbstract, TParent, TComponent>
+    public class Decorator<TAbstract, TParent, TComponent> : ComponentBase<TAbstract, TParent>,
+        IDecorator<TAbstract, TParent, TComponent>
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : class, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
         public TComponent Component { get; set; }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
 
         public override sealed TAbstract GetComponent(string name, bool includeItself = false)
         {
@@ -126,11 +132,6 @@ namespace Diese.Composition
                 return true;
 
             return Component.ContainsComponentInChildren(component);
-        }
-
-        public bool IsReadOnly
-        {
-            get { return false; }
         }
 
         public void Link(TAbstract child)

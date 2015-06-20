@@ -3,7 +3,8 @@ using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
-    public class Container<TAbstract, TParent> : ComponentEnumerable<TAbstract, TParent, TAbstract>, IContainer<TAbstract, TParent>
+    public class Container<TAbstract, TParent> : ComponentEnumerable<TAbstract, TParent, TAbstract>,
+        IContainer<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : IParent<TAbstract, TParent>
     {

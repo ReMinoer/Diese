@@ -12,6 +12,11 @@ namespace Diese.Composition
     {
         protected readonly TInput[] Components;
 
+        public override sealed bool IsReadOnly
+        {
+            get { return true; }
+        }
+
         protected Synthesizer(int size)
         {
             Components = new TInput[size];
@@ -20,11 +25,6 @@ namespace Diese.Composition
         public override IEnumerator<TInput> GetEnumerator()
         {
             return Components.Cast<TInput>().GetEnumerator();
-        }
-
-        public override sealed bool IsReadOnly
-        {
-            get { return true; }
         }
 
         public override sealed void Link(TAbstract child)

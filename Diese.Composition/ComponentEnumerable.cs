@@ -6,12 +6,16 @@ using Diese.Composition.Base;
 
 namespace Diese.Composition
 {
-    public abstract class ComponentEnumerable<TAbstract, TParent, TInput> : ComponentBase<TAbstract, TParent>, IEnumerable<TInput>, IParent<TAbstract, TParent>
+    public abstract class ComponentEnumerable<TAbstract, TParent, TInput> : ComponentBase<TAbstract, TParent>,
+        IEnumerable<TInput>, IParent<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : IParent<TAbstract, TParent>
         where TInput : TAbstract
     {
+        public abstract bool IsReadOnly { get; }
         public abstract IEnumerator<TInput> GetEnumerator();
+        public abstract void Link(TAbstract child);
+        public abstract void Unlink(TAbstract child);
 
         public override sealed TAbstract GetComponent(string name, bool includeItself = false)
         {
@@ -153,9 +157,5 @@ namespace Diese.Composition
         {
             return GetEnumerator();
         }
-
-        public abstract bool IsReadOnly { get; }
-        public abstract void Link(TAbstract child);
-        public abstract void Unlink(TAbstract child);
     }
 }
