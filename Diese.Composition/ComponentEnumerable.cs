@@ -143,14 +143,14 @@ namespace Diese.Composition
             return result;
         }
 
-        public override sealed bool ContainsComponent(TAbstract component)
+        public override sealed bool Contains(TAbstract component)
         {
             return this.Any(child => child.Equals(component));
         }
 
-        public override sealed bool ContainsComponentInChildren(TAbstract component)
+        public override sealed bool ContainsInChildren(TAbstract component)
         {
-            return ContainsComponent(component) || this.Any(child => child.ContainsComponentInChildren(component));
+            return Contains(component) || this.Any(child => child.ContainsInChildren(component));
         }
 
         IEnumerator IEnumerable.GetEnumerator()

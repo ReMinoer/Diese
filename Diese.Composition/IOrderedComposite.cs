@@ -2,8 +2,7 @@
 
 namespace Diese.Composition
 {
-    // ReSharper disable once PossibleInterfaceMemberAmbiguity
-    public interface IComposite<TAbstract, TParent> : ICollection<TAbstract>, IParent<TAbstract, TParent>
+    public interface IOrderedComposite<TAbstract, TParent> : IComposite<TAbstract, TParent>, IList<TAbstract>
         where TAbstract : IComponent<TAbstract, TParent>
         where TParent : IParent<TAbstract, TParent>
     {

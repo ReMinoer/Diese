@@ -22,8 +22,8 @@ namespace Diese.Composition
         List<T> GetAllComponents<T>(bool includeItself = false) where T : class, TAbstract;
         List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false);
         List<T> GetAllComponentsInChildren<T>(bool includeItself = false) where T : class, TAbstract;
-        bool ContainsComponent(TAbstract component);
-        bool ContainsComponentInChildren(TAbstract component);
-        bool ContainsComponentAmongParents(TAbstract component);
+        bool Contains(TAbstract component);
+        bool ContainsInChildren(TAbstract component);
+        bool ContainsAmongParents(TAbstract component);
     }
 }

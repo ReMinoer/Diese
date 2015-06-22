@@ -70,12 +70,12 @@ namespace Diese.Composition
             return GetAllComponents<T>(includeItself);
         }
 
-        public override sealed bool ContainsComponent(TAbstract component)
+        public override sealed bool Contains(TAbstract component)
         {
             return false;
         }
 
-        public override sealed bool ContainsComponentInChildren(TAbstract component)
+        public override sealed bool ContainsInChildren(TAbstract component)
         {
             return false;
         }

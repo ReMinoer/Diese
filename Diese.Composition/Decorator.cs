@@ -121,17 +121,17 @@ namespace Diese.Composition
             return result;
         }
 
-        public override sealed bool ContainsComponent(TAbstract component)
+        public override sealed bool Contains(TAbstract component)
         {
             return Component.Equals(component);
         }
 
-        public override sealed bool ContainsComponentInChildren(TAbstract component)
+        public override sealed bool ContainsInChildren(TAbstract component)
         {
-            if (ContainsComponent(component))
+            if (Contains(component))
                 return true;
 
-            return Component.ContainsComponentInChildren(component);
+            return Component.ContainsInChildren(component);
         }
 
         public void Link(TAbstract child)

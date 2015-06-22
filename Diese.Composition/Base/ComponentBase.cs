@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Diese.Composition.Exceptions;
 
 namespace Diese.Composition.Base
 {
@@ -15,13 +16,24 @@ namespace Diese.Composition.Base
             get { return _parent; }
             set
             {
-                if (_parent.Equals(value))
-                    return;
+                if (_parent != null && !_parent.Equals(value))
+                {
+                    if (_parent.IsReadOnly)
+                        throw new ReadOnlyParentException();
 
-                _parent.Unlink(this as TAbstract);
+                    _parent.Unlink(this as TAbstract);
+                }
 
-                _parent = value;
-                _parent.Link(this as TAbstract);
+                if (_parent == null || !_parent.Equals(value))
+                    _parent = value;
+
+                if (_parent != null && !_parent.Contains(this as TAbstract))
+                {
+                    if (_parent.IsReadOnly)
+                        throw new ReadOnlyParentException();
+
+                    _parent.Link(this as TAbstract);
+                }
             }
         }
 
@@ -35,8 +47,8 @@ namespace Diese.Composition.Base
         public abstract List<T> GetAllComponents<T>(bool includeItself = false) where T : class, TAbstract;
         public abstract List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false);
         public abstract List<T> GetAllComponentsInChildren<T>(bool includeItself = false) where T : class, TAbstract;
-        public abstract bool ContainsComponent(TAbstract component);
-        public abstract bool ContainsComponentInChildren(TAbstract component);
+        public abstract bool Contains(TAbstract component);
+        public abstract bool ContainsInChildren(TAbstract component);
 
         public TAbstract GetComponentAmongParents(string name)
         {
@@ -66,12 +78,12 @@ namespace Diese.Composition.Base
             return parent ?? Parent.GetComponentAmongParents<T>();
         }
 
-        public bool ContainsComponentAmongParents(TAbstract component)
+        public bool ContainsAmongParents(TAbstract component)
         {
             if (Parent == null)
                 return false;
 
-            return Parent.Equals(component) || Parent.ContainsComponentAmongParents(component);
+            return Parent.Equals(component) || Parent.ContainsAmongParents(component);
         }
     }
 }

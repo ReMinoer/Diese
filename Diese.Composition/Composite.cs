@@ -29,21 +29,17 @@ namespace Diese.Composition
         {
             if (Equals(item))
                 throw new InvalidOperationException("Item can't be a child of itself.");
-            if (ContainsComponentAmongParents(item))
+            if (ContainsAmongParents(item))
                 throw new InvalidOperationException(
                     "Item can't be a child of this because it is already among its parents.");
 
+            item.Parent = this as TParent;
             Components.Add(item);
         }
 
         public virtual void Clear()
         {
             Components.Clear();
-        }
-
-        public bool Contains(TAbstract item)
-        {
-            return Components.Contains(item);
         }
 
         public void CopyTo(TAbstract[] array, int arrayIndex)
@@ -53,7 +49,12 @@ namespace Diese.Composition
 
         public virtual bool Remove(TAbstract item)
         {
-            return Components.Remove(item);
+            bool valid = Components.Remove(item);
+
+            if (valid)
+                item.Parent = null;
+
+            return valid;
         }
 
         public override IEnumerator<TAbstract> GetEnumerator()
@@ -61,37 +62,14 @@ namespace Diese.Composition
             return Components.GetEnumerator();
         }
 
-        public int IndexOf(TAbstract item)
-        {
-            return Components.IndexOf(item);
-        }
-
-        public virtual void Insert(int index, TAbstract item)
-        {
-            Components.Insert(index, item);
-        }
-
-        public virtual void RemoveAt(int index)
-        {
-            Components.RemoveAt(index);
-        }
-
-        public virtual TAbstract this[int index]
-        {
-            get { return Components[index]; }
-            set { Components[index] = value; }
-        }
-
         public override sealed void Link(TAbstract child)
         {
             Add(child);
-            child.Parent = this as TParent;
         }
 
         public override sealed void Unlink(TAbstract child)
         {
             Remove(child);
-            child.Parent = null;
         }
     }
 }
