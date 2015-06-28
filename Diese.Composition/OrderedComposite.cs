@@ -2,7 +2,8 @@
 
 namespace Diese.Composition
 {
-    public class OrderedComposite<TAbstract, TParent> : Composite<TAbstract, TParent>, IOrderedComposite<TAbstract, TParent>
+    public class OrderedComposite<TAbstract, TParent> : Composite<TAbstract, TParent>,
+        IOrderedComposite<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : class, IParent<TAbstract, TParent>
     {
