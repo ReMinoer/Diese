@@ -7,7 +7,7 @@ using Diese.Composition.Base;
 namespace Diese.Composition
 {
     public abstract class ComponentEnumerable<TAbstract, TParent, TInput> : ComponentBase<TAbstract, TParent>,
-        IEnumerable<TInput>, IParent<TAbstract, TParent>
+        IComponentEnumerable<TAbstract, TParent, TInput>
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : IParent<TAbstract, TParent>
         where TInput : TAbstract

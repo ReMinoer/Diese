@@ -41,6 +41,7 @@
     <Compile Include="ComponentEnumerable.cs" />
     <Compile Include="Exceptions\InvalidChildException.cs" />
     <Compile Include="Exceptions\ReadOnlyParentException.cs" />
+    <Compile Include="IComponentEnumerable.cs" />
     <Compile Include="IComposite.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="IContainer.cs" />
