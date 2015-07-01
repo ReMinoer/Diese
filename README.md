@@ -3,6 +3,7 @@ Diese
 
 Personal library which regroup common functionalities for C#.
 
+* Diese.Injection : implementation of dependency injection system
 * Diese.Composition : base interface for composition-oriented programming
 * Diese.Modelization : describe objects with smaller data
 * Diese.Serialization : simplify access to serialization
