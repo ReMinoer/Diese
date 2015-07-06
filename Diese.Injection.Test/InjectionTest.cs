@@ -7,19 +7,19 @@ namespace Diese.Injection.Test
     public class InjectionTest
     {
         private IDependencyInjector _injector;
-        private IDependencyContainer _container;
+        private IDependencyRegistry _registry;
 
         [SetUp]
         public void SetUp()
         {
-            //_container = new DependencyContainer();
-            //_injector = new DependencyInjector(_container);
+            _registry = new DependencyRegistry();
+            _injector = new DependencyInjector(_registry);
         }
 
         [Test]
         public void RegisterType()
         {
-            _container.Register<Player>();
+            _registry.Register<Player>();
 
             var player = _injector.Resolve<Player>();
             var otherPlayer = _injector.Resolve<Player>();
@@ -31,7 +31,7 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterImplementationA()
         {
-            _container.Register<ICharacter, Player>();
+            _registry.Register<ICharacter, Player>();
 
             var character = _injector.Resolve<ICharacter>();
 
@@ -41,7 +41,7 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterImplementationB()
         {
-            _container.Register<ICharacter>(typeof(Player));
+            _registry.Register<ICharacter>(typeof(Player));
 
             object character = _injector.Resolve(typeof(ICharacter));
 
@@ -51,7 +51,7 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterImplementationC()
         {
-            _container.Register(typeof(ICharacter), typeof(Player));
+            _registry.Register(typeof(ICharacter), typeof(Player));
 
             object character = _injector.Resolve(typeof(ICharacter));
 
@@ -62,7 +62,7 @@ namespace Diese.Injection.Test
         public void RegisterInstance()
         {
             var alpha = new Character();
-            _container.RegisterInstance<ICharacter>(alpha);
+            _registry.RegisterInstance<ICharacter>(alpha);
 
             var resolvedAlpha = _injector.Resolve<ICharacter>();
 
@@ -72,7 +72,7 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterSingleton()
         {
-            _container.Register<Game>(Subsistence.Singleton);
+            _registry.Register<Game>(Subsistence.Singleton);
 
             var game = _injector.Resolve<Game>();
             var otherGame = _injector.Resolve<Game>();
@@ -83,13 +83,13 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterKeyed()
         {
-            _container.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.One);
-            _container.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.Two);
+            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.One);
+            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.Two);
 
-            var playerOne = _injector.ResolveKeyed<IPlayer>(PlayerId.One);
-            var otherPlayerOne = _injector.ResolveKeyed<IPlayer>(PlayerId.One);
-            var playerTwo = _injector.ResolveKeyed<IPlayer>(PlayerId.Two);
-            var otherPlayerTwo = _injector.ResolveKeyed<IPlayer>(PlayerId.Two);
+            var playerOne = _injector.Resolve<IPlayer>(PlayerId.One);
+            var otherPlayerOne = _injector.Resolve<IPlayer>(PlayerId.One);
+            var playerTwo = _injector.Resolve<IPlayer>(PlayerId.Two);
+            var otherPlayerTwo = _injector.Resolve<IPlayer>(PlayerId.Two);
 
             Assert.AreEqual(playerOne, otherPlayerOne);
             Assert.AreEqual(playerTwo, otherPlayerTwo);
