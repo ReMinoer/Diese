@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Debug", "Diese.Debug\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Lua", "Diese.Lua\Diese.Lua.csproj", "{E2707575-12C2-4CE6-B8E4-E7EFD8D4E301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Lua.Test", "Diese.Lua.Test\Diese.Lua.Test.csproj", "{7AC67B80-2D3D-4872-A8A7-35416E8344FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Lua.Test", "Tests\Diese.Lua.Test\Diese.Lua.Test.csproj", "{7AC67B80-2D3D-4872-A8A7-35416E8344FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.UnitTest", "Diese.UnitTest\Diese.UnitTest.csproj", "{496DD102-2319-4DA5-88AA-53D1ACD07ABF}"
 EndProject
@@ -42,7 +42,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese", "Diese\Diese.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Injection", "Diese.Injection\Diese.Injection.csproj", "{6ADD41DC-F168-43C4-AD4E-F6B8218D8F7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Injection.Test", "Diese.Injection.Test\Diese.Injection.Test.csproj", "{7714AD20-9140-4654-B96A-8399BD065FEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Injection.Test", "Tests\Diese.Injection.Test\Diese.Injection.Test.csproj", "{7714AD20-9140-4654-B96A-8399BD065FEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
