@@ -6,8 +6,5 @@
 
     public class Character : ICharacter
     {
-        public Character()
-        {
-        }
     }
 }
