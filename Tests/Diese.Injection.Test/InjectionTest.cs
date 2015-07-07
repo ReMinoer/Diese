@@ -13,7 +13,7 @@ namespace Diese.Injection.Test
         public void SetUp()
         {
             _registry = new DependencyRegistry();
-            _injector = new DependencyInjector(_registry);
+            _injector = new RegistryInjector(_registry);
         }
 
         [Test]
