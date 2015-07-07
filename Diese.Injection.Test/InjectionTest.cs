@@ -99,5 +99,19 @@ namespace Diese.Injection.Test
             Assert.AreNotEqual(playerOne, otherPlayerTwo);
             Assert.AreNotEqual(playerTwo, otherPlayerOne);
         }
+
+        [Test]
+        public void RegisterWithDependencies()
+        {
+            _registry.Register<ILevel, Level>();
+            _registry.Register<IPlayer, Player>();
+            _registry.Register<Game>(Subsistence.Singleton);
+
+            var level = _injector.Resolve<ILevel>();
+
+            Assert.IsNotNull(level);
+            Assert.IsNotNull(level.Game);
+            Assert.IsNotNull(level.Player);
+        }
     }
 }

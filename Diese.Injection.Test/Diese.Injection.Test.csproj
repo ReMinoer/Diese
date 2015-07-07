@@ -43,6 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\Character.cs" />
     <Compile Include="Samples\Game.cs" />
+    <Compile Include="Samples\Level.cs" />
     <Compile Include="Samples\Player.cs" />
   </ItemGroup>
   <ItemGroup>
