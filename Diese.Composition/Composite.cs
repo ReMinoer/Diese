@@ -27,6 +27,8 @@ namespace Diese.Composition
 
         public virtual void Add(TAbstract item)
         {
+            if (item == null)
+                throw new NullReferenceException("Component can't be null !");
             if (Equals(item))
                 throw new InvalidOperationException("Item can't be a child of itself.");
             if (ContainsAmongParents(item))
