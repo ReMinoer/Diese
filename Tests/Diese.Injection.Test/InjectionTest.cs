@@ -113,5 +113,31 @@ namespace Diese.Injection.Test
             Assert.IsNotNull(level.Game);
             Assert.IsNotNull(level.Player);
         }
+
+        [Test]
+        public void InjectPropertyAndField()
+        {
+            _registry.Register<Level>();
+            _registry.Register<IPlayer, Player>();
+            _registry.Register<Game>(Subsistence.Singleton);
+
+            var level = _injector.Resolve<Level>();
+
+            Assert.IsNotNull(level);
+            Assert.IsNotNull(level.Game);
+            Assert.IsNotNull(level.Player);
+            Assert.IsNull(level.CharacterA);
+            Assert.IsNull(level.CharacterB);
+
+            _registry.Register<ICharacter, Character>();
+
+            var otherLevel = _injector.Resolve<Level>();
+
+            Assert.IsNotNull(otherLevel);
+            Assert.IsNotNull(otherLevel.Game);
+            Assert.IsNotNull(otherLevel.Player);
+            Assert.IsNotNull(otherLevel.CharacterA);
+            Assert.IsNotNull(otherLevel.CharacterB);
+        }
     }
 }
