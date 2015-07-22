@@ -128,10 +128,7 @@ namespace Diese.Composition
 
         public override sealed bool ContainsInChildren(TAbstract component)
         {
-            if (Contains(component))
-                return true;
-
-            return Component.ContainsInChildren(component);
+            return Contains(component) || Component.ContainsInChildren(component);
         }
 
         public void Link(TAbstract child)

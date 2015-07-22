@@ -22,9 +22,8 @@ namespace Diese.Composition
             if (Name == name)
                 return this as TAbstract;
 
-            foreach (TInput component in this)
-                if (component.Name == name)
-                    return component;
+            foreach (TInput component in this.Where(component => component.Name == name))
+                return component;
 
             return null;
         }
@@ -34,9 +33,8 @@ namespace Diese.Composition
             if (includeItself && type.IsInstanceOfType(this))
                 return this as TAbstract;
 
-            foreach (TInput component in this)
-                if (type.IsInstanceOfType(component))
-                    return component;
+            foreach (TInput component in this.Where(component => type.IsInstanceOfType(component)))
+                return component;
 
             return null;
         }
