@@ -7,6 +7,12 @@ namespace Diese.Composition
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : class, IParent<TAbstract, TParent>
     {
+        public virtual TAbstract this[int index]
+        {
+            get { return Components[index]; }
+            set { Components[index] = value; }
+        }
+
         public int IndexOf(TAbstract item)
         {
             return Components.IndexOf(item);
@@ -28,12 +34,6 @@ namespace Diese.Composition
         {
             Components[index].Parent = null;
             Components.RemoveAt(index);
-        }
-
-        public virtual TAbstract this[int index]
-        {
-            get { return Components[index]; }
-            set { Components[index] = value; }
         }
     }
 }

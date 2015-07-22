@@ -27,7 +27,7 @@ namespace Diese.UnitTest.Test
             Assert.IsTrue(eventTest.Args.Number == 10);
         }
 
-        private class EventArgsForTest : EventArgs
+        private sealed class EventArgsForTest : EventArgs
         {
             public string Text { get; private set; }
             public int Number { get; private set; }

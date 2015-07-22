@@ -9,7 +9,7 @@ namespace Diese.Composition
     public abstract class ComponentEnumerable<TAbstract, TParent, TInput> : ComponentBase<TAbstract, TParent>,
         IComponentEnumerable<TAbstract, TParent, TInput>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : IParent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
         where TInput : TAbstract
     {
         public abstract bool IsReadOnly { get; }

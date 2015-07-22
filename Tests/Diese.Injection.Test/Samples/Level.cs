@@ -8,14 +8,14 @@
 
     public class Level : ILevel
     {
+        [Injectable]
+        public ICharacter CharacterB;
+
         public Game Game { get; private set; }
         public IPlayer Player { get; private set; }
 
         [Injectable]
         public ICharacter CharacterA { get; set; }
-
-        [Injectable]
-        public ICharacter CharacterB;
 
         public Level(Game game, IPlayer player)
         {

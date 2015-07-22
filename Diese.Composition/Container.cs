@@ -6,7 +6,7 @@ namespace Diese.Composition
     public abstract class Container<TAbstract, TParent> : ComponentEnumerable<TAbstract, TParent, TAbstract>,
         IContainer<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : IParent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
     {
         protected readonly TAbstract[] Components;
 

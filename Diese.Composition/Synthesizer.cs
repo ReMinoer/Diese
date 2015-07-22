@@ -7,7 +7,7 @@ namespace Diese.Composition
     public class Synthesizer<TAbstract, TParent, TInput> : ComponentEnumerable<TAbstract, TParent, TInput>,
         ISynthesizer<TAbstract, TParent, TInput>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : IParent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
         where TInput : TAbstract
     {
         protected readonly TInput[] Components;

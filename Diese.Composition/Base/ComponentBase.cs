@@ -6,7 +6,7 @@ namespace Diese.Composition.Base
 {
     public abstract class ComponentBase<TAbstract, TParent> : IComponent<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : IParent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
     {
         private TParent _parent;
         public string Name { get; set; }

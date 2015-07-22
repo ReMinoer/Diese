@@ -6,7 +6,7 @@ namespace Diese.Composition
 {
     public class Component<TAbstract, TParent> : ComponentBase<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : IParent<TAbstract, TParent>
+        where TParent : class, IParent<TAbstract, TParent>
     {
         public override sealed TAbstract GetComponent(string name, bool includeItself = false)
         {
