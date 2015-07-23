@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Injection.Test", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Graph", "Diese.Graph\Diese.Graph.csproj", "{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Test", "Tests\Diese.Test\Diese.Test.csproj", "{1CED2D85-0C51-4079-993A-A191987295C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,10 @@ Global
 		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CED2D85-0C51-4079-993A-A191987295C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CED2D85-0C51-4079-993A-A191987295C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CED2D85-0C51-4079-993A-A191987295C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CED2D85-0C51-4079-993A-A191987295C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{7AC67B80-2D3D-4872-A8A7-35416E8344FF} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
 		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
 		{7714AD20-9140-4654-B96A-8399BD065FEC} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
+		{1CED2D85-0C51-4079-993A-A191987295C4} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Diese.Serialization\Diese.Serialization.csproj
