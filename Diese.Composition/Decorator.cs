@@ -1,99 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Diese.Composition.Base;
 using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
-    public class Decorator<TAbstract, TParent, TComponent> : ComponentBase<TAbstract, TParent>,
-        IDecorator<TAbstract, TParent, TComponent>
+    public class Decorator<TAbstract, TParent, TComponent> : ComponentBase<TAbstract, TParent>, IDecorator<TAbstract, TParent, TComponent>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : class, IParent<TAbstract, TParent>
+        where TParent : class, TAbstract, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
-        public TComponent Component { get; set; }
+        private TComponent _component;
 
-        public bool IsReadOnly
+        public TComponent Component
         {
-            get { return false; }
+            get { return _component; }
+            set
+            {
+                if (_component != null)
+                    throw new InvalidChildException("You must unlink a decorator before assign a new component !");
+
+                if (value != null)
+                {
+                    if (Equals(value))
+                        throw new InvalidOperationException("Item can't be a child of itself.");
+                    if (ContainsAmongParents(value))
+                        throw new InvalidOperationException("Item can't be a child of this because it already exist among its parents.");
+                }
+
+                _component = value;
+
+                if (value != null)
+                    value.Parent = this as TParent;
+            }
         }
 
-        public override sealed TAbstract GetComponent(string name, bool includeItself = false)
+        public override sealed TAbstract GetComponent(string name)
         {
-            if (includeItself && Name == name)
-                return this as TAbstract;
-
-            if (includeItself && Component.Name == name)
-                return Component;
-
-            return null;
+            return Component != null && Component.Name == name ? Component : null;
         }
 
-        public override sealed TAbstract GetComponent(Type type, bool includeItself = false)
+        public override sealed TAbstract GetComponent(Type type)
         {
-            if (includeItself && type.IsInstanceOfType(this))
-                return this as TAbstract;
-
-            if (includeItself && type.IsInstanceOfType(Component))
-                return Component;
-
-            return null;
+            return Component != null && type.IsInstanceOfType(Component) ? Component : null;
         }
 
-        public override sealed T GetComponent<T>(bool includeItself = false)
+        public override sealed T GetComponent<T>()
         {
-            if (includeItself && this is T)
-                return this as T;
-
             return Component as T;
         }
 
-        public override sealed TAbstract GetComponentInChildren(string name, bool includeItself = false)
+        public override sealed TAbstract GetComponentInChildren(string name)
         {
-            TAbstract component = GetComponent(name, includeItself);
+            TAbstract component = GetComponent(name);
             if (component != null)
                 return component;
 
             return Component != null ? Component.GetComponentInChildren(name) : null;
         }
 
-        public override sealed TAbstract GetComponentInChildren(Type type, bool includeItself = false)
+        public override sealed TAbstract GetComponentInChildren(Type type)
         {
-            TAbstract component = GetComponent(type, includeItself);
+            TAbstract component = GetComponent(type);
             if (component != null)
                 return component;
 
             return Component != null ? Component.GetComponentInChildren(type) : null;
         }
 
-        public override sealed T GetComponentInChildren<T>(bool includeItself = false)
+        public override sealed T GetComponentInChildren<T>()
         {
-            var component = GetComponent<T>(includeItself);
+            var component = GetComponent<T>();
             if (component != null)
                 return component;
 
             return Component != null ? Component.GetComponentInChildren<T>() : null;
         }
 
-        public override sealed List<TAbstract> GetAllComponents(Type type, bool includeItself = false)
+        public override sealed IEnumerable<TAbstract> GetAllComponents(Type type)
         {
             var result = new List<TAbstract>();
 
-            if (includeItself && type.IsInstanceOfType(this))
-                result.Add(this as TAbstract);
-
-            if (type.IsInstanceOfType(Component))
+            if (Component != null && type.IsInstanceOfType(Component))
                 result.Add(Component);
 
             return result;
         }
 
-        public override sealed List<T> GetAllComponents<T>(bool includeItself = false)
+        public override sealed IEnumerable<T> GetAllComponents<T>()
         {
             var result = new List<T>();
-
-            if (includeItself && this is T)
-                result.Add(this as T);
 
             if (Component is T)
                 result.Add(Component as T);
@@ -101,9 +98,9 @@ namespace Diese.Composition
             return result;
         }
 
-        public override sealed List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false)
+        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
         {
-            List<TAbstract> result = GetAllComponents(type, includeItself);
+            List<TAbstract> result = GetAllComponents(type).ToList();
 
             if (Component != null)
                 result.AddRange(Component.GetAllComponentsInChildren(type));
@@ -111,9 +108,9 @@ namespace Diese.Composition
             return result;
         }
 
-        public override sealed List<T> GetAllComponentsInChildren<T>(bool includeItself = false)
+        public override sealed IEnumerable<T> GetAllComponentsInChildren<T>()
         {
-            List<T> result = GetAllComponents<T>(includeItself);
+            List<T> result = GetAllComponents<T>().ToList();
 
             if (Component != null)
                 result.AddRange(Component.GetAllComponentsInChildren<T>());
@@ -123,7 +120,7 @@ namespace Diese.Composition
 
         public override sealed bool Contains(TAbstract component)
         {
-            return Component.Equals(component);
+            return Component != null && Component.Equals(component);
         }
 
         public override sealed bool ContainsInChildren(TAbstract component)
@@ -131,25 +128,28 @@ namespace Diese.Composition
             return Contains(component) || Component.ContainsInChildren(component);
         }
 
-        public void Link(TAbstract child)
+        public TComponent Unlink()
         {
-            if (Component != null)
-                Component.Parent = null;
-
-            if (!(child is TComponent))
-                throw new InvalidChildException("Component provided is not of type " + typeof(TComponent) + " !");
-
-            Component = (TComponent)child;
-            Component.Parent = this as TParent;
+            TComponent component = Component;
+            Component = null;
+            return component;
         }
 
-        public void Unlink(TAbstract child)
+        void IParent<TAbstract, TParent>.Link(TAbstract child)
+        {
+            var component = child as TComponent;
+            if (component == null)
+                throw new InvalidChildException("Component provided must be of type " + typeof(TComponent) + " !");
+
+            Component = component;
+        }
+
+        void IParent<TAbstract, TParent>.Unlink(TAbstract child)
         {
             if (Component != child)
-                throw new InvalidChildException("Component provided is not a child of this parent !");
+                throw new InvalidChildException("Component provided is not linked !");
 
             Component = null;
-            child.Parent = null;
         }
     }
 }

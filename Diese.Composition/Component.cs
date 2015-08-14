@@ -1,73 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Diese.Composition.Base;
 
 namespace Diese.Composition
 {
     public class Component<TAbstract, TParent> : ComponentBase<TAbstract, TParent>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : class, IParent<TAbstract, TParent>
+        where TParent : class, TAbstract, IParent<TAbstract, TParent>
     {
-        public override sealed TAbstract GetComponent(string name, bool includeItself = false)
+        public override sealed TAbstract GetComponent(string name)
         {
-            if (includeItself && Name == name)
-                return this as TAbstract;
             return null;
         }
 
-        public override sealed TAbstract GetComponent(Type type, bool includeItself = false)
+        public override sealed TAbstract GetComponent(Type type)
         {
-            if (includeItself && type.IsInstanceOfType(this))
-                return this as TAbstract;
             return null;
         }
 
-        public override sealed T GetComponent<T>(bool includeItself = false)
+        public override sealed T GetComponent<T>()
         {
-            if (includeItself && this is T)
-                return this as T;
             return null;
         }
 
-        public override sealed TAbstract GetComponentInChildren(string name, bool includeItself = false)
+        public override sealed TAbstract GetComponentInChildren(string name)
         {
-            return GetComponent(name, includeItself);
+            return null;
         }
 
-        public override sealed TAbstract GetComponentInChildren(Type type, bool includeItself = false)
+        public override sealed TAbstract GetComponentInChildren(Type type)
         {
-            return GetComponent(type, includeItself);
+            return null;
         }
 
-        public override sealed T GetComponentInChildren<T>(bool includeItself = false)
+        public override sealed T GetComponentInChildren<T>()
         {
-            return GetComponent<T>(includeItself);
+            return null;
         }
 
-        public override sealed List<TAbstract> GetAllComponents(Type type, bool includeItself = false)
+        public override sealed IEnumerable<TAbstract> GetAllComponents(Type type)
         {
-            if (includeItself && type.IsInstanceOfType(this))
-                return new List<TAbstract> {this as TAbstract};
-
-            return new List<TAbstract>();
+            return Enumerable.Empty<TAbstract>();
         }
 
-        public override sealed List<T> GetAllComponents<T>(bool includeItself = false)
+        public override sealed IEnumerable<T> GetAllComponents<T>()
         {
-            if (includeItself && this is T)
-                return new List<T> {this as T};
-
-            return new List<T>();
+            return Enumerable.Empty<T>();
         }
 
-        public override sealed List<TAbstract> GetAllComponentsInChildren(Type type, bool includeItself = false)
+        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
         {
-            return GetAllComponents(type, includeItself);
+            return Enumerable.Empty<TAbstract>();
         }
 
-        public override sealed List<T> GetAllComponentsInChildren<T>(bool includeItself = false)
+        public override sealed IEnumerable<T> GetAllComponentsInChildren<T>()
         {
-            return GetAllComponents<T>(includeItself);
+            return Enumerable.Empty<T>();
         }
 
         public override sealed bool Contains(TAbstract component)

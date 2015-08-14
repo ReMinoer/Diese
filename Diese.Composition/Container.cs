@@ -1,36 +1,33 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Diese.Composition.Base;
 using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
-    public abstract class Container<TAbstract, TParent> : ComponentEnumerable<TAbstract, TParent, TAbstract>,
-        IContainer<TAbstract, TParent>
+    public class Container<TAbstract, TParent, TComponent> : ComponentEnumerable<TAbstract, TParent, TComponent>, IContainer<TAbstract, TParent, TComponent>
         where TAbstract : class, IComponent<TAbstract, TParent>
-        where TParent : class, IParent<TAbstract, TParent>
+        where TParent : class, TAbstract, IParent<TAbstract, TParent>
+        where TComponent : class, TAbstract
     {
-        protected readonly TAbstract[] Components;
-
-        public override sealed bool IsReadOnly
-        {
-            get { return true; }
-        }
+        protected readonly TComponent[] _components;
 
         protected Container(int size)
         {
-            Components = new TAbstract[size];
+            _components = new TComponent[size];
         }
 
-        public override IEnumerator<TAbstract> GetEnumerator()
+        public override IEnumerator<TComponent> GetEnumerator()
         {
-            return ((IEnumerable<TAbstract>)Components).GetEnumerator();
+            return _components.Cast<TComponent>().GetEnumerator();
         }
 
-        public override sealed void Link(TAbstract child)
+        protected override sealed void Link(TComponent component)
         {
             throw new ReadOnlyParentException();
         }
 
-        public override sealed void Unlink(TAbstract child)
+        protected override sealed void Unlink(TComponent component)
         {
             throw new ReadOnlyParentException();
         }
