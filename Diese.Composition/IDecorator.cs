@@ -1,10 +1,11 @@
 ﻿namespace Diese.Composition
 {
     public interface IDecorator<TAbstract, TParent, TComponent> : IParent<TAbstract, TParent>
-        where TAbstract : IComponent<TAbstract, TParent>
-        where TParent : IParent<TAbstract, TParent>
-        where TComponent : TAbstract
+        where TAbstract : class, IComponent<TAbstract, TParent>
+        where TParent : class, TAbstract, IParent<TAbstract, TParent>
+        where TComponent : class, TAbstract
     {
         TComponent Component { get; set; }
+        TComponent Unlink();
     }
 }
