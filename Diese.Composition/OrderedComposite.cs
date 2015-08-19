@@ -9,7 +9,7 @@ namespace Diese.Composition
     {
         public virtual TComponent this[int index]
         {
-            get { return _components[index]; }
+            get { return Components[index]; }
             set
             {
                 if (value != null)
@@ -20,16 +20,16 @@ namespace Diese.Composition
                         throw new InvalidOperationException("Item can't be a child of this because it already exist among its parents.");
 
                     if (!Contains(value))
-                        _components.Add(value);
+                        Components.Add(value);
                 }
 
-                _components[index] = value;
+                Components[index] = value;
             }
         }
 
         public int IndexOf(TComponent item)
         {
-            return _components.IndexOf(item);
+            return Components.IndexOf(item);
         }
 
         public virtual void Insert(int index, TComponent item)
@@ -40,9 +40,9 @@ namespace Diese.Composition
                 throw new InvalidOperationException("Item can't be a child of this because it is already among its parents.");
 
             if (!Contains(item))
-                _components.Add(item);
+                Components.Add(item);
 
-            _components.Insert(index, item);
+            Components.Insert(index, item);
 
             if (item != null)
                 item.Parent = this as TParent;
@@ -50,8 +50,8 @@ namespace Diese.Composition
 
         public virtual void RemoveAt(int index)
         {
-            _components.RemoveAt(index);
-            _components[index].Parent = null;
+            Components.RemoveAt(index);
+            Components[index].Parent = null;
         }
     }
 }

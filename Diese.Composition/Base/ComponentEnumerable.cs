@@ -114,6 +114,10 @@ namespace Diese.Composition.Base
             return Contains(component) || this.Any(child => child.ContainsInChildren(component));
         }
 
+        public abstract IEnumerator<TComponent> GetEnumerator();
+        protected abstract void Link(TComponent component);
+        protected abstract void Unlink(TComponent component);
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -136,9 +140,5 @@ namespace Diese.Composition.Base
 
             Unlink(component);
         }
-
-        protected abstract void Link(TComponent component);
-        protected abstract void Unlink(TComponent component);
-        public abstract IEnumerator<TComponent> GetEnumerator();
     }
 }

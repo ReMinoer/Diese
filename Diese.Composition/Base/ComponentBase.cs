@@ -21,7 +21,7 @@ namespace Diese.Composition.Base
                 {
                     if (_parent != null)
                         _parent.Unlink(baseComponent);
-                
+
                     _parent = value;
                 }
 

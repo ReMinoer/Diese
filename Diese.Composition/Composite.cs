@@ -10,16 +10,16 @@ namespace Diese.Composition
         where TParent : class, TAbstract, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
-        protected readonly List<TComponent> _components;
+        protected readonly List<TComponent> Components;
 
         public int Count
         {
-            get { return _components.Count; }
+            get { return Components.Count; }
         }
 
         protected Composite()
         {
-            _components = new List<TComponent>();
+            Components = new List<TComponent>();
         }
 
         public virtual void Add(TComponent item)
@@ -30,29 +30,29 @@ namespace Diese.Composition
                 throw new InvalidOperationException("Item can't be a child of this because it already exist among its parents.");
 
             if (!Contains(item))
-                _components.Add(item);
+                Components.Add(item);
 
             item.Parent = this as TParent;
         }
 
         public virtual void Remove(TComponent item)
         {
-            if (!_components.Contains(item))
+            if (!Components.Contains(item))
                 throw new InvalidChildException("Component provided is not linked !");
 
-            _components.Remove(item);
+            Components.Remove(item);
             item.Parent = null;
         }
 
         public virtual void Clear()
         {
             for (int i = Count; i >= 0; i--)
-                Remove(_components[0]);
+                Remove(Components[0]);
         }
 
         public override IEnumerator<TComponent> GetEnumerator()
         {
-            return _components.GetEnumerator();
+            return Components.GetEnumerator();
         }
 
         protected override sealed void Link(TComponent component)
