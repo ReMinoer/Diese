@@ -1,4 +1,5 @@
-﻿using Diese.Injection.Test.Samples;
+﻿using System;
+using Diese.Injection.Test.Samples;
 using NUnit.Framework;
 
 namespace Diese.Injection.Test
@@ -70,6 +71,18 @@ namespace Diese.Injection.Test
         }
 
         [Test]
+        public void RegisterLazy()
+        {
+            _registry.RegisterLazy<ICharacter>(() => new Character());
+            var lazy = _injector.Resolve<Lazy<ICharacter>>();
+
+            Assert.IsFalse(lazy.IsValueCreated);
+
+            Assert.IsNotNull(lazy.Value);
+            Assert.IsTrue(lazy.IsValueCreated);
+        }
+
+        [Test]
         public void RegisterSingleton()
         {
             _registry.Register<Game>(Subsistence.Singleton);
@@ -78,6 +91,37 @@ namespace Diese.Injection.Test
             var otherGame = _injector.Resolve<Game>();
 
             Assert.AreEqual(game, otherGame);
+        }
+
+        [Test]
+        public void RegisterAction()
+        {
+            _registry.Register<Level>();
+            _registry.Register<ICharacter, Character>();
+            _registry.Register<IPlayer, Player>();
+            _registry.Register<Game>(Subsistence.Singleton);
+
+            var level = _injector.Resolve<Level>();
+
+            Assert.IsNotNull(level.CharacterA);
+
+            _registry.RegisterAction<Level>(x => x.CharacterA = null);
+            var action = _injector.Resolve<Action<Level>>();
+
+            action(level);
+
+            Assert.IsNull(level.CharacterA);
+        }
+
+        [Test]
+        public void RegisterFunc()
+        {
+            _registry.RegisterFunc<int, int>(x => x * 2);
+
+            var func = _injector.Resolve<Func<int, int>>();
+            int result = func(10);
+
+            Assert.AreEqual(result, 20);
         }
 
         [Test]
