@@ -46,7 +46,7 @@ namespace Diese.Composition
 
         public virtual void Clear()
         {
-            for (int i = Count; i >= 0; i--)
+            for (int i = Count; i > 0; i--)
                 Remove(Components[0]);
         }
 
