@@ -42,16 +42,6 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterImplementationB()
         {
-            _registry.Register<ICharacter>(typeof(Player));
-
-            object character = _injector.Resolve(typeof(ICharacter));
-
-            Assert.IsTrue(character is Player);
-        }
-
-        [Test]
-        public void RegisterImplementationC()
-        {
             _registry.Register(typeof(ICharacter), typeof(Player));
 
             object character = _injector.Resolve(typeof(ICharacter));
@@ -142,6 +132,21 @@ namespace Diese.Injection.Test
             Assert.AreNotEqual(otherPlayerOne, otherPlayerTwo);
             Assert.AreNotEqual(playerOne, otherPlayerTwo);
             Assert.AreNotEqual(playerTwo, otherPlayerOne);
+        }
+
+        [Test]
+        public void LinkTypes()
+        {
+            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.One);
+            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.Two);
+            _registry.Link<IPlayer, IPlayer>(PlayerId.One, "MainPlayer");
+
+            var playerOne = _injector.Resolve<IPlayer>(PlayerId.One);
+            var playerTwo = _injector.Resolve<IPlayer>(PlayerId.Two);
+            var mainPlayer = _injector.Resolve<IPlayer>("MainPlayer");
+
+            Assert.AreEqual(playerOne, mainPlayer);
+            Assert.AreNotEqual(playerTwo, mainPlayer);
         }
 
         [Test]
