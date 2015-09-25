@@ -49,6 +49,11 @@ namespace Diese.Composition
             return Enumerable.Empty<T>();
         }
 
+        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren()
+        {
+            return Enumerable.Empty<TAbstract>();
+        }
+
         public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
         {
             return Enumerable.Empty<TAbstract>();

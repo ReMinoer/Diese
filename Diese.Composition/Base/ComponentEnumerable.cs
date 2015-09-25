@@ -84,6 +84,17 @@ namespace Diese.Composition.Base
             return this.OfType<T>();
         }
 
+        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren()
+        {
+            var result = new List<TAbstract>();
+            result.AddRange(this);
+
+            foreach (TComponent child in this)
+                result.AddRange(child.GetAllComponentsInChildren());
+
+            return result;
+        }
+
         public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
         {
             List<TAbstract> result = GetAllComponents(type).ToList();

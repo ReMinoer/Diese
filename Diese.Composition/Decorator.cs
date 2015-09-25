@@ -98,6 +98,19 @@ namespace Diese.Composition
             return result;
         }
 
+        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren()
+        {
+            var result = new List<TAbstract>
+            {
+                Component
+            };
+
+            if (Component != null)
+                result.AddRange(Component.GetAllComponentsInChildren());
+
+            return result;
+        }
+
         public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
         {
             List<TAbstract> result = GetAllComponents(type).ToList();

@@ -43,6 +43,7 @@ namespace Diese.Composition.Base
         public abstract T GetComponentInChildren<T>() where T : class, TAbstract;
         public abstract IEnumerable<TAbstract> GetAllComponents(Type type);
         public abstract IEnumerable<T> GetAllComponents<T>() where T : class, TAbstract;
+        public abstract IEnumerable<TAbstract> GetAllComponentsInChildren();
         public abstract IEnumerable<TAbstract> GetAllComponentsInChildren(Type type);
         public abstract IEnumerable<T> GetAllComponentsInChildren<T>() where T : class, TAbstract;
         public abstract bool Contains(TAbstract component);

@@ -20,6 +20,7 @@ namespace Diese.Composition
         T GetComponentAmongParents<T>() where T : class, TAbstract;
         IEnumerable<TAbstract> GetAllComponents(Type type);
         IEnumerable<T> GetAllComponents<T>() where T : class, TAbstract;
+        IEnumerable<TAbstract> GetAllComponentsInChildren();
         IEnumerable<TAbstract> GetAllComponentsInChildren(Type type);
         IEnumerable<T> GetAllComponentsInChildren<T>() where T : class, TAbstract;
         bool Contains(TAbstract component);
