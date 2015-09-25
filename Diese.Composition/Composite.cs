@@ -57,12 +57,13 @@ namespace Diese.Composition
 
         protected override sealed void Link(TComponent component)
         {
-            Add(component);
+            if (!Contains(component))
+                Components.Add(component);
         }
 
         protected override sealed void Unlink(TComponent component)
         {
-            Remove(component);
+            Components.Remove(component);
         }
     }
 }

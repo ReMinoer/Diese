@@ -134,22 +134,30 @@ namespace Diese.Composition.Base
             return GetEnumerator();
         }
 
-        void IParent<TAbstract, TParent>.Link(TAbstract child)
+        bool IParent<TAbstract, TParent>.Link(TAbstract child)
         {
             var component = child as TComponent;
             if (component == null)
                 throw new InvalidChildException("Component provided must be of type " + typeof(TComponent));
 
+            if (Contains(component))
+                return false;
+
             Link(component);
+            return true;
         }
 
-        void IParent<TAbstract, TParent>.Unlink(TAbstract child)
+        bool IParent<TAbstract, TParent>.Unlink(TAbstract child)
         {
             var component = child as TComponent;
+            if (component == null)
+                throw new InvalidChildException("Component provided must be of type " + typeof(TComponent));
+
             if (!Contains(component))
-                throw new InvalidChildException("Component provided is not linked to this !");
+                return false;
 
             Unlink(component);
+            return true;
         }
     }
 }

@@ -148,21 +148,30 @@ namespace Diese.Composition
             return component;
         }
 
-        void IParent<TAbstract, TParent>.Link(TAbstract child)
+        bool IParent<TAbstract, TParent>.Link(TAbstract child)
         {
             var component = child as TComponent;
             if (component == null)
                 throw new InvalidChildException("Component provided must be of type " + typeof(TComponent) + " !");
 
+            if (Component == child)
+                return false;
+
             Component = component;
+            return true;
         }
 
-        void IParent<TAbstract, TParent>.Unlink(TAbstract child)
+        bool IParent<TAbstract, TParent>.Unlink(TAbstract child)
         {
+            var component = child as TComponent;
+            if (component == null)
+                throw new InvalidChildException("Component provided must be of type " + typeof(TComponent) + " !");
+
             if (Component != child)
-                throw new InvalidChildException("Component provided is not linked !");
+                return false;
 
             Component = null;
+            return true;
         }
     }
 }

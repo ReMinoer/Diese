@@ -4,7 +4,7 @@
         where TAbstract : class, IComponent<TAbstract, TParent>
         where TParent : class, TAbstract, IParent<TAbstract, TParent>
     {
-        void Link(TAbstract child);
-        void Unlink(TAbstract child);
+        bool Link(TAbstract child);
+        bool Unlink(TAbstract child);
     }
 }
