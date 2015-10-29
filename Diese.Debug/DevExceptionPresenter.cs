@@ -37,9 +37,18 @@ namespace Diese.Debug
 
                 var subItems = new[]
                 {
-                    new ListViewItem.ListViewSubItem {Text = ""},
-                    new ListViewItem.ListViewSubItem {Text = stackFrame.GetMethod().ToString()},
-                    new ListViewItem.ListViewSubItem {Text = stackFrame.GetFileLineNumber().ToString()}
+                    new ListViewItem.ListViewSubItem
+                    {
+                        Text = ""
+                    },
+                    new ListViewItem.ListViewSubItem
+                    {
+                        Text = stackFrame.GetMethod().ToString()
+                    },
+                    new ListViewItem.ListViewSubItem
+                    {
+                        Text = stackFrame.GetFileLineNumber().ToString()
+                    }
                 };
                 var item = new ListViewItem(subItems, 0, @group);
                 _view.StackTraceList.Items.Add(item);

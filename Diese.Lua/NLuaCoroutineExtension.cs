@@ -29,8 +29,16 @@ namespace Diese.Lua
             object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
 
             LuaCoroutineResult coroutineResult = (bool)results[0]
-                ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
-                : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
+                ? new LuaCoroutineResult
+                {
+                    IsValid = true,
+                    Results = results.Skip(1).ToArray()
+                }
+                : new LuaCoroutineResult
+                {
+                    IsValid = false,
+                    ErrorMessage = (string)results[1]
+                };
 
             return coroutineResult;
         }
@@ -41,8 +49,16 @@ namespace Diese.Lua
             object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
 
             LuaCoroutineResult coroutineResult = (bool)results[0]
-                ? new LuaCoroutineResult {IsValid = true, Results = results.Skip(1).ToArray()}
-                : new LuaCoroutineResult {IsValid = false, ErrorMessage = (string)results[1]};
+                ? new LuaCoroutineResult
+                {
+                    IsValid = true,
+                    Results = results.Skip(1).ToArray()
+                }
+                : new LuaCoroutineResult
+                {
+                    IsValid = false,
+                    ErrorMessage = (string)results[1]
+                };
 
             return coroutineResult;
         }
@@ -76,7 +92,11 @@ namespace Diese.Lua
 
                 LuaCoroutineResult coroutineResult;
                 if ((bool)values[0])
-                    coroutineResult = new LuaCoroutineResult {IsValid = true, Results = values.Skip(1).ToArray()};
+                    coroutineResult = new LuaCoroutineResult
+                    {
+                        IsValid = true,
+                        Results = values.Skip(1).ToArray()
+                    };
                 else
                 {
                     var exception = values[1] as LuaScriptException;
@@ -87,7 +107,11 @@ namespace Diese.Lua
                             ErrorMessage = exception.Source + exception.Message
                         };
                     else
-                        coroutineResult = new LuaCoroutineResult {IsValid = false, ErrorMessage = values[1].ToString()};
+                        coroutineResult = new LuaCoroutineResult
+                        {
+                            IsValid = false,
+                            ErrorMessage = values[1].ToString()
+                        };
                 }
 
                 coroutineResults.Add((string)pair.Key, coroutineResult);

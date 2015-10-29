@@ -14,7 +14,10 @@ namespace Diese.Test
         {
             _request = new RequestHandler<RequestEventArgs, FinalizeEventArgs>(Finalize);
 
-            _request.Event += (sender, args) => { Process(args.Number); };
+            _request.Event += (sender, args) =>
+            {
+                Process(args.Number);
+            };
 
             ProcessCompleted += _request.Finalize;
 
