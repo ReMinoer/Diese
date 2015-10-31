@@ -15,7 +15,11 @@ namespace Diese.Serialization.Test
             const string path = "test-result.proto";
 
             var serializer = new SerializerProtobuf<Vehicle>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
 
             // Process
             serializer.Save(vehicleA, path);
@@ -33,7 +37,11 @@ namespace Diese.Serialization.Test
             const string path = "test-result.proto";
 
             var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
 
             // Process
             serializer.Save(vehicleA, path);
@@ -51,7 +59,11 @@ namespace Diese.Serialization.Test
             const string path = "test-result.proto";
 
             var serializer = new SerializerProtobuf<Vehicle>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
 
             // Process
             var streamWriter = new StreamWriter(path);
@@ -74,7 +86,11 @@ namespace Diese.Serialization.Test
             const string path = "test-result.proto";
 
             var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
 
             // Process
             var streamWriter = new StreamWriter(path);
@@ -96,8 +112,16 @@ namespace Diese.Serialization.Test
             const string path = "test-result.proto";
 
             var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
+            var vehicleB = new Vehicle
+            {
+                SpeedMax = 100,
+                CurrentSpeed = 40
+            };
 
             // Process
             serializer.Save(vehicleA, path);
@@ -115,8 +139,16 @@ namespace Diese.Serialization.Test
             const string path = "test-result.proto";
 
             var serializer = new SerializerProtobuf<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
+            var vehicleB = new Vehicle
+            {
+                SpeedMax = 100,
+                CurrentSpeed = 40
+            };
 
             // Process
             var streamWriter = new StreamWriter(path);

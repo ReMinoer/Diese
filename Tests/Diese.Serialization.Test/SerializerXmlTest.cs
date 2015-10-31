@@ -14,7 +14,11 @@ namespace Diese.Serialization.Test
             const string path = "test-result.xml";
 
             var serializer = new SerializerXml<Passenger>();
-            var passengerA = new Passenger {Name = "John", Age = 20};
+            var passengerA = new Passenger
+            {
+                Name = "John",
+                Age = 20
+            };
 
             // Process
             serializer.Save(passengerA, path);
@@ -32,7 +36,11 @@ namespace Diese.Serialization.Test
             const string path = "test-result.xml";
 
             var serializer = new SerializerXml<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
 
             // Process
             serializer.Save(vehicleA, path);
@@ -48,7 +56,11 @@ namespace Diese.Serialization.Test
         {
             // Prerequisites
             var serializer = new SerializerXml<Passenger>();
-            var vehicleA = new Passenger {Name = "John", Age = 20};
+            var vehicleA = new Passenger
+            {
+                Name = "John",
+                Age = 20
+            };
 
             // Process
             var stringWriter = new StringWriter();
@@ -67,7 +79,11 @@ namespace Diese.Serialization.Test
         {
             // Prerequisites
             var serializer = new SerializerXml<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
 
             // Process
             var stringWriter = new StringWriter();
@@ -87,8 +103,16 @@ namespace Diese.Serialization.Test
             const string path = "test-result.xml";
 
             var serializer = new SerializerXml<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
+            var vehicleB = new Vehicle
+            {
+                SpeedMax = 100,
+                CurrentSpeed = 40
+            };
 
             // Process
             serializer.Save(vehicleA, path);
@@ -104,8 +128,16 @@ namespace Diese.Serialization.Test
         {
             // Prerequisites
             var serializer = new SerializerXml<Vehicle, VehicleData>();
-            var vehicleA = new Vehicle {SpeedMax = 50, CurrentSpeed = 20};
-            var vehicleB = new Vehicle {SpeedMax = 100, CurrentSpeed = 40};
+            var vehicleA = new Vehicle
+            {
+                SpeedMax = 50,
+                CurrentSpeed = 20
+            };
+            var vehicleB = new Vehicle
+            {
+                SpeedMax = 100,
+                CurrentSpeed = 40
+            };
 
             // Process
             var stringWriter = new StringWriter();
