@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Diese.Lua.Properties;
 using NLua;
 using NLua.Exceptions;
 
@@ -10,7 +11,12 @@ namespace Diese.Lua
     {
         static public void LoadCoroutineManager(this NLua.Lua lua)
         {
-            lua.DoString(LuaTools.CoroutineManager);
+            lua.DoString(Resources.CoroutineManager);
+        }
+
+        static public void LoadTableTools(this NLua.Lua lua)
+        {
+            lua.DoString(Resources.TableTools);
         }
 
         static public void CreateCoroutine(this NLua.Lua lua, LuaFunction function, string name)
@@ -43,7 +49,7 @@ namespace Diese.Lua
             return coroutineResult;
         }
 
-        static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, double elapsedTime, string name)
+        static public LuaCoroutineResult ResumeCoroutine(this NLua.Lua lua, string name, double elapsedTime)
         {
             object[] luaResult = lua.GetFunction("coroutine.manager.resume").Call(name, elapsedTime);
             object[] results = ExtractResultsFromTable((LuaTable)luaResult[0]);
