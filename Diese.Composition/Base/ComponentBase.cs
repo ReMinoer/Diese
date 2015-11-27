@@ -37,38 +37,55 @@ namespace Diese.Composition.Base
 
         public abstract TAbstract GetComponent(string name);
         public abstract TAbstract GetComponent(Type type);
+        public abstract TAbstract GetComponent(Predicate<TAbstract> predicate);
         public abstract T GetComponent<T>() where T : class, TAbstract;
+        public abstract T GetComponent<T>(Predicate<T> predicate) where T : class, TAbstract;
         public abstract TAbstract GetComponentInChildren(string name);
         public abstract TAbstract GetComponentInChildren(Type type);
+        public abstract TAbstract GetComponentInChildren(Predicate<TAbstract> predicate);
         public abstract T GetComponentInChildren<T>() where T : class, TAbstract;
+        public abstract T GetComponentInChildren<T>(Predicate<T> predicate) where T : class, TAbstract;
         public abstract IEnumerable<TAbstract> GetAllComponents(Type type);
+        public abstract IEnumerable<TAbstract> GetAllComponents(Predicate<TAbstract> predicate);
         public abstract IEnumerable<T> GetAllComponents<T>() where T : class, TAbstract;
-        public abstract IEnumerable<TAbstract> GetAllComponentsInChildren();
+        public abstract IEnumerable<T> GetAllComponents<T>(Predicate<T> predicate) where T : class, TAbstract;
         public abstract IEnumerable<TAbstract> GetAllComponentsInChildren(Type type);
+        public abstract IEnumerable<TAbstract> GetAllComponentsInChildren(Predicate<TAbstract> predicate);
         public abstract IEnumerable<T> GetAllComponentsInChildren<T>() where T : class, TAbstract;
+        public abstract IEnumerable<T> GetAllComponentsInChildren<T>(Predicate<T> predicate) where T : class, TAbstract;
         public abstract bool Contains(TAbstract component);
         public abstract bool ContainsInChildren(TAbstract component);
 
         public TAbstract GetComponentAmongParents(string name)
         {
-            if (Parent == null)
-                return null;
-
-            return Parent.Name == name ? Parent : Parent.GetComponentAmongParents(name);
+            return GetComponentAmongParents(component => component.Name == name);
         }
 
         public TAbstract GetComponentAmongParents(Type type)
         {
+            return GetComponentAmongParents(type.IsInstanceOfType);
+        }
+
+        public TAbstract GetComponentAmongParents(Predicate<TAbstract> predicate)
+        {
             if (Parent == null)
                 return null;
 
-            return type.IsInstanceOfType(Parent) ? Parent : Parent.GetComponentAmongParents(type);
+            return predicate(Parent) ? Parent : Parent.GetComponentAmongParents(predicate);
         }
 
         public T GetComponentAmongParents<T>() where T : class, TAbstract
         {
+            return GetComponentAmongParents<T>(component => true);
+        }
+
+        public T GetComponentAmongParents<T>(Predicate<T> predicate) where T : class, TAbstract
+        {
             var parent = Parent as T;
-            return parent ?? Parent.GetComponentAmongParents<T>();
+            if (parent == null)
+                return Parent.GetComponentAmongParents(predicate);
+
+            return predicate(parent) ? parent : Parent.GetComponentAmongParents<T>();
         }
 
         public bool ContainsAmongParents(TAbstract component)

@@ -19,7 +19,17 @@ namespace Diese.Composition
             return null;
         }
 
+        public override TAbstract GetComponent(Predicate<TAbstract> predicate)
+        {
+            return null;
+        }
+
         public override sealed T GetComponent<T>()
+        {
+            return null;
+        }
+
+        public override T GetComponent<T>(Predicate<T> predicate)
         {
             return null;
         }
@@ -34,7 +44,17 @@ namespace Diese.Composition
             return null;
         }
 
+        public override TAbstract GetComponentInChildren(Predicate<TAbstract> predicate)
+        {
+            return null;
+        }
+
         public override sealed T GetComponentInChildren<T>()
+        {
+            return null;
+        }
+
+        public override T GetComponentInChildren<T>(Predicate<T> predicate)
         {
             return null;
         }
@@ -44,14 +64,19 @@ namespace Diese.Composition
             return Enumerable.Empty<TAbstract>();
         }
 
+        public override IEnumerable<TAbstract> GetAllComponents(Predicate<TAbstract> predicate)
+        {
+            return Enumerable.Empty<TAbstract>();
+        }
+
         public override sealed IEnumerable<T> GetAllComponents<T>()
         {
             return Enumerable.Empty<T>();
         }
 
-        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren()
+        public override IEnumerable<T> GetAllComponents<T>(Predicate<T> predicate)
         {
-            return Enumerable.Empty<TAbstract>();
+            return Enumerable.Empty<T>();
         }
 
         public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
@@ -59,7 +84,17 @@ namespace Diese.Composition
             return Enumerable.Empty<TAbstract>();
         }
 
+        public override IEnumerable<TAbstract> GetAllComponentsInChildren(Predicate<TAbstract> predicate)
+        {
+            return Enumerable.Empty<TAbstract>();
+        }
+
         public override sealed IEnumerable<T> GetAllComponentsInChildren<T>()
+        {
+            return Enumerable.Empty<T>();
+        }
+
+        public override IEnumerable<T> GetAllComponentsInChildren<T>(Predicate<T> predicate)
         {
             return Enumerable.Empty<T>();
         }

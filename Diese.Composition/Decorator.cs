@@ -38,51 +38,76 @@ namespace Diese.Composition
 
         public override sealed TAbstract GetComponent(string name)
         {
-            return Component != null && Component.Name == name ? Component : null;
+            return GetComponent(component => component.Name == name);
         }
 
         public override sealed TAbstract GetComponent(Type type)
         {
-            return Component != null && type.IsInstanceOfType(Component) ? Component : null;
+            return GetComponent(type.IsInstanceOfType);
+        }
+
+        public override sealed TAbstract GetComponent(Predicate<TAbstract> predicate)
+        {
+            return Component != null && predicate(Component) ? Component : null;
         }
 
         public override sealed T GetComponent<T>()
         {
-            return Component as T;
+            return GetComponent<T>(component => true);
+        }
+
+        public override sealed T GetComponent<T>(Predicate<T> predicate)
+        {
+            var component = Component as T;
+            if (component == null)
+                return null;
+
+            return predicate(component) ? component : null;
         }
 
         public override sealed TAbstract GetComponentInChildren(string name)
         {
-            TAbstract component = GetComponent(name);
-            if (component != null)
-                return component;
-
-            return Component != null ? Component.GetComponentInChildren(name) : null;
+            return GetComponentInChildren(component => component.Name == name);
         }
 
         public override sealed TAbstract GetComponentInChildren(Type type)
         {
-            TAbstract component = GetComponent(type);
+            return GetComponentInChildren(type.IsInstanceOfType);
+        }
+
+        public override sealed TAbstract GetComponentInChildren(Predicate<TAbstract> predicate)
+        {
+            TAbstract component = GetComponent(predicate);
             if (component != null)
                 return component;
 
-            return Component != null ? Component.GetComponentInChildren(type) : null;
+            return Component != null ? Component.GetComponentInChildren(predicate) : null;
         }
 
         public override sealed T GetComponentInChildren<T>()
         {
-            var component = GetComponent<T>();
+            return GetComponentInChildren<T>(component => true);
+        }
+
+        public override sealed T GetComponentInChildren<T>(Predicate<T> predicate)
+        {
+            T component = GetComponent(predicate);
             if (component != null)
                 return component;
 
-            return Component != null ? Component.GetComponentInChildren<T>() : null;
+            return Component != null ? Component.GetComponentInChildren(predicate) : null;
         }
 
         public override sealed IEnumerable<TAbstract> GetAllComponents(Type type)
         {
+            return GetAllComponents(type.IsInstanceOfType);
+        }
+
+        public override sealed IEnumerable<TAbstract> GetAllComponents(Predicate<TAbstract> predicate)
+        {
             var result = new List<TAbstract>();
 
-            if (Component != null && type.IsInstanceOfType(Component))
+            if (Component != null && predicate(Component))
                 result.Add(Component);
 
             return result;
@@ -90,43 +115,46 @@ namespace Diese.Composition
 
         public override sealed IEnumerable<T> GetAllComponents<T>()
         {
-            var result = new List<T>();
-
-            if (Component is T)
-                result.Add(Component as T);
-
-            return result;
+            return GetAllComponents<T>(component => true);
         }
 
-        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren()
+        public override sealed IEnumerable<T> GetAllComponents<T>(Predicate<T> predicate)
         {
-            var result = new List<TAbstract>
-            {
-                Component
-            };
+            var result = new List<T>();
 
-            if (Component != null)
-                result.AddRange(Component.GetAllComponentsInChildren());
+            var component = Component as T;
+            if (component != null && predicate(component))
+                result.Add(component);
 
             return result;
         }
 
         public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Type type)
         {
-            List<TAbstract> result = GetAllComponents(type).ToList();
+            return GetAllComponentsInChildren(type.IsInstanceOfType);
+        }
+
+        public override sealed IEnumerable<TAbstract> GetAllComponentsInChildren(Predicate<TAbstract> predicate)
+        {
+            List<TAbstract> result = GetAllComponents(predicate).ToList();
 
             if (Component != null)
-                result.AddRange(Component.GetAllComponentsInChildren(type));
+                result.AddRange(Component.GetAllComponentsInChildren(predicate));
 
             return result;
         }
 
         public override sealed IEnumerable<T> GetAllComponentsInChildren<T>()
         {
-            List<T> result = GetAllComponents<T>().ToList();
+            return GetAllComponentsInChildren<T>(component => true);
+        }
+
+        public override sealed IEnumerable<T> GetAllComponentsInChildren<T>(Predicate<T> predicate)
+        {
+            List<T> result = GetAllComponents(predicate).ToList();
 
             if (Component != null)
-                result.AddRange(Component.GetAllComponentsInChildren<T>());
+                result.AddRange(Component.GetAllComponentsInChildren(predicate));
 
             return result;
         }
