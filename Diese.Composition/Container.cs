@@ -10,11 +10,11 @@ namespace Diese.Composition
         where TParent : class, TAbstract, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
-        protected readonly TComponent[] Components;
+        protected readonly List<TComponent> Components;
 
-        protected Container(int size)
+        protected Container()
         {
-            Components = new TComponent[size];
+            Components = new List<TComponent>();
         }
 
         public override IEnumerator<TComponent> GetEnumerator()
