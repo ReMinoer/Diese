@@ -1,23 +1,24 @@
-﻿using ProtoBuf;
+﻿using Diese.Modelization.Collections;
+using ProtoBuf;
 
 namespace Diese.Modelization.Test.Samples
 {
     [ProtoContract]
-    public class VehicleData : IConfigurator<Vehicle>, ICreator<Vehicle>
+    public class VehicleData : IConfigurationData<Vehicle>, ICreationData<Vehicle>
     {
         [ProtoMember(1)]
         public int SpeedMax { get; set; }
 
         [ProtoMember(2)]
-        public CreatorDictionary<string, Passenger, PassengerData> Passengers { get; set; }
+        public CreationDataDictionary<string, Passenger, PassengerData> Passengers { get; set; }
 
         [ProtoMember(3)]
-        public CreatorList<Wheel, WheelData> Wheels { get; set; }
+        public CreationDataList<Wheel, WheelData> Wheels { get; set; }
 
         public VehicleData()
         {
-            Passengers = new CreatorDictionary<string, Passenger, PassengerData>();
-            Wheels = new CreatorList<Wheel, WheelData>();
+            Passengers = new CreationDataDictionary<string, Passenger, PassengerData>();
+            Wheels = new CreationDataList<Wheel, WheelData>();
         }
 
         public void From(Vehicle obj)

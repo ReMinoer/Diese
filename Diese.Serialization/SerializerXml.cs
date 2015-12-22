@@ -47,35 +47,35 @@ namespace Diese.Serialization
             _serializer = new XmlSerializer(typeof(TModel));
         }
 
-        public override TModel LoadModel(Stream stream)
+        protected override TModel DeserializeModel(Stream stream)
         {
             return (TModel)_serializer.Deserialize(stream);
         }
 
-        public override void SaveModel(TModel model, Stream stream)
+        protected override void SerializeModel(TModel model, Stream stream)
         {
             _serializer.Serialize(stream, model);
         }
 
         public void Load(T obj, TextReader textReader)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurator<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement IConfigurator<T>",
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
+                throw new InvalidOperationException(string.Format("{0} does not implement IConfigurationData<T>",
                     typeof(TModel)));
 
-            var model = (TModel)_serializer.Deserialize(textReader) as IConfigurator<T>;
+            var model = (TModel)_serializer.Deserialize(textReader) as IConfigurationData<T>;
             if (model != null)
                 model.Configure(obj);
         }
 
         public T Instantiate(TextReader textReader)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreator<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreator<T>", typeof(TModel)));
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
+                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
 
-            var model = (TModel)_serializer.Deserialize(textReader) as ICreator<T>;
+            var model = (TModel)_serializer.Deserialize(textReader) as ICreationData<T>;
             if (model == null)
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreator<T>", typeof(TModel)));
+                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
 
             return model.Create();
         }

@@ -18,15 +18,15 @@ namespace Diese.Serialization.Protobuf
         }
     }
 
-    public class SerializerProtobuf<T, TModel> : Serializer<T, TModel>
-        where TModel : IDataModel<T>, new()
+    public class SerializerProtobuf<T, TDataModel> : Serializer<T, TDataModel>
+        where TDataModel : IDataModel<T>, new()
     {
-        public override TModel LoadModel(Stream stream)
+        protected override TDataModel DeserializeModel(Stream stream)
         {
-            return Serializer.Deserialize<TModel>(stream);
+            return Serializer.Deserialize<TDataModel>(stream);
         }
 
-        public override void SaveModel(TModel model, Stream stream)
+        protected override void SerializeModel(TDataModel model, Stream stream)
         {
             Serializer.Serialize(stream, model);
         }

@@ -3,7 +3,7 @@
 namespace Diese.Modelization.Test.Samples
 {
     [ProtoContract]
-    public class PassengerData : IConfigurator<Passenger>, ICreator<Passenger>
+    public class PassengerData : IConfigurationData<Passenger>, ICreationData<Passenger>
     {
         [ProtoMember(1)]
         public string Name { get; set; }

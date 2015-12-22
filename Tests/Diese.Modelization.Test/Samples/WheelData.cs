@@ -3,7 +3,7 @@
 namespace Diese.Modelization.Test.Samples
 {
     [ProtoContract]
-    public class WheelData : IConfigurator<Wheel>, ICreator<Wheel>
+    public class WheelData : IConfigurationData<Wheel>, ICreationData<Wheel>
     {
         [ProtoMember(1)]
         public double Wear { get; set; }
