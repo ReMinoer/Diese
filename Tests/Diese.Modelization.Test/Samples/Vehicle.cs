@@ -10,7 +10,7 @@ namespace Diese.Modelization.Test.Samples
         public int SpeedMax { get; set; }
 
         [ProtoMember(2)]
-        public IList<Wheel> Wheels { get; set; }
+        public ICollection<Wheel> Wheels { get; set; }
 
         public Dictionary<string, Passenger> Passengers { get; set; }
         public int CurrentSpeed { get; set; }
