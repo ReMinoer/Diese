@@ -17,6 +17,11 @@ namespace Diese.Composition
             get { return Components.Count; }
         }
 
+        bool ICollection<TComponent>.IsReadOnly
+        {
+            get { return false; }
+        }
+
         protected Composite()
         {
             Components = new List<TComponent>();
@@ -50,6 +55,11 @@ namespace Diese.Composition
                 Remove(Components[0]);
         }
 
+        public bool Contains(TComponent item)
+        {
+            return Components.Contains(item);
+        }
+
         public override IEnumerator<TComponent> GetEnumerator()
         {
             return Components.GetEnumerator();
@@ -64,6 +74,24 @@ namespace Diese.Composition
         protected override sealed void Unlink(TComponent component)
         {
             Components.Remove(component);
+        }
+
+        void ICollection<TComponent>.CopyTo(TComponent[] array, int arrayIndex)
+        {
+            Components.CopyTo(array, arrayIndex);
+        }
+
+        bool ICollection<TComponent>.Remove(TComponent item)
+        {
+            try
+            {
+                Remove(item);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
