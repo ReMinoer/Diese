@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Diese.Injection.Test.Samples;
 using NUnit.Framework;
 
@@ -112,6 +114,20 @@ namespace Diese.Injection.Test
             int result = func(10);
 
             Assert.AreEqual(result, 20);
+        }
+
+        [Test]
+        public void RegisterGeneric()
+        {
+            _registry.RegisterGeneric(typeof(List<>));
+
+            var list = _injector.Resolve<List<int>>();
+            var list2 = _injector.Resolve<List<string>>();
+            var list3 = _injector.Resolve<List<Player>>();
+
+            Assert.IsNotNull(list);
+            Assert.IsNotNull(list2);
+            Assert.IsNotNull(list3);
         }
 
         [Test]
