@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Serialization", "Diese.Serialization\Diese.Serialization.csproj", "{4AE2D764-4161-453D-8B2D-BD66607EC27A}"
 EndProject
@@ -47,6 +47,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Graph", "Diese.Graph\Diese.Graph.csproj", "{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Test", "Tests\Diese.Test\Diese.Test.csproj", "{1CED2D85-0C51-4079-993A-A191987295C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Scripting", "Diese.Scripting\Diese.Scripting.csproj", "{F01C3583-4243-4F08-BDA2-58AEA09792FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Scripting.Sample", "Samples\Diese.Scripting.Sample\Diese.Scripting.Sample.csproj", "{C597788D-C303-4EC6-945E-02AE0EBFCB0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +126,14 @@ Global
 		{1CED2D85-0C51-4079-993A-A191987295C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CED2D85-0C51-4079-993A-A191987295C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CED2D85-0C51-4079-993A-A191987295C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F01C3583-4243-4F08-BDA2-58AEA09792FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F01C3583-4243-4F08-BDA2-58AEA09792FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F01C3583-4243-4F08-BDA2-58AEA09792FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F01C3583-4243-4F08-BDA2-58AEA09792FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C597788D-C303-4EC6-945E-02AE0EBFCB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C597788D-C303-4EC6-945E-02AE0EBFCB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C597788D-C303-4EC6-945E-02AE0EBFCB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C597788D-C303-4EC6-945E-02AE0EBFCB0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,6 +146,7 @@ Global
 		{C9B66B14-F26B-432D-BE30-FCC121AE6CDE} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
 		{7714AD20-9140-4654-B96A-8399BD065FEC} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
 		{1CED2D85-0C51-4079-993A-A191987295C4} = {56AD0BC2-6C0B-4B77-82C9-F23B2AC551EE}
+		{C597788D-C303-4EC6-945E-02AE0EBFCB0A} = {961607C8-6CFD-4DE5-BBC3-0431CF6960AF}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Diese.Serialization\Diese.Serialization.csproj
