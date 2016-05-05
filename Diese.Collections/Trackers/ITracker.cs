@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Diese.Collections
+namespace Diese.Collections.Trackers
 {
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface ITracker<T> : IList<WeakReference<T>>, IEnumerable<T>

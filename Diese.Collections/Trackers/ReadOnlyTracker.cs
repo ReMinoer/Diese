@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Diese.Collections
+namespace Diese.Collections.Trackers
 {
     public class ReadOnlyTracker<T> : IReadOnlyCollection<T>
         where T : class

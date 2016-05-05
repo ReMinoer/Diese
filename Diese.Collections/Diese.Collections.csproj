@@ -35,10 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerable.cs" />
-    <Compile Include="ITracker.cs" />
+    <Compile Include="Trackers\ITracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadOnlyTracker.cs" />
-    <Compile Include="Tracker.cs" />
+    <Compile Include="Trackers\ReadOnlyTracker.cs" />
+    <Compile Include="Trackers\Tracker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

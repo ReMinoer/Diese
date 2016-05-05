@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Diese.Collections
+namespace Diese.Collections.Trackers
 {
     public class Tracker<T> : ITracker<T>
         where T : class
