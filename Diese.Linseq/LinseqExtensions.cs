@@ -24,6 +24,8 @@ namespace Diese.Linseq
 
             for (T value = incrementor(enumerable.Last()); !value.Equals(goal); value = incrementor(value))
                 yield return value;
+
+            yield return goal;
         }
 
         static public IEnumerable<T> ThenRepeat<T>(this IEnumerable<T> sequence, int times, IEnumerable<T> subsequence)
