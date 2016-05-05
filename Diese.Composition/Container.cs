@@ -10,16 +10,16 @@ namespace Diese.Composition
         where TParent : class, TAbstract, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
-        protected readonly List<TComponent> Components;
+        protected ComponentCollection<TAbstract, TParent, TComponent> Components;
 
         protected Container()
         {
-            Components = new List<TComponent>();
+            Components = new ComponentCollection<TAbstract, TParent, TComponent>(this);
         }
 
         public override IEnumerator<TComponent> GetEnumerator()
         {
-            return Components.Cast<TComponent>().GetEnumerator();
+            return Components.GetEnumerator();
         }
 
         protected override sealed void Link(TComponent component)

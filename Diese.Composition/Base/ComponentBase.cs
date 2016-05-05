@@ -15,17 +15,17 @@ namespace Diese.Composition.Base
             get { return _parent; }
             set
             {
+                if (value == _parent)
+                    return;
+
                 var baseComponent = this as TAbstract;
+                
+                if (_parent != null)
+                    _parent.Unlink(baseComponent);
 
-                if (value != _parent)
-                {
-                    if (_parent != null)
-                        _parent.Unlink(baseComponent);
+                _parent = value;
 
-                    _parent = value;
-                }
-
-                if (value != null && !_parent.Contains(baseComponent))
+                if (_parent != null)
                     _parent.Link(baseComponent);
             }
         }

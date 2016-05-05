@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="Base\ComponentBase.cs" />
+    <Compile Include="Base\ComponentCollection.cs" />
     <Compile Include="Composite.cs" />
     <Compile Include="Base\ComponentEnumerable.cs" />
     <Compile Include="Exceptions\InvalidChildException.cs" />

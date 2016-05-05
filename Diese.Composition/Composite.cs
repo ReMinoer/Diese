@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Diese.Composition.Base;
-using Diese.Composition.Exceptions;
 
 namespace Diese.Composition
 {
@@ -10,49 +8,36 @@ namespace Diese.Composition
         where TParent : class, TAbstract, IParent<TAbstract, TParent>
         where TComponent : class, TAbstract
     {
-        protected readonly List<TComponent> Components;
+        protected ComponentCollection<TAbstract, TParent, TComponent> Components;
 
         public int Count
         {
             get { return Components.Count; }
         }
 
-        bool ICollection<TComponent>.IsReadOnly
+        public bool IsReadOnly
         {
-            get { return false; }
+            get { return Components.IsReadOnly; }
         }
 
         protected Composite()
         {
-            Components = new List<TComponent>();
+            Components = new ComponentCollection<TAbstract, TParent, TComponent>(this);
         }
 
         public virtual void Add(TComponent item)
         {
-            if (Equals(item))
-                throw new InvalidOperationException("Item can't be a child of itself.");
-            if (ContainsAmongParents(item))
-                throw new InvalidOperationException("Item can't be a child of this because it already exist among its parents.");
-
-            if (!Contains(item))
-                Components.Add(item);
-
-            item.Parent = this as TParent;
+            Components.Add(item);
         }
 
         public virtual void Remove(TComponent item)
         {
-            if (!Components.Contains(item))
-                throw new InvalidChildException("Component provided is not linked !");
-
             Components.Remove(item);
-            item.Parent = null;
         }
 
         public virtual void Clear()
         {
-            for (int i = Count; i > 0; i--)
-                Remove(Components[0]);
+            Components.Clear();
         }
 
         public bool Contains(TComponent item)
@@ -60,15 +45,9 @@ namespace Diese.Composition
             return Components.Contains(item);
         }
 
-        public override IEnumerator<TComponent> GetEnumerator()
-        {
-            return Components.GetEnumerator();
-        }
-
         protected override sealed void Link(TComponent component)
         {
-            if (!Contains(component))
-                Components.Add(component);
+            Components.Add(component);
         }
 
         protected override sealed void Unlink(TComponent component)
@@ -76,22 +55,19 @@ namespace Diese.Composition
             Components.Remove(component);
         }
 
+        public override IEnumerator<TComponent> GetEnumerator()
+        {
+            return Components.GetEnumerator();
+        }
+
         void ICollection<TComponent>.CopyTo(TComponent[] array, int arrayIndex)
         {
-            Components.CopyTo(array, arrayIndex);
+            ((ICollection<TComponent>)Components).CopyTo(array, arrayIndex);
         }
 
         bool ICollection<TComponent>.Remove(TComponent item)
         {
-            try
-            {
-                Remove(item);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return ((ICollection<TComponent>)Components).Remove(item);
         }
     }
 }
