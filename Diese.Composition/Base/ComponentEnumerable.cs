@@ -135,7 +135,7 @@ namespace Diese.Composition.Base
 
         public override sealed bool Contains(TAbstract component)
         {
-            return this.Any(child => child.Equals(component));
+            return this.Any(child => child == component);
         }
 
         public override sealed bool ContainsInChildren(TAbstract component)
