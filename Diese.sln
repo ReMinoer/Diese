@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Serialization", "Diese.Serialization\Diese.Serialization.csproj", "{4AE2D764-4161-453D-8B2D-BD66607EC27A}"
 EndProject
@@ -53,6 +53,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Scripting.Sample", "Samples\Diese.Scripting.Sample\Diese.Scripting.Sample.csproj", "{C597788D-C303-4EC6-945E-02AE0EBFCB0A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Collections", "Diese.Collections\Diese.Collections.csproj", "{8E354191-E8E5-498B-9C24-A6765DA86417}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Linseq", "Diese.Linseq\Diese.Linseq.csproj", "{F9D2ED94-6FA3-46FB-A50B-83C486F33EEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +142,10 @@ Global
 		{8E354191-E8E5-498B-9C24-A6765DA86417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E354191-E8E5-498B-9C24-A6765DA86417}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E354191-E8E5-498B-9C24-A6765DA86417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D2ED94-6FA3-46FB-A50B-83C486F33EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D2ED94-6FA3-46FB-A50B-83C486F33EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D2ED94-6FA3-46FB-A50B-83C486F33EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D2ED94-6FA3-46FB-A50B-83C486F33EEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
