@@ -31,8 +31,8 @@ namespace Diese.Debug
                 if (reflectedType != null)
                 {
                     string groupName = string.Format("{0} ({1})", reflectedType.FullName, stackFrame.GetFileName());
-                    if (@group == null || @group.Name != groupName)
-                        @group = _view.StackTraceList.Groups.Add(groupName, groupName);
+                    if (group == null || group.Name != groupName)
+                        group = _view.StackTraceList.Groups.Add(groupName, groupName);
                 }
 
                 var subItems = new[]
@@ -50,7 +50,7 @@ namespace Diese.Debug
                         Text = stackFrame.GetFileLineNumber().ToString()
                     }
                 };
-                var item = new ListViewItem(subItems, 0, @group);
+                var item = new ListViewItem(subItems, 0, group);
                 _view.StackTraceList.Items.Add(item);
             }
         }

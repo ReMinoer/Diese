@@ -87,7 +87,7 @@ namespace Diese.Debug
                 Children = new List<TimeNode>();
             }
 
-            public void SaveToCSV(string filename, string extension = ".csv")
+            public void SaveToCsv(string filename, string extension = ".csv")
             {
                 int number = 2;
                 string path = filename + extension;
