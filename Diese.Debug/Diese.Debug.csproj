@@ -36,6 +36,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WatchTree.cs" />
     <Compile Include="DevExceptionPresenter.cs" />
     <Compile Include="DevExceptionView.cs">
       <SubType>Form</SubType>
