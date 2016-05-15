@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\TypeExtension.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Base\ComponentBase.cs" />
     <Compile Include="Base\ComponentCollection.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Diese.Composition.Utils;
 
 namespace Diese.Composition.Base
 {
@@ -95,24 +95,6 @@ namespace Diese.Composition.Base
                 return false;
 
             return Parent.Equals(component) || Parent.ContainsAmongParents(component);
-        }
-    }
-
-    static internal class TypeExtension
-    {
-        static internal string GetDisplayName(this Type type)
-        {
-            string result = type.Name;
-
-            if (type.IsGenericType)
-            {
-                result = result.Substring(0, result.Length - 2);
-                result += "<";
-                result += string.Join(",", type.GenericTypeArguments.Select(x => x.GetDisplayName()));
-                result += ">";
-            }
-
-            return result;
         }
     }
 }
