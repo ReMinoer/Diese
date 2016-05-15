@@ -99,25 +99,32 @@ namespace Diese.Debug
 
                 using (var streamWriter = new StreamWriter(path))
                 {
-                    streamWriter.WriteLine("Name;Time (µs);Depth");
-                    WriteSnapshotRecursive(streamWriter, this, 0);
+                    streamWriter.WriteLine("Order;Name;Time (ms);Depth");
+
+                    int count = 0;
+                    WriteSnapshotRecursive(streamWriter, this, 0, ref count);
                 }
             }
 
-            private void WriteSnapshotRecursive(TextWriter streamWriter, TimeNode node, int depth)
+            private void WriteSnapshotRecursive(TextWriter streamWriter, TimeNode node, int depth, ref int count)
             {
-                streamWriter.WriteLine($"{node.Name};{node.TimeSpan.TotalMilliseconds * 1000};{depth}");
+                count++;
+
+                string tabs = "";
+                for (int i = 0; i < depth; i++)
+                    tabs += "\t";
+
+                streamWriter.WriteLine($"{count};{tabs}|-- {node.Name};{node.TimeSpan.TotalMilliseconds.ToString("F3")};{depth}");
 
                 foreach (TimeNode child in node.Children)
-                    WriteSnapshotRecursive(streamWriter, child, depth + 1);
+                    WriteSnapshotRecursive(streamWriter, child, depth + 1, ref count);
             }
         }
 
-        public class DisposableWatch : IDisposable
+        public class DisposableWatch : Stopwatch, IDisposable
         {
             private readonly WatchTree _watchTree;
             private readonly TimeNode _node;
-            private Stopwatch _stopWatch;
 
             internal DisposableWatch(WatchTree watchTree, TimeNode node)
             {
@@ -125,16 +132,14 @@ namespace Diese.Debug
                 _node = node;
 
                 _watchTree._watches.Push(this);
-
-                _stopWatch = new Stopwatch();
-                _stopWatch.Start();
+                
+                Start();
             }
 
             public void Dispose()
             {
-                _stopWatch.Stop();
-                _node.TimeSpan = _stopWatch.Elapsed;
-                _stopWatch = null;
+                Stop();
+                _node.TimeSpan = Elapsed;
 
                 _watchTree.DeleteWatch();
             }
