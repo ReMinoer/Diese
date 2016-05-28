@@ -16,6 +16,26 @@ namespace Diese.Linseq
             return sequence.Concat(nextValues);
         }
 
+        static public IEnumerable<T> ThenStack<T>(this IEnumerable<T> sequence, params T[] nextValues)
+        {
+            return nextValues.Concat(sequence);
+        }
+
+        static public IEnumerable<T> ThenStack<T>(this IEnumerable<T> sequence, IEnumerable<T> nextValues)
+        {
+            return nextValues.Concat(sequence);
+        }
+
+        static public IEnumerable<T> ThenInsertAt<T>(this IEnumerable<T> sequence, int index, params T[] nextValues)
+        {
+            return sequence.Take(index).Concat(nextValues).Concat(sequence.Skip(index));
+        }
+
+        static public IEnumerable<T> ThenInsertAt<T>(this IEnumerable<T> sequence, int index, IEnumerable<T> nextValues)
+        {
+            return sequence.Take(index).Concat(nextValues).Concat(sequence.Skip(index));
+        }
+
         static public IEnumerable<T> ThenGoTo<T>(this IEnumerable<T> sequence, T goal, Func<T, T> incrementor)
         {
             IEnumerable<T> enumerable = sequence as T[] ?? sequence.ToArray();
