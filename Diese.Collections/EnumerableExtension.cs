@@ -4,8 +4,53 @@ using System.Linq;
 
 namespace Diese.Collections
 {
+    public class ItemIndexPair<T>
+    {
+        public T Item { get; }
+        public int Index { get; }
+
+        public ItemIndexPair(T item, int index)
+        {
+            Item = item;
+            Index = index;
+        }
+    }
+
+    public enum ResultOrder
+    {
+        Conserved,
+        Neglected
+    }
+
+    public enum ConservedKey
+    {
+        FirstOccurence,
+        LastOccurence
+    }
+
     static public class EnumerableExtension
     {
+        static public bool Any<T>(this IEnumerable<T> enumerable, Predicate<T> predicate, out T item)
+        {
+            foreach (T obj in enumerable)
+            {
+                if (!predicate(obj))
+                    continue;
+
+                item = obj;
+                return true;
+            }
+
+            item = default(T);
+            return false;
+        }
+
+        static public IEnumerable<T> NotNulls<T>(this IEnumerable<T> enumerable)
+            where T : class
+        {
+            return enumerable.Where(x => x != null);
+        }
+
         static public bool CountIsSuperiorTo<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number <= 0)
@@ -39,6 +84,7 @@ namespace Diese.Collections
 
             return true;
         }
+
         static public bool CountIsSuperiorOrEqualsTo<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number < 0)
@@ -73,9 +119,97 @@ namespace Diese.Collections
             return true;
         }
 
+        static public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> enumerable)
+        {
+            return enumerable.ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        static public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> enumerable, ConservedKey conservedKey)
+        {
+            return enumerable.ToDictionary(x => x.Key, x => x.Value, conservedKey);
+        }
+
+        static public Dictionary<T1, T2> ToDictionary<T1, T2>(this IEnumerable<Tuple<T1, T2>> enumerable)
+        {
+            return enumerable.ToDictionary(x => x.Item1, x => x.Item2);
+        }
+
+        static public Dictionary<T1, T2> ToDictionary<T1, T2>(this IEnumerable<Tuple<T1, T2>> enumerable, ConservedKey conservedKey)
+        {
+            return enumerable.ToDictionary(x => x.Item1, x => x.Item2, conservedKey);
+        }
+
+        static public Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, Func<T, TValue> valueSelector, ConservedKey conservedKey)
+        {
+            var dictionary = new Dictionary<TKey, TValue>();
+
+            foreach (T obj in enumerable)
+            {
+                TKey key = keySelector(obj);
+
+                switch (conservedKey)
+                {
+                    case ConservedKey.FirstOccurence:
+                        if (dictionary.ContainsKey(key))
+                            dictionary.Add(key, valueSelector(obj));
+                        break;
+                    case ConservedKey.LastOccurence:
+                        dictionary[key] = valueSelector(obj);
+                        break;
+                    default: throw new NotSupportedException();
+                }
+            }
+
+            return dictionary;
+        }
+
+        static public HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable)
+        {
+            return new HashSet<T>(enumerable);
+        }
+
+        static public HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable, ConservedKey conservedKey)
+        {
+            var hashSet = new HashSet<T>();
+
+            foreach (T obj in enumerable)
+            {
+                switch (conservedKey)
+                {
+                    case ConservedKey.FirstOccurence:
+                        hashSet.Add(obj);
+                        break;
+                    case ConservedKey.LastOccurence:
+                        hashSet.Remove(obj);
+                        hashSet.Add(obj);
+                        break;
+                    default: throw new NotSupportedException();
+                }
+            }
+
+            return hashSet;
+        }
+
+        static public IEnumerable<ItemIndexPair<T>> Indexed<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.Select((item, index) => new ItemIndexPair<T>(item, index));
+        }
+
+        static public int IndexOf<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
+        {
+            ItemIndexPair<T> pair = enumerable.Indexed().FirstOrDefault(p => predicate(p.Item));
+            return pair?.Index ?? -1;
+        }
+
+        static public IEnumerable<int> IndexesOf<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
+        {
+            return enumerable.Indexed().Where(p => predicate(p.Item)).Select(p => p.Index);
+        }
+
         static public bool SetEquals<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn)
         {
-            return enumerableOut.All(enumerableIn.Contains);
+            List<T> listIn = enumerableIn.ToList();
+            return enumerableOut.All(item => listIn.Remove(item));
         }
 
         static public bool SetDiff<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, out IEnumerable<T> added, out IEnumerable<T> removed)
@@ -89,7 +223,6 @@ namespace Diese.Collections
             foreach (T itemOut in arrayOut)
                 if (addedList.Contains(itemOut))
                     addedList.Remove(itemOut);
-
 
             foreach (T itemIn in arrayIn)
                 if (removedList.Contains(itemIn))
@@ -132,38 +265,44 @@ namespace Diese.Collections
             return added.Any() || removed.Any();
         }
 
-        static public IEnumerable<TResult> JoinByOrdering<T, TResult>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Func<T, T, TResult> resultSelector, bool conserveOrder = true)
+        static public IEnumerable<TResult> JoinByOrdering<T, TResult>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Func<T, T, TResult> resultSelector, ResultOrder resultOrder = ResultOrder.Conserved)
             where T : IComparable<T>
         {
-            return JoinByOrdering(enumerableOut, enumerableIn, x => x, x => x, resultSelector, new ComparisonComparer<T>((x, y) => x.CompareTo(y)), conserveOrder);
+            return JoinByOrdering(enumerableOut, enumerableIn, x => x, x => x, resultSelector, new ComparisonComparer<T>((x, y) => x.CompareTo(y)), resultOrder);
         }
 
-        static public IEnumerable<TResult> JoinByOrdering<T, TResult>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Func<T, T, TResult> resultSelector, Comparison<T> comparison, bool conserveOrder = true)
+        static public IEnumerable<TResult> JoinByOrdering<T, TResult>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Func<T, T, TResult> resultSelector, Comparison<T> comparison, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            return JoinByOrdering(enumerableOut, enumerableIn, x => x, x => x, resultSelector, new ComparisonComparer<T>(comparison), conserveOrder);
+            return JoinByOrdering(enumerableOut, enumerableIn, x => x, x => x, resultSelector, new ComparisonComparer<T>(comparison), resultOrder);
         }
 
-        static public IEnumerable<TResult> JoinByOrdering<T, TResult>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Func<T, T, TResult> resultSelector, IComparer<T> comparer, bool conserveOrder = true)
+        static public IEnumerable<TResult> JoinByOrdering<T, TResult>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Func<T, T, TResult> resultSelector, IComparer<T> comparer, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            return JoinByOrdering(enumerableOut, enumerableIn, x => x, x => x, resultSelector, comparer, conserveOrder);
+            return JoinByOrdering(enumerableOut, enumerableIn, x => x, x => x, resultSelector, comparer, resultOrder);
         }
 
-        static public IEnumerable<TResult> JoinByOrdering<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, bool conserveOrder = true)
+        static public IEnumerable<TResult> JoinByOrdering<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, ResultOrder resultOrder = ResultOrder.Conserved)
             where TKey : IComparable<TKey>
         {
-            return JoinByOrdering(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, resultSelector, new ComparisonComparer<TKey>((x, y) => x.CompareTo(y)), conserveOrder);
+            return JoinByOrdering(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, resultSelector, new ComparisonComparer<TKey>((x, y) => x.CompareTo(y)), resultOrder);
         }
 
-        static public IEnumerable<TResult> JoinByOrdering<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, Comparison<TKey> comparison, bool conserveOrder = true)
+        static public IEnumerable<TResult> JoinByOrdering<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, Comparison<TKey> comparison, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            return JoinByOrdering(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, resultSelector, new ComparisonComparer<TKey>(comparison), conserveOrder);
+            return JoinByOrdering(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, resultSelector, new ComparisonComparer<TKey>(comparison), resultOrder);
         }
 
-        static public IEnumerable<TResult> JoinByOrdering<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, IComparer<TKey> comparer, bool conserveOrder = true)
+        static public IEnumerable<TResult> JoinByOrdering<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, IComparer<TKey> comparer, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            return conserveOrder
-                ? enumerableOut.Select((key, index) => new KeyIndexPair<TOut>(key, index)).JoinByOrderingInternal(enumerableIn, x => keySelectorOut(x.Key), keySelectorIn, (x, y) => new KeyIndexPair<TResult>(resultSelector(x.Key, y), x.Index), comparer).OrderBy(x => x.Index).Select(x => x.Key)
-                : JoinByOrderingInternal(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, resultSelector, comparer);
+            switch (resultOrder)
+            {
+                case ResultOrder.Conserved:
+                    return enumerableOut.Indexed().JoinByOrderingInternal(enumerableIn, x => keySelectorOut(x.Item), keySelectorIn, (x, y) => new ItemIndexPair<TResult>(resultSelector(x.Item, y), x.Index), comparer).OrderBy(x => x.Index).Select(x => x.Item);
+                case ResultOrder.Neglected:
+                    return enumerableOut.JoinByOrderingInternal(enumerableIn, keySelectorOut, keySelectorIn, resultSelector, comparer);
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
         static private IEnumerable<TResult> JoinByOrderingInternal<TOut, TIn, TKey, TResult>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, Func<TOut, TIn, TResult> resultSelector, IComparer<TKey> comparer)
@@ -194,7 +333,7 @@ namespace Diese.Collections
 
                     if (enumeratorIn.MoveNext())
                         yield break;
-                    
+
                     if (enumeratorOut.MoveNext())
                         yield break;
 
@@ -245,11 +384,17 @@ namespace Diese.Collections
             return RejectByOrdering(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, new ComparisonComparer<TKey>(comparison));
         }
 
-        static public IEnumerable<TOut> RejectByOrdering<TOut, TIn, TKey>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, IComparer<TKey> comparer, bool conserveOrder = true)
+        static public IEnumerable<TOut> RejectByOrdering<TOut, TIn, TKey>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, IComparer<TKey> comparer, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            return conserveOrder
-                ? enumerableOut.Select((key, index) => new KeyIndexPair<TOut>(key, index)).RejectByOrderingInternal(enumerableIn, x => keySelectorOut(x.Key), keySelectorIn, comparer).OrderBy(x => x.Index).Select(x => x.Key)
-                : RejectByOrderingInternal(enumerableOut, enumerableIn, keySelectorOut, keySelectorIn, comparer);
+            switch (resultOrder)
+            {
+                case ResultOrder.Conserved:
+                    return enumerableOut.Indexed().RejectByOrderingInternal(enumerableIn, x => keySelectorOut(x.Item), keySelectorIn, comparer).OrderBy(x => x.Index).Select(x => x.Item);
+                case ResultOrder.Neglected:
+                    return enumerableOut.RejectByOrderingInternal(enumerableIn, keySelectorOut, keySelectorIn, comparer);
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
         static private IEnumerable<TOut> RejectByOrderingInternal<TOut, TIn, TKey>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, IComparer<TKey> comparer)
@@ -317,7 +462,7 @@ namespace Diese.Collections
         {
             return SetEqualsByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>((x, y) => x.CompareTo(y)));
         }
-        
+
         static public bool SetEqualsByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Comparison<T> comparison)
         {
             return SetEqualsByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>(comparison));
@@ -328,34 +473,37 @@ namespace Diese.Collections
             return !enumerableOut.RejectByOrdering(enumerableIn, comparer).Any();
         }
 
-        static public bool SetDiffByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, out IEnumerable<T> added, out IEnumerable<T> removed, out IEnumerable<T> conserved, bool conserveOrder = true)
+        static public bool SetDiffByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, out IEnumerable<T> added, out IEnumerable<T> removed, out IEnumerable<T> conserved, ResultOrder resultOrder = ResultOrder.Conserved)
             where T : IComparable<T>
         {
-            return SetDiffByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>((x, y) => x.CompareTo(y)), out added, out removed, out conserved, conserveOrder);
+            return SetDiffByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>((x, y) => x.CompareTo(y)), out added, out removed, out conserved, resultOrder);
         }
 
-        static public bool SetDiffByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Comparison<T> comparison, out IEnumerable<T> added, out IEnumerable<T> removed, out IEnumerable<T> conserved, bool conserveOrder = true)
+        static public bool SetDiffByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Comparison<T> comparison, out IEnumerable<T> added, out IEnumerable<T> removed, out IEnumerable<T> conserved, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            return SetDiffByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>(comparison), out added, out removed, out conserved, conserveOrder);
+            return SetDiffByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>(comparison), out added, out removed, out conserved, resultOrder);
         }
 
-        static public bool SetDiffByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, IComparer<T> comparer, out IEnumerable<T> added, out IEnumerable<T> removed, out IEnumerable<T> conserved, bool conserveOrder = true)
+        static public bool SetDiffByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, IComparer<T> comparer, out IEnumerable<T> added, out IEnumerable<T> removed, out IEnumerable<T> conserved, ResultOrder resultOrder = ResultOrder.Conserved)
         {
-            if (conserveOrder)
+            switch (resultOrder)
             {
-                IEnumerable<KeyIndexPair<T>> addedPair;
-                IEnumerable<KeyIndexPair<T>> removedPair;
-                IEnumerable<KeyIndexPair<T>> conservedPair;
+                case ResultOrder.Conserved:
+                    IEnumerable<ItemIndexPair<T>> addedPair;
+                    IEnumerable<ItemIndexPair<T>> removedPair;
+                    IEnumerable<ItemIndexPair<T>> conservedPair;
 
-                bool result = enumerableOut.Select((key, index) => new KeyIndexPair<T>(key, index)).SetDiffByOrderingInternal(enumerableIn.Select((key, index) => new KeyIndexPair<T>(key, index)), x => x.Key, x => x.Key, comparer, out addedPair, out removedPair, out conservedPair);
+                    bool result = enumerableOut.Indexed().SetDiffByOrderingInternal(enumerableIn.Indexed(), x => x.Item, x => x.Item, comparer, out addedPair, out removedPair, out conservedPair);
 
-                added = addedPair.OrderBy(x => x.Index).Select(x => x.Key);
-                removed = removedPair.OrderBy(x => x.Index).Select(x => x.Key);
-                conserved = conservedPair.OrderBy(x => x.Index).Select(x => x.Key);
-                return result;
+                    added = addedPair.OrderBy(x => x.Index).Select(x => x.Item);
+                    removed = removedPair.OrderBy(x => x.Index).Select(x => x.Item);
+                    conserved = conservedPair.OrderBy(x => x.Index).Select(x => x.Item);
+                    return result;
+                case ResultOrder.Neglected:
+                    return enumerableOut.SetDiffByOrderingInternal(enumerableIn, x => x, x => x, comparer, out added, out removed, out conserved);
+                default:
+                    throw new NotSupportedException();
             }
-
-            return SetDiffByOrderingInternal(enumerableOut, enumerableIn, x => x, x => x, comparer, out added, out removed, out conserved);
         }
 
         static private bool SetDiffByOrderingInternal<TOut, TIn, TKey>(this IEnumerable<TOut> enumerableOut, IEnumerable<TIn> enumerableIn, Func<TOut, TKey> keySelectorOut, Func<TIn, TKey> keySelectorIn, IComparer<TKey> comparer, out IEnumerable<TIn> added, out IEnumerable<TOut> removed, out IEnumerable<TOut> conserved)
@@ -450,20 +598,20 @@ namespace Diese.Collections
             return added.Any() || removed.Any();
         }
 
-        static public IEnumerable<int> IndexesOfByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, bool conserveOrder = true)
+        static public IEnumerable<int> IndexesOfByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn)
             where T : IComparable<T>
         {
-            return IndexesOfByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>((x, y) => x.CompareTo(y)), conserveOrder);
+            return IndexesOfByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>((x, y) => x.CompareTo(y)));
         }
 
-        static public IEnumerable<int> IndexesOfByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Comparison<T> comparison, bool conserveOrder = true)
+        static public IEnumerable<int> IndexesOfByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, Comparison<T> comparison)
         {
-            return IndexesOfByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>(comparison), conserveOrder);
+            return IndexesOfByOrdering(enumerableOut, enumerableIn, new ComparisonComparer<T>(comparison));
         }
 
-        static public IEnumerable<int> IndexesOfByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, IComparer<T> comparer, bool conserveOrder = true)
+        static public IEnumerable<int> IndexesOfByOrdering<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, IComparer<T> comparer)
         {
-            return enumerableOut.Select((x, index) => new KeyIndexPair<T>(x, index)).JoinByOrdering(enumerableIn, x => x.Key, x => x, (x, y) => x, comparer, conserveOrder).Select(x => x.Index);
+            return enumerableOut.Indexed().JoinByOrdering(enumerableIn, x => x.Item, x => x, (x, y) => x, comparer, ResultOrder.Neglected).Select(x => x.Index).OrderBy(x => x);
         }
 
         private sealed class ComparisonComparer<T> : IComparer<T>
@@ -478,18 +626,6 @@ namespace Diese.Collections
             public int Compare(T x, T y)
             {
                 return _comparison(x, y);
-            }
-        }
-
-        private sealed class KeyIndexPair<T>
-        {
-            public T Key { get; }
-            public int Index { get; }
-
-            public KeyIndexPair(T key, int index)
-            {
-                Key = key;
-                Index = index;
             }
         }
     }
