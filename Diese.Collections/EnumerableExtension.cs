@@ -30,6 +30,19 @@ namespace Diese.Collections
 
     static public class EnumerableExtension
     {
+        static public bool Any<T>(this IEnumerable<T> enumerable, out T item)
+        {
+            IEnumerator<T> enumerator = enumerable.GetEnumerator();
+            if (enumerator.MoveNext())
+            {
+                item = enumerator.Current;
+                return true;
+            }
+
+            item = default(T);
+            return false;
+        }
+
         static public bool Any<T>(this IEnumerable<T> enumerable, Predicate<T> predicate, out T item)
         {
             foreach (T obj in enumerable)
@@ -49,6 +62,11 @@ namespace Diese.Collections
             where T : class
         {
             return enumerable.Where(x => x != null);
+        }
+
+        static public IEnumerable<T> OfType<T>(this IEnumerable<T> enumerable, Type type)
+        {
+            return enumerable.Where(x => type.IsInstanceOfType(x));
         }
 
         static public bool CountIsSuperiorTo<T>(this IEnumerable<T> enumerable, int number)

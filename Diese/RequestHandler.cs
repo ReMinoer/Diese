@@ -15,8 +15,7 @@ namespace Diese
 
         public void Invoke(object sender, TRequestArgs requestArgs)
         {
-            if (Event != null)
-                Event(sender, requestArgs);
+            Event?.Invoke(sender, requestArgs);
         }
     }
 }

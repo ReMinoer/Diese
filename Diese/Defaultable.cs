@@ -30,5 +30,10 @@
             _userValue = default(T);
             _userDefined = false;
         }
+
+        static public implicit operator T(Defaultable<T> defaultable)
+        {
+            return defaultable.Value;
+        }
     }
 }
