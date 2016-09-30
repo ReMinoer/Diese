@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Diese.Collections
 {
-    public class ItemIndexPair<T>
+    public struct ItemIndexPair<T>
     {
         public T Item { get; }
         public int Index { get; }
@@ -30,6 +31,7 @@ namespace Diese.Collections
 
     static public class EnumerableExtension
     {
+
         static public bool Any<T>(this IEnumerable<T> enumerable, out T item)
         {
             IEnumerator<T> enumerator = enumerable.GetEnumerator();
@@ -58,6 +60,36 @@ namespace Diese.Collections
             return false;
         }
 
+        static public bool Any<T>(this IEnumerable enumerable)
+        {
+            return enumerable.OfType<T>().Any();
+        }
+
+        static public bool Any<TResult>(this IEnumerable enumerable, out TResult item)
+        {
+            foreach (object obj in enumerable)
+            {
+                if (!(obj is TResult))
+                    continue;
+
+                item = (TResult)obj;
+                return true;
+            }
+
+            item = default(TResult);
+            return false;
+        }
+
+        static public TResult First<TResult>(this IEnumerable enumerable)
+        {
+            return enumerable.OfType<TResult>().First();
+        }
+
+        static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable)
+        {
+            return enumerable.OfType<TResult>().FirstOrDefault();
+        }
+
         static public IEnumerable<T> NotNulls<T>(this IEnumerable<T> enumerable)
             where T : class
         {
@@ -69,7 +101,7 @@ namespace Diese.Collections
             return enumerable.Where(x => type.IsInstanceOfType(x));
         }
 
-        static public bool CountIsSuperiorTo<T>(this IEnumerable<T> enumerable, int number)
+        static public bool CountSuperiorTo<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number <= 0)
                 return true;
@@ -86,7 +118,7 @@ namespace Diese.Collections
             return false;
         }
 
-        static public bool CountIsInferiorTo<T>(this IEnumerable<T> enumerable, int number)
+        static public bool CountInferiorTo<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number <= 0)
                 return false;
@@ -103,7 +135,7 @@ namespace Diese.Collections
             return true;
         }
 
-        static public bool CountIsSuperiorOrEqualsTo<T>(this IEnumerable<T> enumerable, int number)
+        static public bool CountSuperiorOrEqualTo<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number < 0)
                 return true;
@@ -120,7 +152,7 @@ namespace Diese.Collections
             return false;
         }
 
-        static public bool CountIsInferiorOrEqualsTo<T>(this IEnumerable<T> enumerable, int number)
+        static public bool CountInferiorOrEqualTo<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number < 0)
                 return false;
@@ -215,13 +247,26 @@ namespace Diese.Collections
 
         static public int IndexOf<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
         {
-            ItemIndexPair<T> pair = enumerable.Indexed().FirstOrDefault(p => predicate(p.Item));
-            return pair?.Index ?? -1;
+            int index = 0;
+            foreach (T obj in enumerable)
+            {
+                if (predicate(obj))
+                    return index;
+                index++;
+            }
+
+            return -1;
         }
 
         static public IEnumerable<int> IndexesOf<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
         {
-            return enumerable.Indexed().Where(p => predicate(p.Item)).Select(p => p.Index);
+            int i = 0;
+            foreach (T obj in enumerable)
+            {
+                if (predicate(obj))
+                    yield return i;
+                i++;
+            }
         }
 
         static public bool SetEquals<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn)
