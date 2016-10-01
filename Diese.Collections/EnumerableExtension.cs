@@ -80,6 +80,26 @@ namespace Diese.Collections
             return false;
         }
 
+        static public bool Any<T>(this IEnumerable<T> enumerable, Type type)
+        {
+            return enumerable.Any(x => type.IsInstanceOfType(x));
+        }
+
+        static public bool Any<T>(this IEnumerable<T> enumerable, Type type, out T item)
+        {
+            foreach (T obj in enumerable)
+            {
+                if (!type.IsInstanceOfType(obj))
+                    continue;
+
+                item = obj;
+                return true;
+            }
+
+            item = default(T);
+            return false;
+        }
+
         static public TResult First<TResult>(this IEnumerable enumerable)
         {
             return enumerable.OfType<TResult>().First();
