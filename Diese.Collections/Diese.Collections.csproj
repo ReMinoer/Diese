@@ -34,6 +34,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionExtension.cs" />
+    <Compile Include="DictionaryExtension.cs" />
+    <Compile Include="ListExtension.cs" />
     <Compile Include="Enumerable.cs" />
     <Compile Include="EnumerableExtension.cs" />
     <Compile Include="ReadOnlyList.cs" />
