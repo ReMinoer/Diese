@@ -60,22 +60,23 @@ namespace Diese.Serialization
         public void Load(T obj, TextReader textReader)
         {
             if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement IConfigurationData<T>",
-                    typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
 
             var model = (TModel)_serializer.Deserialize(textReader) as IConfigurationData<T>;
-            if (model != null)
-                model.Configure(obj);
+            if (model == null)
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
+
+            model.Configure(obj);
         }
 
         public T Instantiate(TextReader textReader)
         {
             if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
 
             var model = (TModel)_serializer.Deserialize(textReader) as ICreationData<T>;
             if (model == null)
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
 
             return model.Create();
         }

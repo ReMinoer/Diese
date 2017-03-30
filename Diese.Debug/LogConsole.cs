@@ -11,6 +11,6 @@ namespace Diese.Debug
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static private extern bool AllocConsole();
+        extern static private bool AllocConsole();
     }
 }

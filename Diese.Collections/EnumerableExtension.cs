@@ -34,11 +34,13 @@ namespace Diese.Collections
 
         static public bool Any<T>(this IEnumerable<T> enumerable, out T item)
         {
-            IEnumerator<T> enumerator = enumerable.GetEnumerator();
-            if (enumerator.MoveNext())
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
             {
-                item = enumerator.Current;
-                return true;
+                if (enumerator.MoveNext())
+                {
+                    item = enumerator.Current;
+                    return true;
+                }
             }
 
             item = default(T);
@@ -127,12 +129,14 @@ namespace Diese.Collections
                 return true;
 
             int i = 0;
-            IEnumerator<T> enumerator = enumerable.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
             {
-                i++;
-                if (i > number)
-                    return true;
+                while (enumerator.MoveNext())
+                {
+                    i++;
+                    if (i > number)
+                        return true;
+                }
             }
 
             return false;
@@ -144,12 +148,14 @@ namespace Diese.Collections
                 return false;
 
             int i = 0;
-            IEnumerator<T> enumerator = enumerable.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
             {
-                i++;
-                if (i >= number)
-                    return false;
+                while (enumerator.MoveNext())
+                {
+                    i++;
+                    if (i >= number)
+                        return false;
+                }
             }
 
             return true;
@@ -161,12 +167,14 @@ namespace Diese.Collections
                 return true;
 
             int i = 0;
-            IEnumerator<T> enumerator = enumerable.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
             {
-                i++;
-                if (i >= number)
-                    return true;
+                while (enumerator.MoveNext())
+                {
+                    i++;
+                    if (i >= number)
+                        return true;
+                }
             }
 
             return false;
@@ -178,12 +186,14 @@ namespace Diese.Collections
                 return false;
 
             int i = 0;
-            IEnumerator<T> enumerator = enumerable.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
             {
-                i++;
-                if (i > number)
-                    return false;
+                while (enumerator.MoveNext())
+                {
+                    i++;
+                    if (i > number)
+                        return false;
+                }
             }
 
             return true;
@@ -398,44 +408,45 @@ namespace Diese.Collections
             if (!arrayIn.Any())
                 yield break;
 
-            IEnumerator<TOut> enumeratorOut = arrayOut.OrderBy(keySelectorOut, comparer).GetEnumerator();
-            IEnumerator<TIn> enumeratorIn = arrayIn.OrderBy(keySelectorIn, comparer).GetEnumerator();
-
-            enumeratorOut.MoveNext();
-            enumeratorIn.MoveNext();
-            TKey currentKeyOut = keySelectorOut(enumeratorOut.Current);
-            TKey currentKeyIn = keySelectorIn(enumeratorIn.Current);
-
-            while (true)
+            using (IEnumerator<TOut> enumeratorOut = arrayOut.OrderBy(keySelectorOut, comparer).GetEnumerator())
+            using (IEnumerator<TIn> enumeratorIn = arrayIn.OrderBy(keySelectorIn, comparer).GetEnumerator())
             {
-                int comparison = comparer.Compare(currentKeyOut, currentKeyIn);
+                enumeratorOut.MoveNext();
+                enumeratorIn.MoveNext();
+                TKey currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                TKey currentKeyIn = keySelectorIn(enumeratorIn.Current);
 
-                if (comparison == 0)
+                while (true)
                 {
-                    yield return resultSelector(enumeratorOut.Current, enumeratorIn.Current);
+                    int comparison = comparer.Compare(currentKeyOut, currentKeyIn);
 
-                    if (enumeratorIn.MoveNext())
-                        yield break;
+                    if (comparison == 0)
+                    {
+                        yield return resultSelector(enumeratorOut.Current, enumeratorIn.Current);
 
-                    if (enumeratorOut.MoveNext())
-                        yield break;
+                        if (enumeratorIn.MoveNext())
+                            yield break;
 
-                    currentKeyOut = keySelectorOut(enumeratorOut.Current);
-                    currentKeyIn = keySelectorIn(enumeratorIn.Current);
-                }
-                else if (comparison < 0)
-                {
-                    if (enumeratorOut.MoveNext())
-                        yield break;
+                        if (enumeratorOut.MoveNext())
+                            yield break;
 
-                    currentKeyOut = keySelectorOut(enumeratorOut.Current);
-                }
-                else // (comparison > 0)
-                {
-                    if (!enumeratorIn.MoveNext())
-                        yield break;
+                        currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                        currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                    }
+                    else if (comparison < 0)
+                    {
+                        if (enumeratorOut.MoveNext())
+                            yield break;
 
-                    currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                        currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                    }
+                    else // (comparison > 0)
+                    {
+                        if (!enumeratorIn.MoveNext())
+                            yield break;
+
+                        currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                    }
                 }
             }
         }
@@ -490,52 +501,55 @@ namespace Diese.Collections
             if (!arrayIn.Any())
                 yield break;
 
-            IEnumerator<TOut> enumeratorOut = arrayOut.OrderBy(keySelectorOut, comparer).GetEnumerator();
-            IEnumerator<TIn> enumeratorIn = arrayIn.OrderBy(keySelectorIn, comparer).GetEnumerator();
-
-            enumeratorOut.MoveNext();
-            enumeratorIn.MoveNext();
-            TKey currentKeyOut = keySelectorOut(enumeratorOut.Current);
-            TKey currentKeyIn = keySelectorIn(enumeratorIn.Current);
-
-            while (true)
+            using (IEnumerator<TOut> enumeratorOut = arrayOut.OrderBy(keySelectorOut, comparer).GetEnumerator())
+            using (IEnumerator<TIn> enumeratorIn = arrayIn.OrderBy(keySelectorIn, comparer).GetEnumerator())
             {
-                int comparison = comparer.Compare(currentKeyOut, currentKeyIn);
+                enumeratorOut.MoveNext();
+                enumeratorIn.MoveNext();
+                TKey currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                TKey currentKeyIn = keySelectorIn(enumeratorIn.Current);
 
-                if (comparison == 0)
+                while (true)
                 {
-                    if (enumeratorIn.MoveNext())
+                    int comparison = comparer.Compare(currentKeyOut, currentKeyIn);
+
+                    if (comparison == 0)
                     {
-                        while (enumeratorOut.MoveNext())
-                            yield return enumeratorOut.Current;
-                        yield break;
+                        if (enumeratorIn.MoveNext())
+                        {
+                            while (enumeratorOut.MoveNext())
+                                yield return enumeratorOut.Current;
+
+                            yield break;
+                        }
+
+                        if (enumeratorOut.MoveNext())
+                            yield break;
+
+                        currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                        currentKeyIn = keySelectorIn(enumeratorIn.Current);
                     }
-
-                    if (enumeratorOut.MoveNext())
-                        yield break;
-
-                    currentKeyOut = keySelectorOut(enumeratorOut.Current);
-                    currentKeyIn = keySelectorIn(enumeratorIn.Current);
-                }
-                else if (comparison < 0)
-                {
-                    yield return enumeratorOut.Current;
-
-                    if (!enumeratorOut.MoveNext())
-                        yield break;
-
-                    currentKeyOut = keySelectorOut(enumeratorOut.Current);
-                }
-                else // (comparison > 0)
-                {
-                    if (enumeratorIn.MoveNext())
+                    else if (comparison < 0)
                     {
-                        while (enumeratorOut.MoveNext())
-                            yield return enumeratorOut.Current;
-                        yield break;
-                    }
+                        yield return enumeratorOut.Current;
 
-                    currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                        if (!enumeratorOut.MoveNext())
+                            yield break;
+
+                        currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                    }
+                    else // (comparison > 0)
+                    {
+                        if (enumeratorIn.MoveNext())
+                        {
+                            while (enumeratorOut.MoveNext())
+                                yield return enumeratorOut.Current;
+
+                            yield break;
+                        }
+
+                        currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                    }
                 }
             }
         }
@@ -609,74 +623,80 @@ namespace Diese.Collections
                 return removed.Any();
             }
 
-            IEnumerator<TOut> enumeratorOut = arrayOut.OrderBy(keySelectorOut, comparer).GetEnumerator();
-            IEnumerator<TIn> enumeratorIn = arrayIn.OrderBy(keySelectorIn, comparer).GetEnumerator();
-
-            enumeratorOut.MoveNext();
-            enumeratorIn.MoveNext();
-            TKey currentKeyOut = keySelectorOut(enumeratorOut.Current);
-            TKey currentKeyIn = keySelectorIn(enumeratorIn.Current);
-
-            var addedList = new List<TIn>();
-            var removedList = new List<TOut>();
-            var conservedList = new List<TOut>();
-
-            while (true)
+            using (IEnumerator<TOut> enumeratorOut = arrayOut.OrderBy(keySelectorOut, comparer).GetEnumerator())
+            using (IEnumerator<TIn> enumeratorIn = arrayIn.OrderBy(keySelectorIn, comparer).GetEnumerator())
             {
-                int comparison = comparer.Compare(currentKeyOut, currentKeyIn);
 
-                if (comparison == 0)
+                enumeratorOut.MoveNext();
+                enumeratorIn.MoveNext();
+                TKey currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                TKey currentKeyIn = keySelectorIn(enumeratorIn.Current);
+
+                var addedList = new List<TIn>();
+                var removedList = new List<TOut>();
+                var conservedList = new List<TOut>();
+
+                while (true)
                 {
-                    conservedList.Add(enumeratorOut.Current);
+                    int comparison = comparer.Compare(currentKeyOut, currentKeyIn);
 
-                    if (enumeratorOut.MoveNext())
+                    if (comparison == 0)
                     {
-                        while (enumeratorIn.MoveNext())
-                            addedList.Add(enumeratorIn.Current);
-                        break;
-                    }
+                        conservedList.Add(enumeratorOut.Current);
 
-                    if (enumeratorIn.MoveNext())
+                        if (enumeratorOut.MoveNext())
+                        {
+                            while (enumeratorIn.MoveNext())
+                                addedList.Add(enumeratorIn.Current);
+
+                            break;
+                        }
+
+                        if (enumeratorIn.MoveNext())
+                        {
+                            while (enumeratorOut.MoveNext())
+                                removedList.Add(enumeratorOut.Current);
+
+                            break;
+                        }
+
+                        currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                        currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                    }
+                    else if (comparison < 0)
                     {
-                        while (enumeratorOut.MoveNext())
-                            removedList.Add(enumeratorOut.Current);
-                        break;
-                    }
+                        removedList.Add(enumeratorOut.Current);
 
-                    currentKeyOut = keySelectorOut(enumeratorOut.Current);
-                    currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                        if (enumeratorOut.MoveNext())
+                        {
+                            while (enumeratorIn.MoveNext())
+                                addedList.Add(enumeratorIn.Current);
+
+                            break;
+                        }
+
+                        currentKeyOut = keySelectorOut(enumeratorOut.Current);
+                    }
+                    else // (comparison > 0)
+                    {
+                        addedList.Add(enumeratorIn.Current);
+
+                        if (enumeratorIn.MoveNext())
+                        {
+                            while (enumeratorOut.MoveNext())
+                                removedList.Add(enumeratorOut.Current);
+
+                            break;
+                        }
+
+                        currentKeyIn = keySelectorIn(enumeratorIn.Current);
+                    }
                 }
-                else if (comparison < 0)
-                {
-                    removedList.Add(enumeratorOut.Current);
 
-                    if (enumeratorOut.MoveNext())
-                    {
-                        while (enumeratorIn.MoveNext())
-                            addedList.Add(enumeratorIn.Current);
-                        break;
-                    }
-
-                    currentKeyOut = keySelectorOut(enumeratorOut.Current);
-                }
-                else // (comparison > 0)
-                {
-                    addedList.Add(enumeratorIn.Current);
-
-                    if (enumeratorIn.MoveNext())
-                    {
-                        while (enumeratorOut.MoveNext())
-                            removedList.Add(enumeratorOut.Current);
-                        break;
-                    }
-
-                    currentKeyIn = keySelectorIn(enumeratorIn.Current);
-                }
+                added = addedList;
+                removed = removedList;
+                conserved = conservedList;
             }
-
-            added = addedList;
-            removed = removedList;
-            conserved = conservedList;
 
             return added.Any() || removed.Any();
         }

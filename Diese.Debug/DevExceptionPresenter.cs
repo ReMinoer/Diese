@@ -30,7 +30,7 @@ namespace Diese.Debug
                 Type reflectedType = stackFrame.GetMethod().ReflectedType;
                 if (reflectedType != null)
                 {
-                    string groupName = string.Format("{0} ({1})", reflectedType.FullName, stackFrame.GetFileName());
+                    string groupName = $"{reflectedType.FullName} ({stackFrame.GetFileName()})";
                     if (group == null || group.Name != groupName)
                         group = _view.StackTraceList.Groups.Add(groupName, groupName);
                 }

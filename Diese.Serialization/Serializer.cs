@@ -38,8 +38,7 @@ namespace Diese.Serialization
         {
             TModel dataModel = DeserializeModel(stream);
 
-            if (DataConfiguration != null)
-                DataConfiguration(dataModel);
+            DataConfiguration?.Invoke(dataModel);
 
             return dataModel;
         }
@@ -66,8 +65,7 @@ namespace Diese.Serialization
         public void Load(T obj, string path)
         {
             if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement IConfigurationData<T>",
-                    typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
 
             var streamReader = new StreamReader(path);
             Load(obj, streamReader.BaseStream);
@@ -77,18 +75,16 @@ namespace Diese.Serialization
         public void Load(T obj, Stream stream)
         {
             if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement IConfigurationData<T>",
-                    typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
 
             var model = LoadModel(stream) as IConfigurationData<T>;
-            if (model != null)
-                model.Configure(obj);
+            model?.Configure(obj);
         }
 
         public T Instantiate(string path)
         {
             if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
 
             var streamReader = new StreamReader(path);
             T obj = Instantiate(streamReader.BaseStream);
@@ -100,11 +96,11 @@ namespace Diese.Serialization
         public T Instantiate(Stream stream)
         {
             if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
 
             var model = LoadModel(stream) as ICreationData<T>;
             if (model == null)
-                throw new InvalidOperationException(string.Format("{0} does not implement ICreationData<T>", typeof(TModel)));
+                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
 
             return model.Create();
         }

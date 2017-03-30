@@ -114,7 +114,7 @@ namespace Diese.Debug
                 for (int i = 0; i < depth; i++)
                     tabs += "\t";
 
-                streamWriter.WriteLine($"{count};{tabs}|-- {node.Name};{node.TimeSpan.TotalMilliseconds.ToString("F3")};{depth}");
+                streamWriter.WriteLine($"{count};{tabs}|-- {node.Name};{node.TimeSpan.TotalMilliseconds:F3};{depth}");
 
                 foreach (TimeNode child in node.Children)
                     WriteSnapshotRecursive(streamWriter, child, depth + 1, ref count);

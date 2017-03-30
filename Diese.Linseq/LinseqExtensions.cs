@@ -28,12 +28,46 @@ namespace Diese.Linseq
 
         static public IEnumerable<T> ThenInsertAt<T>(this IEnumerable<T> sequence, int index, params T[] nextValues)
         {
-            return sequence.Take(index).Concat(nextValues).Concat(sequence.Skip(index));
+            int i = 0;
+            using (IEnumerator<T> enumerator = sequence.GetEnumerator())
+            {
+                while (i < index && enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                    i++;
+                }
+
+                foreach (T nextValue in nextValues)
+                    yield return nextValue;
+
+                while (enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                    i++;
+                }
+            }
         }
 
         static public IEnumerable<T> ThenInsertAt<T>(this IEnumerable<T> sequence, int index, IEnumerable<T> nextValues)
         {
-            return sequence.Take(index).Concat(nextValues).Concat(sequence.Skip(index));
+            int i = 0;
+            using (IEnumerator<T> enumerator = sequence.GetEnumerator())
+            {
+                while (i < index && enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                    i++;
+                }
+
+                foreach (T nextValue in nextValues)
+                    yield return nextValue;
+
+                while (enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                    i++;
+                }
+            }
         }
 
         static public IEnumerable<T> ThenGoTo<T>(this IEnumerable<T> sequence, T goal, Func<T, T> incrementor)
