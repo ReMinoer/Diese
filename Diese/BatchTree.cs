@@ -57,8 +57,7 @@ namespace Diese
 
         public void EndBatch()
         {
-            OnNodeEnded(_nodeStack.Peek().Queue, CurrentDepth);
-            _nodeStack.Pop();
+            OnNodeEnded(_nodeStack.Pop().Queue, CurrentDepth);
         }
 
         public bool Batch(T item)
