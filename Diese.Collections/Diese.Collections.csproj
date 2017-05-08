@@ -36,6 +36,10 @@
   <ItemGroup>
     <Compile Include="CollectionExtension.cs" />
     <Compile Include="DictionaryExtension.cs" />
+    <Compile Include="ExcludingFilter.cs" />
+    <Compile Include="FilterBase.cs" />
+    <Compile Include="IFilter.cs" />
+    <Compile Include="IncludingFilter.cs" />
     <Compile Include="ListExtension.cs" />
     <Compile Include="Enumerable.cs" />
     <Compile Include="EnumerableExtension.cs" />
