@@ -123,45 +123,87 @@ namespace Diese.Collections
             return enumerable.Where(x => type.IsInstanceOfType(x));
         }
 
-        static public bool CountSuperiorTo<T>(this IEnumerable<T> enumerable, int number)
+        static public T MinBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
+            where TKey : IComparable<TKey>
         {
-            if (number <= 0)
-                return true;
-
-            int i = 0;
-            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    i++;
-                    if (i > number)
-                        return true;
-                }
-            }
-
-            return false;
+            return MinBy(enumerable, keySelector, (x, y) => x.CompareTo(y));
         }
 
-        static public bool CountInferiorTo<T>(this IEnumerable<T> enumerable, int number)
+        static public T MinBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, IComparer<TKey> comparer)
         {
-            if (number <= 0)
-                return false;
-
-            int i = 0;
-            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    i++;
-                    if (i >= number)
-                        return false;
-                }
-            }
-
-            return true;
+            return MinBy(enumerable, keySelector, comparer.Compare);
         }
 
-        static public bool CountSuperiorOrEqualTo<T>(this IEnumerable<T> enumerable, int number)
+        static public T MinBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, Comparison<TKey> comparison)
+        {
+            if (enumerable == null)
+                throw new InvalidOperationException();
+
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
+
+                T min = enumerator.Current;
+                TKey minKey = keySelector(min);
+
+                while (enumerator.MoveNext())
+                {
+                    T current = enumerator.Current;
+                    TKey currentKey = keySelector(current);
+
+                    if (comparison(currentKey, minKey) >= 0)
+                        continue;
+
+                    min = current;
+                    minKey = currentKey;
+                }
+
+                return min;
+            }
+        }
+
+        static public T MaxBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
+            where TKey : IComparable<TKey>
+        {
+            return MaxBy(enumerable, keySelector, (x, y) => x.CompareTo(y));
+        }
+
+        static public T MaxBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, IComparer<TKey> comparer)
+        {
+            return MaxBy(enumerable, keySelector, comparer.Compare);
+        }
+
+        static public T MaxBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, Comparison<TKey> comparison)
+        {
+            if (enumerable == null)
+                throw new InvalidOperationException();
+
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
+
+                T max = enumerator.Current;
+                TKey maxKey = keySelector(max);
+
+                while (enumerator.MoveNext())
+                {
+                    T current = enumerator.Current;
+                    TKey currentKey = keySelector(current);
+
+                    if (comparison(currentKey, maxKey) <= 0)
+                        continue;
+
+                    max = current;
+                    maxKey = currentKey;
+                }
+
+                return max;
+            }
+        }
+
+        static public bool AtLeast<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number < 0)
                 return true;
@@ -180,7 +222,7 @@ namespace Diese.Collections
             return false;
         }
 
-        static public bool CountInferiorOrEqualTo<T>(this IEnumerable<T> enumerable, int number)
+        static public bool AtMost<T>(this IEnumerable<T> enumerable, int number)
         {
             if (number < 0)
                 return false;
