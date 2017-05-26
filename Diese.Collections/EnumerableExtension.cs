@@ -107,9 +107,19 @@ namespace Diese.Collections
             return enumerable.OfType<TResult>().First();
         }
 
+        static public TResult First<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
+        {
+            return enumerable.OfType<TResult>().First(x => resultPredicate(x));
+        }
+
         static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable)
         {
             return enumerable.OfType<TResult>().FirstOrDefault();
+        }
+
+        static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
+        {
+            return enumerable.OfType<TResult>().FirstOrDefault(x => resultPredicate(x));
         }
 
         static public IEnumerable<T> NotNulls<T>(this IEnumerable<T> enumerable)
