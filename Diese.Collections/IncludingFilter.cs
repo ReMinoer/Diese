@@ -25,14 +25,12 @@ namespace Diese.Collections
 
         public override sealed bool Filter(T item)
         {
-            return List.Contains(item);
+            return Items.Contains(item);
         }
 
         public ExcludingFilter<T> ToExcluding(IEnumerable<T> data)
         {
-            var excludingFilter = new ExcludingFilter<T>();
-            excludingFilter.List.AddRange(data.Where(x => !Filter(x)));
-            return excludingFilter;
+            return new ExcludingFilter<T>(data.Where(x => !Filter(x)));
         }
     }
 }

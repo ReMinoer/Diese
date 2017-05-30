@@ -4,7 +4,7 @@ namespace Diese.Collections
 {
     public interface IFilter<T>
     {
-        List<T> List { get; }
+        HashSet<T> Items { get; }
         bool Excluding { get; }
         bool Filter(T item);
     }

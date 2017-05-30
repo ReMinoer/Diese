@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Diese.Collections
 {
     public abstract class FilterBase<T> : IFilter<T>
     {
-        public List<T> List { get; } = new List<T>();
+        public HashSet<T> Items { get; } = new HashSet<T>();
         public abstract bool Excluding { get; }
 
         protected FilterBase()
@@ -14,12 +13,12 @@ namespace Diese.Collections
 
         protected FilterBase(IEnumerable<T> enumerable)
         {
-            List.AddRange(enumerable);
+            Items.UnionWith(enumerable);
         }
 
         protected FilterBase(params T[] array)
         {
-            List.AddRange(array);
+            Items.UnionWith(array);
         }
 
         public abstract bool Filter(T item);
