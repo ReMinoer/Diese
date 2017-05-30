@@ -213,39 +213,35 @@ namespace Diese.Collections
             }
         }
 
-        static public bool AtLeast<T>(this IEnumerable<T> enumerable, int number)
+        static public bool AtLeast(this IEnumerable enumerable, int number)
         {
             if (number < 0)
                 return true;
 
             int i = 0;
-            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
+            IEnumerator enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                while (enumerator.MoveNext())
-                {
-                    i++;
-                    if (i >= number)
-                        return true;
-                }
+                i++;
+                if (i >= number)
+                    return true;
             }
 
             return false;
         }
 
-        static public bool AtMost<T>(this IEnumerable<T> enumerable, int number)
+        static public bool AtMost(this IEnumerable enumerable, int number)
         {
             if (number < 0)
                 return false;
 
             int i = 0;
-            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
+            IEnumerator enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                while (enumerator.MoveNext())
-                {
-                    i++;
-                    if (i > number)
-                        return false;
-                }
+                i++;
+                if (i > number)
+                    return false;
             }
 
             return true;
