@@ -125,5 +125,10 @@ namespace Diese.Collections
             foreach (int index in indexes)
                 list.RemoveAt(index);
         }
+
+        static public ReadOnlyList<T> AsReadOnly<T>(this IList<T> list)
+        {
+            return new ReadOnlyList<T>(list);
+        }
     }
 }

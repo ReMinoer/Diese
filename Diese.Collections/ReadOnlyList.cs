@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Diese.Collections
 {
@@ -9,6 +10,12 @@ namespace Diese.Collections
         public int Count => _list.Count;
         public T this[int index] => _list[index];
 
+        static public ReadOnlyList<T> Empty => new ReadOnlyList<T>();
+
+        private ReadOnlyList()
+        {
+        }
+
         public ReadOnlyList(IList<T> list)
         {
             _list = list;
@@ -16,7 +23,7 @@ namespace Diese.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return (_list ?? Enumerable.Empty<T>()).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

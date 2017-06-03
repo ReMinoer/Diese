@@ -41,5 +41,10 @@ namespace Diese.Collections
             foreach (T item in toRemove)
                 collection.Remove(item);
         }
+
+        static public ReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection)
+        {
+            return new ReadOnlyCollection<T>(collection);
+        }
     }
 }

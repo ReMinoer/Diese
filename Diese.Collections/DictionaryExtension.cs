@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Diese.Collections
 {
@@ -24,6 +25,11 @@ namespace Diese.Collections
         {
             foreach (T item in enumerable)
                 dictionary.Add(keySelector(item), valueSelector(item));
+        }
+
+        static public ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        {
+            return new ReadOnlyDictionary<TKey, TValue>(dictionary);
         }
     }
 }
