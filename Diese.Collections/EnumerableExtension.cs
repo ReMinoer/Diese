@@ -291,11 +291,6 @@ namespace Diese.Collections
             return dictionary;
         }
 
-        static public HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable)
-        {
-            return new HashSet<T>(enumerable);
-        }
-
         static public HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable, ConservedKey conservedKey)
         {
             var hashSet = new HashSet<T>();
