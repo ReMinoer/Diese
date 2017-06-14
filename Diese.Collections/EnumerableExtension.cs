@@ -122,6 +122,26 @@ namespace Diese.Collections
             return enumerable.OfType<TResult>().FirstOrDefault(x => resultPredicate(x));
         }
 
+        static public IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count, Func<T> fillingFactory)
+        {
+            if (count <= 0)
+                yield break;
+
+            int i = 0;
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
+                while (i < count && enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                    i++;
+                }
+
+            while (i < count)
+            {
+                yield return fillingFactory();
+                i++;
+            }
+        }
+
         static public IEnumerable<T> NotNulls<T>(this IEnumerable<T> enumerable)
             where T : class
         {
