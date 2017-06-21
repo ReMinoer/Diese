@@ -364,8 +364,9 @@ namespace Diese.Collections
 
         static public bool SetEquals<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn)
         {
+            T[] arrayOut = enumerableOut as T[] ?? enumerableOut.ToArray();
             List<T> listIn = enumerableIn.ToList();
-            return enumerableOut.All(item => listIn.Remove(item));
+            return arrayOut.Length == listIn.Count && arrayOut.All(item => listIn.Remove(item));
         }
 
         static public bool SetDiff<T>(this IEnumerable<T> enumerableOut, IEnumerable<T> enumerableIn, out IEnumerable<T> added, out IEnumerable<T> removed)
