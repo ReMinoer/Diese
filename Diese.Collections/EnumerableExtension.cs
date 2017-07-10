@@ -31,7 +31,6 @@ namespace Diese.Collections
 
     static public class EnumerableExtension
     {
-
         static public bool Any<T>(this IEnumerable<T> enumerable, out T item)
         {
             using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
@@ -102,9 +101,25 @@ namespace Diese.Collections
             return false;
         }
 
+        static public object First(this IEnumerable enumerable)
+        {
+            IEnumerator enumerator = enumerable.GetEnumerator();
+            enumerator.MoveNext();
+            return enumerator.Current;
+        }
+
+        static public object First(this IEnumerable enumerable, Predicate<object> predicate)
+        {
+            foreach (object item in enumerable)
+                if (predicate(item))
+                    return item;
+
+            throw new InvalidOperationException();
+        }
+
         static public TResult First<TResult>(this IEnumerable enumerable)
         {
-            return enumerable.OfType<TResult>().First();
+            return Enumerable.First(enumerable.OfType<TResult>());
         }
 
         static public TResult First<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
@@ -112,9 +127,24 @@ namespace Diese.Collections
             return enumerable.OfType<TResult>().First(x => resultPredicate(x));
         }
 
+        static public object FirstOrDefault(this IEnumerable enumerable)
+        {
+            IEnumerator enumerator = enumerable.GetEnumerator();
+            return enumerator.MoveNext() ? enumerator.Current : default(object);
+        }
+
         static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable)
         {
-            return enumerable.OfType<TResult>().FirstOrDefault();
+            return Enumerable.FirstOrDefault(enumerable.OfType<TResult>());
+        }
+
+        static public object FirstOrDefault(this IEnumerable enumerable, Predicate<object> predicate)
+        {
+            foreach (object item in enumerable)
+                if (predicate(item))
+                    return item;
+
+            return default(object);
         }
 
         static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
