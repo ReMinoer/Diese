@@ -297,6 +297,36 @@ namespace Diese.Collections
             return true;
         }
 
+        static public IEnumerable Concat(this IEnumerable enumerable, object value)
+        {
+            foreach (object item in enumerable)
+                yield return item;
+            yield return value;
+        }
+
+        static public IEnumerable<T> Concat<T>(this IEnumerable<T> enumerable, T value)
+        {
+            foreach (T item in enumerable)
+                yield return item;
+            yield return value;
+        }
+
+        static public IEnumerable Concat(this IEnumerable enumerable, params object[] values)
+        {
+            foreach (object item in enumerable)
+                yield return item;
+            foreach (object value in values)
+                yield return value;
+        }
+
+        static public IEnumerable<T> Concat<T>(this IEnumerable<T> enumerable, params T[] values)
+        {
+            foreach (T item in enumerable)
+                yield return item;
+            foreach (T value in values)
+                yield return value;
+        }
+
         static public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> enumerable)
         {
             return enumerable.ToDictionary(x => x.Key, x => x.Value);
