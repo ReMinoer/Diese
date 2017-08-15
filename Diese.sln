@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Serialization", "Diese.Serialization\Diese.Serialization.csproj", "{4AE2D764-4161-453D-8B2D-BD66607EC27A}"
 EndProject
@@ -55,6 +55,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Linseq", "Diese.Linseq\Diese.Linseq.csproj", "{F9D2ED94-6FA3-46FB-A50B-83C486F33EEB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Lintree", "Diese.Lintree\Diese.Lintree.csproj", "{B55579DD-9710-4D1F-9C6A-4D7ACC878D37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Scheduling", "Diese.Scheduling\Diese.Scheduling.csproj", "{ED3283B6-9691-4418-96D0-6E83AEE37540}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -146,6 +148,10 @@ Global
 		{B55579DD-9710-4D1F-9C6A-4D7ACC878D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B55579DD-9710-4D1F-9C6A-4D7ACC878D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B55579DD-9710-4D1F-9C6A-4D7ACC878D37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED3283B6-9691-4418-96D0-6E83AEE37540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED3283B6-9691-4418-96D0-6E83AEE37540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED3283B6-9691-4418-96D0-6E83AEE37540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED3283B6-9691-4418-96D0-6E83AEE37540}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
