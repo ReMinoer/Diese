@@ -45,6 +45,7 @@
     <Compile Include="ListExtension.cs" />
     <Compile Include="Enumerable.cs" />
     <Compile Include="EnumerableExtension.cs" />
+    <Compile Include="ObservableList.cs" />
     <Compile Include="ReadOnlyList.cs" />
     <Compile Include="ReadOnlyCollection.cs" />
     <Compile Include="ReadOnlyEnumerable.cs" />
