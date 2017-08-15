@@ -6,8 +6,8 @@ namespace Diese.Collections
 {
     public class ReadOnlyCollection<T> : IReadOnlyCollection<T>
     {
-        private readonly ICollection<T> _collection;
-        public int Count => _collection.Count;
+        protected readonly ICollection<T> Collection;
+        public int Count => Collection.Count;
 
         static public ReadOnlyCollection<T> Empty => new ReadOnlyCollection<T>();
 
@@ -17,12 +17,12 @@ namespace Diese.Collections
 
         public ReadOnlyCollection(ICollection<T> collection)
         {
-            _collection = collection;
+            Collection = collection;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return (_collection ?? Enumerable.Empty<T>()).GetEnumerator();
+            return (Collection ?? Enumerable.Empty<T>()).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -6,9 +6,9 @@ namespace Diese.Collections
 {
     public class ReadOnlyList<T> : IReadOnlyList<T>
     {
-        private readonly IList<T> _list;
-        public int Count => _list.Count;
-        public T this[int index] => _list[index];
+        protected readonly IList<T> List;
+        public int Count => List.Count;
+        public T this[int index] => List[index];
 
         static public ReadOnlyList<T> Empty => new ReadOnlyList<T>();
 
@@ -18,12 +18,12 @@ namespace Diese.Collections
 
         public ReadOnlyList(IList<T> list)
         {
-            _list = list;
+            List = list;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return (_list ?? Enumerable.Empty<T>()).GetEnumerator();
+            return (List ?? Enumerable.Empty<T>()).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
