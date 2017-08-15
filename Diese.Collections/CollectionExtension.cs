@@ -6,6 +6,17 @@ namespace Diese.Collections
 {
     static public class CollectionExtension
     {
+        static public void AddMany<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                collection.Add(item);
+        }
+
+        static public bool RemoveMany<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            return items.Aggregate(true, (current, item) => current & collection.Remove(item));
+        }
+
         static public T FirstOrAdd<T>(this ICollection<T> collection, Predicate<T> predicate, Func<T> itemFactory)
         {
             T firstItem;
