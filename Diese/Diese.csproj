@@ -39,6 +39,7 @@
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="IBatchable.cs" />
     <Compile Include="IDefaultable.cs" />
+    <Compile Include="ITaggable.cs" />
     <Compile Include="Predicate.cs" />
     <Compile Include="Defaultable.cs" />
     <Compile Include="DisposableCollection.cs" />
