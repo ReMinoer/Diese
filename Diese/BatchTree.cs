@@ -3,88 +3,36 @@ using System.Collections.Generic;
 
 namespace Diese
 {
-    public abstract class BatchTree : IBatchTree
+    public abstract class BatchTree<TBatchNode> : IBatchTree
+        where TBatchNode : BatchNode
     {
-        private readonly Stack<BatchNode> _nodeStack = new Stack<BatchNode>();
-        public int CurrentDepth => _nodeStack.Count;
-        public bool IsBatching => CurrentDepth > 0;
+        protected readonly Stack<TBatchNode> NodeStack = new Stack<TBatchNode>();
+        public int BatchDepth => NodeStack.Count;
+        public bool IsBatching => BatchDepth > 0;
 
-        public IDisposable BeginBatch()
+        public IDisposable Batch()
         {
-            var instance = new BatchNode(this);
-            _nodeStack.Push(instance);
+            TBatchNode instance = CreateBatchNode();
+            NodeStack.Push(instance);
             return instance;
+        }
+
+        protected abstract TBatchNode CreateBatchNode();
+
+        public void BeginBatch()
+        {
+            Batch();
         }
 
         public void EndBatch()
         {
-            _nodeStack.Pop();
+            OnNodeEnded(NodeStack.Pop(), BatchDepth);
 
             if (!IsBatching)
                 OnBatchEnded();
         }
 
-        protected abstract void OnBatchEnded();
-
-        private sealed class BatchNode : IDisposable
-        {
-            private readonly BatchTree _batch;
-
-            public BatchNode(BatchTree batch)
-            {
-                _batch = batch;
-            }
-
-            public void Dispose()
-            {
-                _batch.EndBatch();
-            }
-        }
-    }
-
-    public abstract class BatchTree<T> : IBatchTree<T>
-    {
-        private readonly Stack<BatchNode> _nodeStack = new Stack<BatchNode>();
-        public int CurrentDepth => _nodeStack.Count;
-        public bool IsBatching => CurrentDepth > 0;
-
-        public IDisposable BeginBatch()
-        {
-            var instance = new BatchNode(this);
-            _nodeStack.Push(instance);
-            return instance;
-        }
-
-        public void EndBatch()
-        {
-            OnNodeEnded(_nodeStack.Pop().Queue, CurrentDepth);
-        }
-
-        public bool Batch(T item)
-        {
-            if (!IsBatching)
-                return false;
-
-            _nodeStack.Peek().Queue.Enqueue(item);
-            return true;
-        }
-
-        protected abstract void OnNodeEnded(Queue<T> queue, int depth);
-
-        private sealed class BatchNode : IDisposable
-        {
-            private readonly BatchTree<T> _batch;
-            public Queue<T> Queue { get; private set; } = new Queue<T>();
-
-            public BatchNode(BatchTree<T> batch)
-            {
-                _batch = batch;
-            }
-
-            public void Dispose()
-            {
-                _batch.EndBatch();
-            }
-        }
+        protected abstract void OnNodeEnded(TBatchNode batchNode, int depth);
+        protected virtual void OnBatchEnded() { }
     }
 }
