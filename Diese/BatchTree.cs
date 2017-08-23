@@ -26,7 +26,8 @@ namespace Diese
 
         public void EndBatch()
         {
-            OnNodeEnded(NodeStack.Pop(), BatchDepth);
+            int batchDepth = BatchDepth;
+            OnNodeEnded(NodeStack.Pop(), batchDepth);
 
             if (!IsBatching)
                 OnBatchEnded();
