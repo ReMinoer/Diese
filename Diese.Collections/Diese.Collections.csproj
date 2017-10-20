@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="CollectionExtension.cs" />
     <Compile Include="DictionaryExtension.cs" />
+    <Compile Include="EnumeratorExtension.cs" />
     <Compile Include="ExcludingFilter.cs" />
     <Compile Include="FilterBase.cs" />
     <Compile Include="IFilter.cs" />
