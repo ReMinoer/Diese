@@ -64,8 +64,8 @@ namespace Diese.Serialization
 
         public void Load(T obj, string path)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurator<T>)))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(IConfigurator<T>)}");
 
             var streamReader = new StreamReader(path);
             Load(obj, streamReader.BaseStream);
@@ -74,17 +74,17 @@ namespace Diese.Serialization
 
         public void Load(T obj, Stream stream)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurator<T>)))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(IConfigurator<T>)}");
 
-            var model = LoadModel(stream) as IConfigurationData<T>;
+            var model = LoadModel(stream) as IConfigurator<T>;
             model?.Configure(obj);
         }
 
         public T Instantiate(string path)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreator<T>)))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(ICreator<T>)}");
 
             var streamReader = new StreamReader(path);
             T obj = Instantiate(streamReader.BaseStream);
@@ -95,12 +95,12 @@ namespace Diese.Serialization
 
         public T Instantiate(Stream stream)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreator<T>)))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(ICreator<T>)}");
 
-            var model = LoadModel(stream) as ICreationData<T>;
+            var model = LoadModel(stream) as ICreator<T>;
             if (model == null)
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(ICreator<T>)}");
 
             return model.Create();
         }

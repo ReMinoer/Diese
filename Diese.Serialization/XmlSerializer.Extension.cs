@@ -46,14 +46,14 @@ namespace Diese.Serialization
         // With model
 
         static public T Instantiate<T, TModel>(this XmlSerializer serializer, Stream stream)
-            where TModel : ICreationData<T>
+            where TModel : ICreator<T>
         {
             var model = serializer.Instantiate<TModel>(stream);
             return model.Create();
         }
 
         static public void Load<T, TModel>(this XmlSerializer serializer, T obj, Stream stream)
-            where TModel : IConfigurationData<T>
+            where TModel : IConfigurator<T>
         {
             var model = serializer.Instantiate<TModel>(stream);
             model.Configure(obj);
@@ -68,7 +68,7 @@ namespace Diese.Serialization
         }
 
         static public T Instantiate<T, TModel>(this XmlSerializer serializer, string path)
-            where TModel : ICreationData<T>
+            where TModel : ICreator<T>
         {
             var streamReader = new StreamReader(path);
             T obj = serializer.Instantiate<T, TModel>(streamReader.BaseStream);
@@ -77,7 +77,7 @@ namespace Diese.Serialization
         }
 
         static public void Load<T, TModel>(this XmlSerializer serializer, T obj, string path)
-            where TModel : IConfigurationData<T>
+            where TModel : IConfigurator<T>
         {
             var streamReader = new StreamReader(path);
             serializer.Load<T, TModel>(obj, streamReader.BaseStream);
@@ -93,14 +93,14 @@ namespace Diese.Serialization
         }
 
         static public T Instantiate<T, TModel>(this XmlSerializer serializer, TextReader textReader)
-            where TModel : ICreationData<T>
+            where TModel : ICreator<T>
         {
             var model = (TModel)serializer.Deserialize(textReader);
             return model.Create();
         }
 
         static public void Load<T, TModel>(this XmlSerializer serializer, T obj, TextReader textReader)
-            where TModel : IConfigurationData<T>
+            where TModel : IConfigurator<T>
         {
             var model = serializer.Instantiate<TModel>(textReader);
             model.Configure(obj);

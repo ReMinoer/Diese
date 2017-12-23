@@ -59,24 +59,22 @@ namespace Diese.Serialization
 
         public void Load(T obj, TextReader textReader)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurationData<T>)))
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(IConfigurator<T>)))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(IConfigurator<T>)}");
 
-            var model = (TModel)_serializer.Deserialize(textReader) as IConfigurationData<T>;
-            if (model == null)
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement IConfigurationData<T>");
+            if (!((TModel)_serializer.Deserialize(textReader) is IConfigurator<T> model))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(IConfigurator<T>)}");
 
             model.Configure(obj);
         }
 
         public T Instantiate(TextReader textReader)
         {
-            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreationData<T>)))
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
+            if (!typeof(TModel).GetInterfaces().Contains(typeof(ICreator<T>)))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(IConfigurator<T>)}");
 
-            var model = (TModel)_serializer.Deserialize(textReader) as ICreationData<T>;
-            if (model == null)
-                throw new InvalidOperationException($"{typeof(TModel)} does not implement ICreationData<T>");
+            if (!((TModel)_serializer.Deserialize(textReader) is ICreator<T> model))
+                throw new InvalidOperationException($"{nameof(TModel)} does not implement {nameof(IConfigurator<T>)}");
 
             return model.Create();
         }
