@@ -61,6 +61,11 @@ namespace Diese.Collections
             return false;
         }
 
+        static public bool Any(this IEnumerable enumerable)
+        {
+            return enumerable.GetEnumerator().MoveNext();
+        }
+
         static public bool Any<T>(this IEnumerable enumerable)
         {
             return enumerable.OfType<T>().Any();
