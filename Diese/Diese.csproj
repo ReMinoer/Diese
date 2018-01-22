@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="BatchNode.cs" />
     <Compile Include="BatchTree.cs" />
+    <Compile Include="ComparisonExtension.cs" />
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="IBatchable.cs" />
     <Compile Include="IDefaultable.cs" />
