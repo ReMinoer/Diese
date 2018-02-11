@@ -35,12 +35,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionExtension.cs" />
+    <Compile Include="CompositeReadOnlyCollection.cs" />
+    <Compile Include="CompositeReadOnlyObservableCollection.cs" />
     <Compile Include="DictionaryExtension.cs" />
     <Compile Include="EnumeratorExtension.cs" />
     <Compile Include="ExcludingFilter.cs" />
     <Compile Include="FilterBase.cs" />
     <Compile Include="IFilter.cs" />
     <Compile Include="IncludingFilter.cs" />
+    <Compile Include="IReadOnlyObservableCollection.cs" />
     <Compile Include="IWrappedCollection.cs" />
     <Compile Include="IWrappedList.cs" />
     <Compile Include="ListExtension.cs" />
@@ -52,6 +55,7 @@
     <Compile Include="ReadOnlyEnumerable.cs" />
     <Compile Include="ITracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadOnlyObservableCollection.cs" />
     <Compile Include="Tracker.cs" />
     <Compile Include="TrackerExtension.cs" />
     <Compile Include="WrappedCollection.cs" />
