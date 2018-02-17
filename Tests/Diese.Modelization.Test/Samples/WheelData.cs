@@ -1,11 +1,7 @@
-﻿using ProtoBuf;
-
-namespace Diese.Modelization.Test.Samples
+﻿namespace Diese.Modelization.Test.Samples
 {
-    [ProtoContract]
-    public class WheelData : IConfigurationData<Wheel>, ICreationData<Wheel>
+    public class WheelData : IDataModel<Wheel>, IConfigurator<Wheel>, ICreator<Wheel>
     {
-        [ProtoMember(1)]
         public double Wear { get; set; }
 
         public void From(Wheel obj)

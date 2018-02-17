@@ -5,6 +5,11 @@ namespace Diese.Collections
 {
     public class Enumerable<T> : IEnumerable<T>
     {
+        static public IEnumerable<T> New(T item)
+        {
+            yield return item;
+        }
+
         private readonly IEnumerator<T> _enumerator;
 
         public Enumerable(IEnumerator<T> enumerator)

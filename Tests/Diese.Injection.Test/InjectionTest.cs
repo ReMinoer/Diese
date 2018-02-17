@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Diese.Injection.Test.Samples;
 using NUnit.Framework;
 
@@ -77,7 +76,7 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterSingleton()
         {
-            _registry.Register<Game>(Subsistence.Singleton);
+            _registry.RegisterSingleton<Game>();
 
             var game = _injector.Resolve<Game>();
             var otherGame = _injector.Resolve<Game>();
@@ -91,7 +90,7 @@ namespace Diese.Injection.Test
             _registry.Register<Level>();
             _registry.Register<ICharacter, Character>();
             _registry.Register<IPlayer, Player>();
-            _registry.Register<Game>(Subsistence.Singleton);
+            _registry.RegisterSingleton<Game>();
 
             var level = _injector.Resolve<Level>();
 
@@ -133,13 +132,13 @@ namespace Diese.Injection.Test
         [Test]
         public void RegisterKeyed()
         {
-            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.One);
-            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.Two);
+            _registry.RegisterSingleton<IPlayer, Player>(PlayerId.One);
+            _registry.RegisterSingleton<IPlayer, Player>(PlayerId.Two);
 
-            var playerOne = _injector.Resolve<IPlayer>(PlayerId.One);
-            var otherPlayerOne = _injector.Resolve<IPlayer>(PlayerId.One);
-            var playerTwo = _injector.Resolve<IPlayer>(PlayerId.Two);
-            var otherPlayerTwo = _injector.Resolve<IPlayer>(PlayerId.Two);
+            var playerOne = _injector.Resolve<IPlayer>(serviceKey: PlayerId.One);
+            var otherPlayerOne = _injector.Resolve<IPlayer>(serviceKey: PlayerId.One);
+            var playerTwo = _injector.Resolve<IPlayer>(serviceKey: PlayerId.Two);
+            var otherPlayerTwo = _injector.Resolve<IPlayer>(serviceKey: PlayerId.Two);
 
             Assert.AreEqual(playerOne, otherPlayerOne);
             Assert.AreEqual(playerTwo, otherPlayerTwo);
@@ -153,13 +152,13 @@ namespace Diese.Injection.Test
         [Test]
         public void LinkTypes()
         {
-            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.One);
-            _registry.Register<IPlayer, Player>(Subsistence.Singleton, PlayerId.Two);
+            _registry.RegisterSingleton<IPlayer, Player>(PlayerId.One);
+            _registry.RegisterSingleton<IPlayer, Player>(PlayerId.Two);
             _registry.Link<IPlayer, IPlayer>(PlayerId.One, "MainPlayer");
 
-            var playerOne = _injector.Resolve<IPlayer>(PlayerId.One);
-            var playerTwo = _injector.Resolve<IPlayer>(PlayerId.Two);
-            var mainPlayer = _injector.Resolve<IPlayer>("MainPlayer");
+            var playerOne = _injector.Resolve<IPlayer>(serviceKey: PlayerId.One);
+            var playerTwo = _injector.Resolve<IPlayer>(serviceKey: PlayerId.Two);
+            var mainPlayer = _injector.Resolve<IPlayer>(serviceKey: "MainPlayer");
 
             Assert.AreEqual(playerOne, mainPlayer);
             Assert.AreNotEqual(playerTwo, mainPlayer);
@@ -170,7 +169,7 @@ namespace Diese.Injection.Test
         {
             _registry.Register<ILevel, Level>();
             _registry.Register<IPlayer, Player>();
-            _registry.Register<Game>(Subsistence.Singleton);
+            _registry.RegisterSingleton<Game>();
 
             var level = _injector.Resolve<ILevel>();
 
@@ -184,7 +183,7 @@ namespace Diese.Injection.Test
         {
             _registry.Register<Level>();
             _registry.Register<IPlayer, Player>();
-            _registry.Register<Game>(Subsistence.Singleton);
+            _registry.RegisterSingleton<Game>();
 
             var level = _injector.Resolve<Level>();
 

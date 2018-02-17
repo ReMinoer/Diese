@@ -1,14 +1,8 @@
-﻿using ProtoBuf;
-
-namespace Diese.Modelization.Test.Samples
+﻿namespace Diese.Modelization.Test.Samples
 {
-    [ProtoContract]
-    public class PassengerData : IConfigurationData<Passenger>, ICreationData<Passenger>
+    public class PassengerData : IDataModel<Passenger>, IConfigurator<Passenger>, ICreator<Passenger>
     {
-        [ProtoMember(1)]
         public string Name { get; set; }
-
-        [ProtoMember(2)]
         public int Age { get; set; }
 
         public void From(Passenger obj)
