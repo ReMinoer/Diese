@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.UnitTest.Test", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese", "Diese\Diese.csproj", "{F2F3FEB2-8453-409E-B00C-96DC64AC8020}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Graph", "Diese.Graph\Diese.Graph.csproj", "{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Test", "Tests\Diese.Test\Diese.Test.csproj", "{1CED2D85-0C51-4079-993A-A191987295C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diese.Scripting", "Diese.Scripting\Diese.Scripting.csproj", "{F01C3583-4243-4F08-BDA2-58AEA09792FD}"
@@ -67,10 +65,6 @@ Global
 		{F2F3FEB2-8453-409E-B00C-96DC64AC8020}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2F3FEB2-8453-409E-B00C-96DC64AC8020}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2F3FEB2-8453-409E-B00C-96DC64AC8020}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBC6C938-95A5-4CBF-AA6B-DA2A9A09C4F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1CED2D85-0C51-4079-993A-A191987295C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1CED2D85-0C51-4079-993A-A191987295C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CED2D85-0C51-4079-993A-A191987295C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
