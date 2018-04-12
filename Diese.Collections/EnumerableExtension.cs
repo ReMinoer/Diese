@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Diese.Collections
 {
@@ -88,14 +89,14 @@ namespace Diese.Collections
 
         static public bool Any<T>(this IEnumerable<T> enumerable, Type type)
         {
-            return enumerable.Any(x => type.IsInstanceOfType(x));
+            return enumerable.Any(x => x != null && type.GetTypeInfo().IsAssignableFrom(x.GetType().GetTypeInfo()));
         }
 
         static public bool Any<T>(this IEnumerable<T> enumerable, Type type, out T item)
         {
             foreach (T obj in enumerable)
             {
-                if (!type.IsInstanceOfType(obj))
+                if (obj == null || !type.GetTypeInfo().IsAssignableFrom(obj.GetType().GetTypeInfo()))
                     continue;
 
                 item = obj;
@@ -185,7 +186,7 @@ namespace Diese.Collections
 
         static public IEnumerable<T> OfType<T>(this IEnumerable<T> enumerable, Type type)
         {
-            return enumerable.Where(x => type.IsInstanceOfType(x));
+            return enumerable.Where(x => x != null && type.GetTypeInfo().IsAssignableFrom(x.GetType().GetTypeInfo()));
         }
 
         static public T MinBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)

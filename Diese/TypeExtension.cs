@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Diese
 {
@@ -10,7 +11,7 @@ namespace Diese
         {
             string result = type.Name;
 
-            if (type.IsGenericType)
+            if (type.GetTypeInfo().IsGenericType)
             {
                 result = result.Substring(0, result.Length - 2);
                 result += "<";
@@ -23,10 +24,10 @@ namespace Diese
 
         static public IEnumerable<Type> GetInheritedTypes(this Type type)
         {
-            foreach (Type interfaceType in type.GetInterfaces())
+            foreach (Type interfaceType in type.GetTypeInfo().ImplementedInterfaces)
                 yield return interfaceType;
 
-            for (Type baseType = type.BaseType; baseType != null; baseType = baseType.BaseType)
+            for (Type baseType = type.GetTypeInfo().BaseType; baseType != null; baseType = baseType.GetTypeInfo().BaseType)
                 yield return baseType;
         }
 
@@ -37,10 +38,12 @@ namespace Diese
 
         static public IEnumerable<Type> GetInheritedTypes(this Type type, Type assignableType)
         {
-            foreach (Type interfaceType in type.GetInterfaces().Where(assignableType.IsAssignableFrom))
+            TypeInfo assignableTypeInfo = assignableType.GetTypeInfo();
+
+            foreach (Type interfaceType in type.GetTypeInfo().ImplementedInterfaces.Where(x => assignableTypeInfo.IsAssignableFrom(x.GetTypeInfo())))
                 yield return interfaceType;
 
-            for (Type baseType = type.BaseType; baseType != null && assignableType.IsAssignableFrom(type.BaseType); baseType = baseType.BaseType)
+            for (Type baseType = type.GetTypeInfo().BaseType; baseType != null && assignableTypeInfo.IsAssignableFrom(type.GetTypeInfo().BaseType.GetTypeInfo()); baseType = baseType.GetTypeInfo().BaseType)
                 yield return baseType;
         }
     }

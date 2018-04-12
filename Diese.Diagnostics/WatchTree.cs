@@ -87,23 +87,12 @@ namespace Diese.Debug
                 Children = new List<TimeNode>();
             }
 
-            public void SaveToCsv(string filename, string extension = ".csv")
+            public void WriteAsCsv(TextWriter textWriter)
             {
-                int number = 2;
-                string path = filename + extension;
-                while (File.Exists(path))
-                {
-                    path = filename + $" ({number})" + extension;
-                    number++;
-                }
+                textWriter.WriteLine("Order;Name;Time (ms);Depth");
 
-                using (var streamWriter = new StreamWriter(path))
-                {
-                    streamWriter.WriteLine("Order;Name;Time (ms);Depth");
-
-                    int count = 0;
-                    WriteSnapshotRecursive(streamWriter, this, 0, ref count);
-                }
+                int count = 0;
+                WriteSnapshotRecursive(textWriter, this, 0, ref count);
             }
 
             private void WriteSnapshotRecursive(TextWriter streamWriter, TimeNode node, int depth, ref int count)

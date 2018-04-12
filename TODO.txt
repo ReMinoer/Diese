@@ -1,5 +1,0 @@
-- Attributes (Domain, NotNull)
-- generic converter
-- ramdom object value generator
-- helper for unit test
-- universisal transition
