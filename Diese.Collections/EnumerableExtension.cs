@@ -32,6 +32,11 @@ namespace Diese.Collections
 
     static public class EnumerableExtension
     {
+        static public bool Any(this IEnumerable enumerable)
+        {
+            return enumerable.GetEnumerator().MoveNext();
+        }
+
         static public bool Any<T>(this IEnumerable<T> enumerable, out T item)
         {
             using (IEnumerator<T> enumerator = enumerable.GetEnumerator())
@@ -59,31 +64,6 @@ namespace Diese.Collections
             }
 
             item = default(T);
-            return false;
-        }
-
-        static public bool Any(this IEnumerable enumerable)
-        {
-            return enumerable.GetEnumerator().MoveNext();
-        }
-
-        static public bool Any<T>(this IEnumerable enumerable)
-        {
-            return enumerable.OfType<T>().Any();
-        }
-
-        static public bool Any<TResult>(this IEnumerable enumerable, out TResult item)
-        {
-            foreach (object obj in enumerable)
-            {
-                if (!(obj is TResult))
-                    continue;
-
-                item = (TResult)obj;
-                return true;
-            }
-
-            item = default(TResult);
             return false;
         }
 
@@ -123,25 +103,10 @@ namespace Diese.Collections
             throw new InvalidOperationException();
         }
 
-        static public TResult First<TResult>(this IEnumerable enumerable)
-        {
-            return Enumerable.First(enumerable.OfType<TResult>());
-        }
-
-        static public TResult First<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
-        {
-            return enumerable.OfType<TResult>().First(x => resultPredicate(x));
-        }
-
         static public object FirstOrDefault(this IEnumerable enumerable)
         {
             IEnumerator enumerator = enumerable.GetEnumerator();
             return enumerator.MoveNext() ? enumerator.Current : default(object);
-        }
-
-        static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable)
-        {
-            return Enumerable.FirstOrDefault(enumerable.OfType<TResult>());
         }
 
         static public object FirstOrDefault(this IEnumerable enumerable, Predicate<object> predicate)
@@ -151,11 +116,6 @@ namespace Diese.Collections
                     return item;
 
             return default(object);
-        }
-
-        static public TResult FirstOrDefault<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
-        {
-            return enumerable.OfType<TResult>().FirstOrDefault(x => resultPredicate(x));
         }
 
         static public IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count, Func<T> fillingFactory)
