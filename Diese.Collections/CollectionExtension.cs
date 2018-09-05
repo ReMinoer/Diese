@@ -30,7 +30,7 @@ namespace Diese.Collections
         static public TItem FirstOrAdd<T, TItem>(this ICollection<T> collection, Func<TItem> itemFactory)
             where TItem : T
         {
-            if (collection.OfType<TItem>().Any(out TItem firstItem))
+            if (collection.AnyOfType(out TItem firstItem))
                 return firstItem;
 
             TItem item = itemFactory();

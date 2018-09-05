@@ -67,12 +67,32 @@ namespace Diese.Collections
             return false;
         }
 
-        static public bool Any<T>(this IEnumerable<T> enumerable, Type type)
+        static public bool AnyOfType<TResult>(this IEnumerable enumerable)
+        {
+            return enumerable.OfType<TResult>().Any();
+        }
+
+        static public bool AnyOfType<TResult>(this IEnumerable enumerable, out TResult item)
+        {
+            foreach (object obj in enumerable)
+            {
+                if (!(obj is TResult))
+                    continue;
+
+                item = (TResult)obj;
+                return true;
+            }
+
+            item = default(TResult);
+            return false;
+        }
+
+        static public bool AnyOfType<T>(this IEnumerable<T> enumerable, Type type)
         {
             return enumerable.Any(x => x != null && type.GetTypeInfo().IsAssignableFrom(x.GetType().GetTypeInfo()));
         }
 
-        static public bool Any<T>(this IEnumerable<T> enumerable, Type type, out T item)
+        static public bool AnyOfType<T>(this IEnumerable<T> enumerable, Type type, out T item)
         {
             foreach (T obj in enumerable)
             {
@@ -103,6 +123,16 @@ namespace Diese.Collections
             throw new InvalidOperationException();
         }
 
+        static public TResult FirstOfType<TResult>(this IEnumerable enumerable)
+        {
+            return Enumerable.First(enumerable.OfType<TResult>());
+        }
+
+        static public TResult FirstOfType<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
+        {
+            return enumerable.OfType<TResult>().First(x => resultPredicate(x));
+        }
+
         static public object FirstOrDefault(this IEnumerable enumerable)
         {
             IEnumerator enumerator = enumerable.GetEnumerator();
@@ -116,6 +146,16 @@ namespace Diese.Collections
                     return item;
 
             return default(object);
+        }
+
+        static public TResult FirstOfTypeOrDefault<TResult>(this IEnumerable enumerable)
+        {
+            return Enumerable.FirstOrDefault(enumerable.OfType<TResult>());
+        }
+
+        static public TResult FirstOfTypeOrDefault<TResult>(this IEnumerable enumerable, Predicate<TResult> resultPredicate)
+        {
+            return enumerable.OfType<TResult>().FirstOrDefault(x => resultPredicate(x));
         }
 
         static public IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count, Func<T> fillingFactory)
