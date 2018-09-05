@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 
-namespace Diese.Debug
+namespace Diese.Diagnostics
 {
     public class WatchTree
     {

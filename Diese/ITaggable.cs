@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Glyph
+namespace Diese
 {
     public interface ITaggable
     {

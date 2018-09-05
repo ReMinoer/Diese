@@ -19,8 +19,7 @@ namespace Diese.Collections
 
         static public T FirstOrAdd<T>(this ICollection<T> collection, Predicate<T> predicate, Func<T> itemFactory)
         {
-            T firstItem;
-            if (collection.Any(predicate, out firstItem))
+            if (collection.Any(predicate, out T firstItem))
                 return firstItem;
 
             T item = itemFactory();
@@ -31,8 +30,7 @@ namespace Diese.Collections
         static public TItem FirstOrAdd<T, TItem>(this ICollection<T> collection, Func<TItem> itemFactory)
             where TItem : T
         {
-            TItem firstItem;
-            if (collection.Any(out firstItem))
+            if (collection.OfType<TItem>().Any(out TItem firstItem))
                 return firstItem;
 
             TItem item = itemFactory();
@@ -42,8 +40,7 @@ namespace Diese.Collections
 
         static public bool Remove<T>(this ICollection<T> collection, Predicate<T> predicate)
         {
-            T item;
-            return collection.Any(predicate, out item) && collection.Remove(item);
+            return collection.Any(predicate, out T item) && collection.Remove(item);
         }
 
         static public void RemoveAll<T>(this ICollection<T> collection, Predicate<T> predicate)

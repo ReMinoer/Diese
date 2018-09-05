@@ -67,8 +67,7 @@ namespace Diese.Collections
 
         static public int ReplaceOrAdd<T>(this IList<T> list, T oldItem, T newItem)
         {
-            bool added;
-            return ReplaceOrAdd(list, oldItem, newItem, out added);
+            return ReplaceOrAdd(list, oldItem, newItem, out bool _);
         }
 
         static public int ReplaceOrAdd<T>(this IList<T> list, T oldItem, T newItem, out bool added)
@@ -89,8 +88,7 @@ namespace Diese.Collections
 
         static public int ReplaceOrAdd<T>(this IList<T> list, Predicate<T> predicate, T newItem)
         {
-            bool added;
-            return ReplaceOrAdd(list, predicate, newItem, out added);
+            return ReplaceOrAdd(list, predicate, newItem, out bool _);
         }
 
         static public int ReplaceOrAdd<T>(this IList<T> list, Predicate<T> predicate, T newItem, out bool added)
