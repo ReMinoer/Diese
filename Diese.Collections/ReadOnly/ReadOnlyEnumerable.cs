@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Diese.Collections
+namespace Diese.Collections.ReadOnly
 {
     public class ReadOnlyEnumerable : IEnumerable
     {
