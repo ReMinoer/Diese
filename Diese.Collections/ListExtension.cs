@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Diese.Collections.ReadOnly;
 
@@ -7,6 +8,12 @@ namespace Diese.Collections
 {
     static public class ListExtension
     {
+        static public void InsertMany<T>(this IList<T> list, int index, IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                list.Insert(index++, item);
+        }
+
         static public int Replace<T>(this IList<T> list, T oldItem, T newItem)
         {
             int index = list.IndexOf(oldItem);
@@ -27,6 +34,15 @@ namespace Diese.Collections
             list.RemoveAt(index);
             list.Insert(index, newItem);
             return index;
+        }
+
+        static public void ReplaceRange<T>(this IList<T> list, int oldStartingIndex, int newStartingIndex, IEnumerable<T> newItems)
+        {
+            foreach (T newItem in newItems)
+            {
+                list.RemoveAt(oldStartingIndex++);
+                list.Insert(newStartingIndex++, newItem);
+            }
         }
 
         static public IEnumerable<int> ReplaceAll<T>(this IList<T> list, Predicate<T> predicate, T newItem)
@@ -106,6 +122,38 @@ namespace Diese.Collections
             list.Insert(index, newItem);
             added = false;
             return index;
+        }
+
+        static public void Move<T>(this IList<T> list, int oldIndex, int newIndex)
+        {
+            T item = list[oldIndex];
+            list.RemoveAt(oldIndex);
+            list.Insert(newIndex, item);
+        }
+
+        static public bool Move<T>(this IList<T> list, T item, int newIndex)
+        {
+            if (!list.Remove(item))
+                return false;
+
+            list.Insert(newIndex, item);
+            return true;
+        }
+
+        static public bool MoveMany<T>(this IList<T> list, IEnumerable<T> items, int newIndex)
+        {
+            T[] itemsArray = items.ToArray();
+            List<int> indexes = itemsArray.Select(list.IndexOf).ToList();
+            if (indexes.Any(x => x == -1))
+                return false;
+
+            indexes.Sort(Comparer<int>.Create((x, y) => y - x));
+
+            foreach (int index in indexes)
+                list.RemoveAt(index);
+
+            list.InsertMany(newIndex, itemsArray);
+            return true;
         }
 
         static public bool Remove<T>(this IList<T> list, Predicate<T> predicate)
