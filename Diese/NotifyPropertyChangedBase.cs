@@ -8,13 +8,14 @@ namespace Diese
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        protected bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(value, field))
-                return;
+                return false;
 
             field = value;
             NotifyPropertyChanged(propertyName);
+            return true;
         }
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
