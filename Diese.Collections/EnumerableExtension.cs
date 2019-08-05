@@ -269,6 +269,16 @@ namespace Diese.Collections
             }
         }
 
+        static public int Count(this IEnumerable enumerable)
+        {
+            int i = 0;
+            IEnumerator enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
+                i++;
+
+            return i;
+        }
+
         static public bool AtLeast(this IEnumerable enumerable, int number)
         {
             if (number < 0)
@@ -301,6 +311,23 @@ namespace Diese.Collections
             }
 
             return true;
+        }
+
+        static public object ElementAt(this IEnumerable enumerable, int index)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index), "Index should be superior or equal to 0.");
+
+            int i = 0;
+            IEnumerator enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                i++;
+                if (i == index)
+                    return enumerator.Current;
+            }
+            
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index should be inferior to {i}.");
         }
 
         static public IEnumerable Concat(this IEnumerable enumerable, object value)
