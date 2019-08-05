@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Diese.Collections.Observables.ReadOnly
+﻿namespace Diese.Collections.Observables.ReadOnly
 {
     public class ReadOnlyObservableList<T> : ReadOnlyObservableCollection<T>, IReadOnlyObservableList<T>
     {
