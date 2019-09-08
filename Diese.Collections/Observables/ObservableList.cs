@@ -2,19 +2,33 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 
 namespace Diese.Collections.Observables
 {
     public class ObservableList<T> : IObservableList<T>
     {
-        private readonly List<T> _list = new List<T>();
+        private readonly IList<T> _list;
 
         public int Count => _list.Count;
         bool ICollection<T>.IsReadOnly => false;
         
         public event PropertyChangedEventHandler PropertyChanged;
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        public ObservableList()
+        {
+            _list = new List<T>();
+        }
+
+        public ObservableList(IEnumerable<T> items)
+        {
+            _list = new List<T>(items);
+        }
+
+        public ObservableList(IList<T> listImplementation)
+        {
+            _list = listImplementation;
+        }
         
         private void NotifyCountChange() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
 
@@ -49,35 +63,6 @@ namespace Diese.Collections.Observables
 
             NotifyCountChange();
             CollectionChanged?.Invoke(this, CollectionChangedEventArgs.Insert(item, index));
-        }
-
-        public void AddRange(IEnumerable<T> items)
-        {
-            if (CollectionChanged == null)
-                _list.AddRange(items);
-            else
-            {
-                T[] newItems = items.ToArray();
-
-                _list.AddRange(newItems);
-
-                NotifyCountChange();
-                CollectionChanged.Invoke(this, CollectionChangedEventArgs.AddRange(newItems, Count));
-            }
-        }
-
-        public void InsertRange(int index, IEnumerable<T> items)
-        {
-            if (CollectionChanged == null)
-                _list.InsertRange(index, items);
-            else
-            {
-                T[] newItems = items.ToArray();
-                _list.InsertRange(index, newItems);
-                
-                NotifyCountChange();
-                CollectionChanged.Invoke(this, CollectionChangedEventArgs.InsertRange(newItems, index));
-            }
         }
 
         public bool Remove(T item)
