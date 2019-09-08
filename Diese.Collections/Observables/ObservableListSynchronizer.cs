@@ -2,78 +2,73 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Diese.Collections.Observables.Base;
 using Diese.Collections.Observables.ReadOnly;
 
 namespace Diese.Collections.Observables
 {
     public class ObservableListSynchronizer<TObservedItem, TCollectedItem> : ObservableListSynchronizer<IReadOnlyObservableList<TObservedItem>, TObservedItem, TCollectedItem>
     {
-        public ObservableListSynchronizer(Func<TObservedItem, TCollectedItem> converter)
-            : base(converter)
+        public ObservableListSynchronizer(Func<TObservedItem, TCollectedItem> converter, Func<TCollectedItem, TObservedItem> dataGetter, Action<TCollectedItem> disposer = null)
+            : base(converter, dataGetter, disposer)
         {
         }
 
-        public ObservableListSynchronizer(IReadOnlyObservableList<TObservedItem> reference, Func<TObservedItem, TCollectedItem> converter)
-            : base(reference, converter)
+        public ObservableListSynchronizer(IReadOnlyObservableList<TObservedItem> reference, Func<TObservedItem, TCollectedItem> converter, Func<TCollectedItem, TObservedItem> dataGetter, Action<TCollectedItem> disposer = null)
+            : base(reference, converter, dataGetter, disposer)
         {
         }
     }
 
-    public class ObservableListSynchronizer<TObservedList, TObservedItem, TCollectedItem> : ObservableCollectionSynchronizerBase<TObservedList, IList<TCollectedItem>>
+    public class ObservableListSynchronizer<TObservedList, TObservedItem, TCollectedItem> : ObservableListSynchronizer<TObservedList, IList<TCollectedItem>, TObservedItem, TCollectedItem>
         where TObservedList : class, IEnumerable<TObservedItem>, INotifyCollectionChanged
     {
-        private readonly Func<TObservedItem, TCollectedItem> _converter;
-
-        public ObservableListSynchronizer(Func<TObservedItem, TCollectedItem> converter)
+        public ObservableListSynchronizer(Func<TObservedItem, TCollectedItem> converter, Func<TCollectedItem, TObservedItem> dataGetter, Action<TCollectedItem> disposer = null)
+            : base(converter, dataGetter, disposer)
         {
-            _converter = converter;
         }
 
-        public ObservableListSynchronizer(TObservedList reference, Func<TObservedItem, TCollectedItem> converter)
-            : base(reference)
+        public ObservableListSynchronizer(TObservedList reference, Func<TObservedItem, TCollectedItem> converter, Func<TCollectedItem, TObservedItem> dataGetter, Action<TCollectedItem> disposer = null)
+            : base(reference, converter, dataGetter, disposer)
         {
-            _converter = converter;
+        }
+    }
+
+    public class ObservableListSynchronizer<TObservedList, TCollectedCollection, TObservedItem, TCollectedItem> : ObservableCollectionSynchronizer<TObservedList, TCollectedCollection, TObservedItem, TCollectedItem>
+        where TObservedList : class, IEnumerable<TObservedItem>, INotifyCollectionChanged
+        where TCollectedCollection : class, IList<TCollectedItem>
+    {
+        public ObservableListSynchronizer(Func<TObservedItem, TCollectedItem> converter, Func<TCollectedItem, TObservedItem> dataGetter, Action<TCollectedItem> disposer = null)
+            : base(converter, dataGetter, disposer)
+        {
         }
 
-        protected override void InitializeCollection(IList<TCollectedItem> list)
+        public ObservableListSynchronizer(TObservedList reference, Func<TObservedItem, TCollectedItem> converter, Func<TCollectedItem, TObservedItem> dataGetter, Action<TCollectedItem> disposer = null)
+            : base(reference, converter, dataGetter, disposer)
         {
-            if (Reference != null)
-                list.AddMany(Reference.Select(_converter));
         }
 
-        protected override void ResetCollection(IList<TCollectedItem> list)
-        {
-            list.Clear();
-        }
-
-        protected override void OnReferenceCollectionChanged(IList<TCollectedItem> list, NotifyCollectionChangedEventArgs e)
+        protected override void OnReferenceCollectionChanged(TCollectedCollection list, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                 {
-                    list.InsertMany(e.NewStartingIndex, e.NewItems.Cast<TObservedItem>().Select(_converter));
-                    return;
-                }
-                case NotifyCollectionChangedAction.Remove:
-                {
-                    list.RemoveMany(e.OldItems.Cast<TObservedItem>().Select(_converter));
+                    list.InsertMany(e.NewStartingIndex, e.NewItems.Cast<TObservedItem>().Select(Converter));
                     return;
                 }
                 case NotifyCollectionChangedAction.Replace:
                 {
-                    list.ReplaceRange(e.OldStartingIndex, e.NewStartingIndex, e.NewItems.Cast<TObservedItem>().Select(_converter));
+                    list.ReplaceRange(e.OldStartingIndex, e.NewStartingIndex, e.NewItems.Cast<TObservedItem>().Select(Converter));
                     return;
                 }
                 case NotifyCollectionChangedAction.Move:
                 {
-                    list.MoveMany(e.NewItems.Cast<TObservedItem>().Select(_converter), e.NewStartingIndex);
+                    list.MoveMany(e.NewItems.Cast<TObservedItem>().Select(Converter), e.NewStartingIndex);
                     return;
                 }
-                case NotifyCollectionChangedAction.Reset:
+                default:
                 {
-                    list.Clear();
+                    base.OnReferenceCollectionChanged(list, e);
                     return;
                 }
             }
