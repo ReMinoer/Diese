@@ -21,7 +21,14 @@ namespace Diese.Collections.Observables.ReadOnly
             _observableCollection.CollectionChanged += OnCollectionChanged;
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Count))
+                return;
+
+            PropertyChanged?.Invoke(this, e);
+        }
+
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => CollectionChanged?.Invoke(this, e);
 
         public IEnumerator<T> GetEnumerator() => _observableCollection.GetEnumerator();
