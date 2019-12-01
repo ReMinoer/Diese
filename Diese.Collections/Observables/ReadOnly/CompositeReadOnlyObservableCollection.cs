@@ -26,6 +26,11 @@ namespace Diese.Collections.Observables.ReadOnly
             }
         }
 
+        public CompositeReadOnlyObservableCollection(params IReadOnlyObservableCollection<T>[] observableCollections)
+            : this(observableCollections.AsEnumerable())
+        {
+        }
+
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => PropertyChanged?.Invoke(sender, e);
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => CollectionChanged?.Invoke(sender, e);
 
