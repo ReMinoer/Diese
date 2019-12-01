@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using Diese.Collections.ReadOnly;
 
@@ -176,6 +176,49 @@ namespace Diese.Collections
         static public ReadOnlyList<T> AsReadOnly<T>(this IList<T> list)
         {
             return new ReadOnlyList<T>(list);
+        }
+        
+        static public void AddMany(this IList list, IEnumerable items)
+        {
+            foreach (object item in items)
+                list.Add(item);
+        }
+
+        static public void RemoveMany(this IList list, IEnumerable items)
+        {
+            foreach (object item in items)
+                list.Remove(item);
+        }
+
+        static public void InsertMany(this IList list, int index, IEnumerable items)
+        {
+            foreach (object item in items)
+                list.Insert(index++, item);
+        }
+
+        static public void ReplaceRange(this IList list, int oldStartingIndex, int newStartingIndex, IEnumerable newItems)
+        {
+            foreach (object newItem in newItems)
+            {
+                list.RemoveAt(oldStartingIndex++);
+                list.Insert(newStartingIndex++, newItem);
+            }
+        }
+
+        static public bool MoveMany(this IList list, IEnumerable items, int newIndex)
+        {
+            object[] itemsArray = items.Cast<object>().ToArray();
+            List<int> indexes = itemsArray.Select(list.IndexOf).ToList();
+            if (indexes.Any(x => x == -1))
+                return false;
+
+            indexes.Sort(Comparer<int>.Create((x, y) => y - x));
+
+            foreach (int index in indexes)
+                list.RemoveAt(index);
+
+            list.InsertMany(newIndex, itemsArray);
+            return true;
         }
     }
 }

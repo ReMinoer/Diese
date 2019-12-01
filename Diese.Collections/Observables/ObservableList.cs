@@ -1,33 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace Diese.Collections.Observables
 {
-    public class ObservableList<T> : IObservableList<T>
+    public class ObservableList<T> : IObservableList<T>, IList
     {
         private readonly IList<T> _list;
+        private readonly IList _nonGenericList;
 
         public int Count => _list.Count;
         bool ICollection<T>.IsReadOnly => false;
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         public ObservableList()
         {
-            _list = new List<T>();
+            var list = new List<T>();
+            _list = list;
+            _nonGenericList = list;
         }
 
         public ObservableList(IEnumerable<T> items)
         {
-            _list = new List<T>(items);
+            var list = new List<T>(items);
+            _list = list;
+            _nonGenericList = list;
         }
 
         public ObservableList(IList<T> listImplementation)
         {
             _list = listImplementation;
+            _nonGenericList = listImplementation as IList;
         }
         
         private void NotifyCountChange() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
@@ -109,5 +116,57 @@ namespace Diese.Collections.Observables
 
         public IEnumerator<T> GetEnumerator() => _list.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_list).GetEnumerator();
+        
+        #region IList implementation
+
+        bool IList.IsFixedSize => _nonGenericList?.IsFixedSize ?? false;
+        bool IList.IsReadOnly => _list.IsReadOnly;
+        bool ICollection.IsSynchronized => _nonGenericList?.IsSynchronized ?? false;
+
+        private object _syncRoot;
+        object ICollection.SyncRoot
+        {
+            get
+            {
+                if (_nonGenericList?.SyncRoot != null)
+                    return _nonGenericList.SyncRoot;
+                
+                if( _syncRoot == null)
+                    System.Threading.Interlocked.CompareExchange<object>(ref _syncRoot, new object(), null);
+                return _syncRoot;
+            }
+        }
+
+        object IList.this[int index]
+        {
+            get => _list[index];
+            set => _list[index] = (T)value;
+        }
+
+        int IList.Add(object value)
+        {
+            Add((T)value);
+            return Count - 1;
+        }
+
+        void IList.Insert(int index, object value) => Insert(index, (T)value);
+        void IList.Remove(object value) => Remove((T)value);
+        bool IList.Contains(object value) => Contains((T)value);
+        int IList.IndexOf(object value) => IndexOf((T)value);
+
+        void ICollection.CopyTo(Array array, int index)
+        {
+            int i = index;
+            foreach (T item in _list)
+            {
+                if (i >= array.Length)
+                    return;
+
+                array.SetValue(item, i);
+                i++;
+            }
+        }
+
+        #endregion
     }
 }
