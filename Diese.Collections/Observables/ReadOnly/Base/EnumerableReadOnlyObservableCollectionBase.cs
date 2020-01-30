@@ -54,7 +54,7 @@ namespace Diese.Collections.Observables.ReadOnly.Base
                     break;
             }
 
-            CollectionChanged?.Invoke(sender, e);
+            CollectionChanged?.Invoke(this, e);
         }
 
         public abstract IEnumerator<TItem> GetEnumerator();
