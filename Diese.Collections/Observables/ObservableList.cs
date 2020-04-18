@@ -84,7 +84,7 @@ namespace Diese.Collections.Observables
             _list.RemoveAt(index);
 
             NotifyCountChange();
-            CollectionChanged.Invoke(this, CollectionChangedEventArgs.Remove(item, index));
+            CollectionChanged?.Invoke(this, CollectionChangedEventArgs.Remove(item, index));
             return true;
         }
 
@@ -98,7 +98,7 @@ namespace Diese.Collections.Observables
                 _list.RemoveAt(index);
 
                 NotifyCountChange();
-                CollectionChanged.Invoke(this, CollectionChangedEventArgs.Remove(item, index));
+                CollectionChanged?.Invoke(this, CollectionChangedEventArgs.Remove(item, index));
             }
         }
 

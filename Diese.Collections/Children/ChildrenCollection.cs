@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Diese.Collections.Observables;
 
 namespace Diese.Collections.Children
 {
