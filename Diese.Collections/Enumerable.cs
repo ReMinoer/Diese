@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Diese.Collections
@@ -11,6 +12,7 @@ namespace Diese.Collections
         }
 
         private readonly IEnumerator<T> _enumerator;
+        private bool _enumeratorUsed;
 
         public Enumerable(IEnumerator<T> enumerator)
         {
@@ -19,6 +21,12 @@ namespace Diese.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
+            if (_enumeratorUsed && _enumerator.MoveNext())
+                throw new InvalidOperationException("Cannot handle simultaneous enumeration.");
+
+            _enumerator.Reset();
+            _enumeratorUsed = true;
+
             return _enumerator;
         }
 
