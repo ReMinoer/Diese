@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Diese.Collections.Observables
+namespace Diese.Collections
 {
     public class CompositeReadOnlyCollection<T> : IReadOnlyCollection<T>
     {
