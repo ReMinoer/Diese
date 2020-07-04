@@ -1,80 +1,25 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Diese.Collections
 {
-    public class Tracker<T> : ITracker<T>, ICollection<T>
+    public class Tracker<T> : OrderedTrackerBase<T>
         where T : class
     {
-        private readonly List<WeakReference<T>> _list;
-        public int Count => _list.Count;
-        bool ICollection<T>.IsReadOnly => false;
+        private readonly Func<T, bool> _canRegisterFunc;
+        private readonly Action<T, EventHandler> _subscribeAction;
+        private readonly Action<T, EventHandler> _unsubscribeAction;
 
-        public Tracker()
+        public Tracker(Func<T, bool> canRegisterFunc, Action<T, EventHandler> subscribeAction, Action<T, EventHandler> unsubscribeAction)
         {
-            _list = new List<WeakReference<T>>();
+            _canRegisterFunc = canRegisterFunc;
+            _subscribeAction = subscribeAction;
+            _unsubscribeAction = unsubscribeAction;
         }
 
-        public virtual void Register(T item)
-        {
-            _list.Add(new WeakReference<T>(item));
-        }
+        protected override bool CanRegister(T item) => _canRegisterFunc?.Invoke(item) ?? true;
+        protected override void Subscribe(T item) => _subscribeAction(item, UnregisterHandler);
+        protected override void Unsubscribe(T item) => _unsubscribeAction(item, UnregisterHandler);
 
-        void ICollection<T>.Add(T item)
-        {
-            Register(item);
-        }
-
-        public virtual bool Unregister(T item)
-        {
-            return _list.Remove(x => ReferenceEquals(x, item));
-        }
-
-        bool ICollection<T>.Remove(T item)
-        {
-            return Unregister(item);
-        }
-
-        public virtual void Clear()
-        {
-            _list.Clear();
-        }
-
-        public void ClearDisposed()
-        {
-            _list.RemoveAll(x => !x.TryGetTarget(out T _));
-        }
-
-        public bool Contains(T item)
-        {
-            return _list.Any(x => ReferenceEquals(x, item));
-        }
-
-        private bool ReferenceEquals(WeakReference<T> x, T item)
-        {
-            x.TryGetTarget(out T obj);
-            return obj == item;
-        }
-
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
-        {
-            _list.Where(x => x.TryGetTarget(out T _)).ToArray().CopyTo(array, arrayIndex);
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _list.Select(x =>
-            {
-                x.TryGetTarget(out T obj);
-                return obj;
-            }).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        protected virtual void UnregisterHandler(object sender, EventArgs e) => Unregister((T)sender);
     }
 }
