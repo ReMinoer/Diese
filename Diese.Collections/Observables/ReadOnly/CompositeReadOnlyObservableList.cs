@@ -30,32 +30,34 @@ namespace Diese.Collections.Observables.ReadOnly
 
         protected override NotifyCollectionChangedEventArgs BuildCompositeEventArgs(IReadOnlyObservableList<T> sender, NotifyCollectionChangedEventArgs e)
         {
-            int senderIndex = ObservableCollections.TakeWhile(x => x != sender).Sum(x => x.Count);
+            int GetSenderStartIndex() => ObservableCollections.TakeWhile(x => x != sender).Sum(x => x.Count);
+            int GetNewItemsIndex() => GetSenderStartIndex() + (e.NewStartingIndex >= 0 ? e.NewStartingIndex : throw new InvalidOperationException());
+            int GetOldItemsIndex() => GetSenderStartIndex() + (e.OldStartingIndex >= 0 ? e.OldStartingIndex : throw new InvalidOperationException());
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                 {
-                    return CollectionChangedEventArgs.InsertRange(e.NewItems, senderIndex + e.NewStartingIndex);
+                    return CollectionChangedEventArgs.InsertRange(e.NewItems, GetNewItemsIndex());
                 }
                 case NotifyCollectionChangedAction.Remove:
                 {
-                    return CollectionChangedEventArgs.RemoveRange(e.OldItems, senderIndex + e.OldStartingIndex);
+                    return CollectionChangedEventArgs.RemoveRange(e.OldItems, GetOldItemsIndex());
                 }
                 case NotifyCollectionChangedAction.Replace:
                 {
-                    return CollectionChangedEventArgs.ReplaceRange(e.OldItems, e.NewItems, senderIndex + e.OldStartingIndex);
+                    return CollectionChangedEventArgs.ReplaceRange(e.OldItems, e.NewItems, GetOldItemsIndex());
                 }
                 case NotifyCollectionChangedAction.Move:
                 {
-                    return CollectionChangedEventArgs.MoveRange(e.OldItems, senderIndex + e.OldStartingIndex, senderIndex + e.NewStartingIndex);
+                    return CollectionChangedEventArgs.MoveRange(e.OldItems, GetOldItemsIndex(), GetNewItemsIndex());
                 }
                 case NotifyCollectionChangedAction.Reset:
                 {
                     if (sender.Count == Count)
                         return CollectionChangedEventArgs.Clear();
                     
-                    return CollectionChangedEventArgs.RemoveRange(sender.ToList(), senderIndex);
+                    return CollectionChangedEventArgs.RemoveRange(sender.ToList(), GetSenderStartIndex());
                 }
                 default:
                     throw new NotSupportedException();
