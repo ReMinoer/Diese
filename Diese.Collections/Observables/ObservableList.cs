@@ -139,8 +139,8 @@ namespace Diese.Collections.Observables
 
         object IList.this[int index]
         {
-            get => _list[index];
-            set => _list[index] = (T)value;
+            get => this[index];
+            set => this[index] = (T)value;
         }
 
         int IList.Add(object value)

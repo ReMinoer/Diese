@@ -53,16 +53,22 @@ namespace Diese.Collections.Observables
             {
                 case NotifyCollectionChangedAction.Add:
                 {
+                    if (e.NewStartingIndex == -1)
+                        goto default;
                     list.InsertMany(e.NewStartingIndex, e.NewItems.Cast<TObservedItem>().Select(Converter));
                     return;
                 }
                 case NotifyCollectionChangedAction.Replace:
                 {
+                    if (e.NewStartingIndex == -1 || e.OldStartingIndex == -1)
+                        goto default;
                     list.ReplaceRange(e.OldStartingIndex, e.NewStartingIndex, e.NewItems.Cast<TObservedItem>().Select(Converter));
                     return;
                 }
                 case NotifyCollectionChangedAction.Move:
                 {
+                    if (e.NewStartingIndex == -1)
+                        goto default;
                     list.MoveMany(e.NewItems.Cast<TObservedItem>().Select(Converter), e.NewStartingIndex);
                     return;
                 }
