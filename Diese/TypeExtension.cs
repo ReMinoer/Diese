@@ -22,6 +22,15 @@ namespace Diese
             return result;
         }
 
+        static public bool Is<T>(this Type type) => type.Is(typeof(T));
+        static public bool Is(this Type type, Type baseType)
+        {
+            if (type == null)
+                return false;
+
+            return baseType.GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+        }
+
         static public IEnumerable<Type> GetInheritedTypes(this Type type)
         {
             foreach (Type interfaceType in type.GetTypeInfo().ImplementedInterfaces)
