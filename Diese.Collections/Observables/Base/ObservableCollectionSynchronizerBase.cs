@@ -45,12 +45,6 @@ namespace Diese.Collections.Observables.Base
             _collections = new List<TCollection>();
             Collections = new ReadOnlyCollection<TCollection>(_collections);
         }
-
-        public ObservableCollectionSynchronizerBase(TReference reference)
-            : this()
-        {
-            Reference = reference;
-        }
         
         protected abstract void InitializeCollection(TCollection collection);
         protected abstract void ResetCollection(TCollection collection);

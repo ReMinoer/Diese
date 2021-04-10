@@ -20,8 +20,7 @@ namespace Diese.Collections
             if (index == -1)
                 return -1;
 
-            list.RemoveAt(index);
-            list.Insert(index, newItem);
+            list[index] = newItem;
             return index;
         }
 
@@ -31,18 +30,14 @@ namespace Diese.Collections
             if (index == -1)
                 return -1;
 
-            list.RemoveAt(index);
-            list.Insert(index, newItem);
+            list[index] = newItem;
             return index;
         }
 
-        static public void ReplaceRange<T>(this IList<T> list, int oldStartingIndex, int newStartingIndex, IEnumerable<T> newItems)
+        static public void ReplaceRange<T>(this IList<T> list, int index, IEnumerable<T> newItems)
         {
             foreach (T newItem in newItems)
-            {
-                list.RemoveAt(oldStartingIndex++);
-                list.Insert(newStartingIndex++, newItem);
-            }
+                list[index++] = newItem;
         }
 
         static public IEnumerable<int> ReplaceAll<T>(this IList<T> list, Predicate<T> predicate, T newItem)
@@ -50,10 +45,7 @@ namespace Diese.Collections
             int[] indexes = list.IndexesOf(predicate).ToArray();
 
             foreach (int index in indexes)
-            {
-                list.RemoveAt(index);
-                list.Insert(index, newItem);
-            }
+                list[index] = newItem;
 
             return indexes;
         }
@@ -75,8 +67,7 @@ namespace Diese.Collections
             foreach (int index in indexes)
             {
                 T newItem = newItemsFactory(list[index], index);
-                list.RemoveAt(index);
-                list.Insert(index, newItem);
+                list[index] = newItem;
             }
 
             return indexes;
@@ -97,8 +88,7 @@ namespace Diese.Collections
                 return list.Count - 1;
             }
 
-            list.RemoveAt(index);
-            list.Insert(index, newItem);
+            list[index] = newItem;
             added = false;
             return index;
         }
@@ -118,8 +108,7 @@ namespace Diese.Collections
                 return list.Count - 1;
             }
 
-            list.RemoveAt(index);
-            list.Insert(index, newItem);
+            list[index] = newItem;
             added = false;
             return index;
         }
@@ -140,20 +129,30 @@ namespace Diese.Collections
             return true;
         }
 
-        static public bool MoveMany<T>(this IList<T> list, IEnumerable<T> items, int newIndex)
+        static public void MoveMany<T>(this IList<T> list, IEnumerable<T> items, int index)
         {
-            T[] itemsArray = items.ToArray();
-            List<int> indexes = itemsArray.Select(list.IndexOf).ToList();
-            if (indexes.Any(x => x == -1))
-                return false;
+            using (IEnumerator<T> enumerator = list.OrderBy(list.IndexOf).GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                    return;
 
-            indexes.Sort(Comparer<int>.Create((x, y) => y - x));
+                T item = enumerator.Current;
+                int itemIndex = list.IndexOf(item);
 
-            foreach (int index in indexes)
-                list.RemoveAt(index);
+                list.RemoveAt(itemIndex);
+                list.Insert(index, item);
 
-            list.InsertMany(newIndex, itemsArray);
-            return true;
+                while (enumerator.MoveNext())
+                {
+                    item = enumerator.Current;
+                    itemIndex = list.IndexOf(item);
+                    if (itemIndex > index)
+                        index++;
+
+                    list.RemoveAt(itemIndex);
+                    list.Insert(index, item);
+                }
+            }
         }
 
         static public bool Remove<T>(this IList<T> list, Predicate<T> predicate)
@@ -196,29 +195,36 @@ namespace Diese.Collections
                 list.Insert(index++, item);
         }
 
-        static public void ReplaceRange(this IList list, int oldStartingIndex, int newStartingIndex, IEnumerable newItems)
+        static public void ReplaceRange(this IList list, int index, IEnumerable newItems)
         {
             foreach (object newItem in newItems)
-            {
-                list.RemoveAt(oldStartingIndex++);
-                list.Insert(newStartingIndex++, newItem);
-            }
+                list[index++] = newItem;
         }
 
-        static public bool MoveMany(this IList list, IEnumerable items, int newIndex)
+        static public void MoveMany(this IList list, IEnumerable items, int index)
         {
-            object[] itemsArray = items.Cast<object>().ToArray();
-            List<int> indexes = itemsArray.Select(list.IndexOf).ToList();
-            if (indexes.Any(x => x == -1))
-                return false;
+            using (IEnumerator<object> enumerator = list.Cast<object>().OrderBy(list.IndexOf).GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                    return;
 
-            indexes.Sort(Comparer<int>.Create((x, y) => y - x));
+                object item = enumerator.Current;
+                int itemIndex = list.IndexOf(item);
 
-            foreach (int index in indexes)
-                list.RemoveAt(index);
+                list.RemoveAt(itemIndex);
+                list.Insert(index, item);
 
-            list.InsertMany(newIndex, itemsArray);
-            return true;
+                while (enumerator.MoveNext())
+                {
+                    item = enumerator.Current;
+                    itemIndex = list.IndexOf(item);
+                    if (itemIndex > index)
+                        index++;
+
+                    list.RemoveAt(itemIndex);
+                    list.Insert(index, item);
+                }
+            }
         }
     }
 }
