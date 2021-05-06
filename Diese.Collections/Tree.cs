@@ -6,37 +6,25 @@ namespace Diese.Collections
 {
     static public class Tree
     {
-        static public IEnumerable<T> DepthFirst<T, TBase>(T root, Func<TBase, IEnumerable<T>> childrenSelector)
-            where T : TBase
+        static public IEnumerable<T> DepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             yield return root;
-            foreach (T child in DepthFirst(root))
+            foreach (T child in DepthFirstExclusive(root, childrenSelector))
                 yield return child;
-
-            IEnumerable<T> DepthFirst(TBase parent)
-            {
-                foreach (T item in childrenSelector(parent))
-                {
-                    yield return item;
-
-                    foreach (T child in DepthFirst(item))
-                        yield return child;
-                }
-            }
         }
 
         static public IEnumerable<T> DepthFirstExclusive<T, TBase>(TBase ignoredRoot, Func<TBase, IEnumerable<T>> childrenSelector)
             where T : TBase
         {
-            return DepthFirst(ignoredRoot);
+            return DepthFirstAlgorithm(ignoredRoot);
 
-            IEnumerable<T> DepthFirst(TBase parent)
+            IEnumerable<T> DepthFirstAlgorithm(TBase parent)
             {
                 foreach (T item in childrenSelector(parent))
                 {
                     yield return item;
 
-                    foreach (T child in DepthFirst(item))
+                    foreach (T child in DepthFirstAlgorithm(item))
                         yield return child;
                 }
             }
@@ -45,33 +33,16 @@ namespace Diese.Collections
         static public IEnumerable<T> BreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             yield return root;
-            foreach (T child in BreadthFirst(Enumerable<T>.New(root)))
+            foreach (T child in BreadthFirstExclusive(root, childrenSelector))
                 yield return child;
-
-            IEnumerable<T> BreadthFirst(IEnumerable<T> parent)
-            {
-                var childrenLayer = new List<T>();
-
-                foreach (T child in parent.SelectMany(childrenSelector))
-                {
-                    yield return child;
-                    childrenLayer.Add(child);
-                }
-
-                if (childrenLayer.Count == 0)
-                    yield break;
-
-                foreach (T child in BreadthFirst(childrenLayer))
-                    yield return child;
-            }
         }
 
         static public IEnumerable<T> BreadthFirstExclusive<T, TBase>(TBase ignoredRoot, Func<TBase, IEnumerable<T>> childrenSelector)
             where T : TBase
         {
-            return BreadthFirst(Enumerable<TBase>.New(ignoredRoot));
+            return BreadthFirstAlgorithm(Enumerable<TBase>.New(ignoredRoot));
 
-            IEnumerable<T> BreadthFirst(IEnumerable<TBase> parent)
+            IEnumerable<T> BreadthFirstAlgorithm(IEnumerable<TBase> parent)
             {
                 var childrenLayer = new List<TBase>();
 
@@ -84,7 +55,7 @@ namespace Diese.Collections
                 if (childrenLayer.Count == 0)
                     yield break;
 
-                foreach (T child in BreadthFirst(childrenLayer))
+                foreach (T child in BreadthFirstAlgorithm(childrenLayer))
                     yield return child;
             }
         }
