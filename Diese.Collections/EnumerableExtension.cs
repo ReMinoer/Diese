@@ -431,6 +431,19 @@ namespace Diese.Collections
             return enumerable.Select((item, index) => new ItemIndexPair<T>(item, index));
         }
 
+        static public int IndexOf(this IEnumerable enumerable, object item)
+        {
+            int index = 0;
+            foreach (object obj in enumerable)
+            {
+                if (obj == item)
+                    return index;
+                index++;
+            }
+
+            return -1;
+        }
+
         static public int IndexOf<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
         {
             int index = 0;
