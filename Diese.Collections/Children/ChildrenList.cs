@@ -65,6 +65,13 @@ namespace Diese.Collections.Children
             item.Parent = null;
         }
 
+        public virtual void Move(int oldIndex, int newIndex)
+        {
+            TChildren item = Collection[oldIndex];
+            Collection.RemoveAt(oldIndex);
+            Collection.Insert(newIndex, item);
+        }
+
         public int IndexOf(TChildren item)
         {
             return item != null ? Collection.IndexOf(item) : -1;

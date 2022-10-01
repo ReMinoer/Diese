@@ -30,16 +30,16 @@ namespace Diese.Collections.Observables
             => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, newItem, oldItem, index);
 
         static public NotifyCollectionChangedEventArgs ReplaceRange(IList oldItems, IList newItems)
-            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, oldItems, newItems);
+            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, newItems, oldItems);
 
         static public NotifyCollectionChangedEventArgs ReplaceRange(IList oldItems, IList newItems, int index)
-            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, oldItems, newItems, index);
+            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, newItems, oldItems, index);
 
-        static public NotifyCollectionChangedEventArgs Move(IList items, int oldIndex, int newIndex)
-            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, items, oldIndex, newIndex);
+        static public NotifyCollectionChangedEventArgs Move(object item, int oldIndex, int newIndex)
+            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex);
 
         static public NotifyCollectionChangedEventArgs MoveRange(IList items, int oldIndex, int newIndex)
-            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, items, oldIndex, newIndex);
+            => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, items, newIndex, oldIndex);
 
         static public NotifyCollectionChangedEventArgs Remove(object item)
             => new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item);

@@ -73,6 +73,12 @@ namespace Diese.Collections.Children.Observables
             NotifyCollectionChange();
         }
 
+        public override void Move(int oldIndex, int newIndex)
+        {
+            Collection.Move(oldIndex, newIndex);
+            NotifyCollectionChange();
+        }
+
         public override void Clear()
         {
             if (Count == 0)

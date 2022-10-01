@@ -129,30 +129,18 @@ namespace Diese.Collections
             return true;
         }
 
-        static public void MoveMany<T>(this IList<T> list, IEnumerable<T> items, int index)
+        static public bool MoveMany<T>(this IList<T> list, IEnumerable<T> items, int index)
         {
-            using (IEnumerator<T> enumerator = list.OrderBy(list.IndexOf).GetEnumerator())
-            {
-                if (!enumerator.MoveNext())
-                    return;
+            T[] itemsArray = items.ToArray();
+            int[] oldIndices = itemsArray.Select(list.IndexOf).OrderByDescending(x => x).ToArray();
+            if (oldIndices.Any(x => x == -1))
+                return false;
 
-                T item = enumerator.Current;
-                int itemIndex = list.IndexOf(item);
+            foreach (int oldIndex in oldIndices)
+                list.RemoveAt(oldIndex);
 
-                list.RemoveAt(itemIndex);
-                list.Insert(index, item);
-
-                while (enumerator.MoveNext())
-                {
-                    item = enumerator.Current;
-                    itemIndex = list.IndexOf(item);
-                    if (itemIndex > index)
-                        index++;
-
-                    list.RemoveAt(itemIndex);
-                    list.Insert(index, item);
-                }
-            }
+            list.InsertMany(index, itemsArray);
+            return true;
         }
 
         static public bool Remove<T>(this IList<T> list, Predicate<T> predicate)

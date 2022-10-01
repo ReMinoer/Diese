@@ -11,7 +11,7 @@ namespace Diese.Collections.Children.Observables
         where TChildren : class, IParentable<TOwner>
     {
         public ObservableChildrenCollection(TOwner owner)
-            : base(owner, new ObservableCollection<TChildren>())
+            : base(owner, new ObservableList<TChildren>())
         {
         }
     }
